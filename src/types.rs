@@ -91,7 +91,7 @@ pub struct BitSpec {
 }
 
 /// 解析值
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum Value {
     /// 整数
     Int(i64),

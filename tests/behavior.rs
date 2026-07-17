@@ -228,6 +228,85 @@ fn parses_0001ff00_minimal_exists() {
 }
 
 #[test]
+fn parses_0001ff00_repeat_item_names_include_id() {
+    fn collect_leaf_names<'a>(value: &'a Value, names: &mut Vec<String>) {
+        match value {
+            Value::Node { name, value, .. } => {
+                names.push(name.clone());
+                collect_leaf_names(value.as_ref(), names);
+            }
+            Value::WithUnit { value, .. } => collect_leaf_names(value.as_ref(), names),
+            Value::Map(entries) => {
+                for (_, v) in entries {
+                    collect_leaf_names(v, names);
+                }
+            }
+            Value::List(items) => {
+                for item in items {
+                    collect_leaf_names(item, names);
+                }
+            }
+            _ => {}
+        }
+    }
+
+    // 2 rates, plus the 4-byte total energy field
+    let mut buf = vec![0x02u8];
+    buf.extend_from_slice(&[0x00, 0x12, 0x34, 0x56]);
+    buf.extend_from_slice(&[0x23, 0x01, 0x00, 0x00]);
+    buf.extend_from_slice(&[0x23, 0x01, 0x00, 0x00]);
+
+    let (value, consumed) = parse_case(0x0001FF00, &buf);
+    assert_eq!(consumed, buf.len());
+
+    let mut names = Vec::new();
+    collect_leaf_names(&value, &mut names);
+    assert!(names.iter().any(|n| n.starts_with("00010100_")));
+    assert!(names.iter().any(|n| n.starts_with("00010200_")));
+}
+
+#[test]
+fn parses_0101ff00_repeat_inner_names_are_expanded() {
+    let mut buf = vec![0x03u8];
+    buf.extend_from_slice(&[0x12, 0x00, 0x00]);
+    buf.extend_from_slice(&[0x01, 0x01, 0x01, 0x01, 0x20]);
+    buf.extend_from_slice(&[0x11, 0x00, 0x00, 0x02, 0x01, 0x01, 0x01, 0x20]);
+    buf.extend_from_slice(&[0x22, 0x00, 0x00, 0x03, 0x02, 0x02, 0x02, 0x20]);
+    buf.extend_from_slice(&[0x33, 0x00, 0x00, 0x04, 0x03, 0x03, 0x03, 0x20]);
+
+    let (value, consumed) = parse_case(0x0101FF00, &buf);
+    assert_eq!(consumed, buf.len());
+
+    fn collect_leaf_names<'a>(value: &'a Value, names: &mut Vec<String>) {
+        match value {
+            Value::Node { name, value, .. } => {
+                names.push(name.clone());
+                collect_leaf_names(value.as_ref(), names);
+            }
+            Value::WithUnit { value, .. } => collect_leaf_names(value.as_ref(), names),
+            Value::Map(entries) => {
+                for (_, v) in entries {
+                    collect_leaf_names(v, names);
+                }
+            }
+            Value::List(items) => {
+                for item in items {
+                    collect_leaf_names(item, names);
+                }
+            }
+            _ => {}
+        }
+    }
+
+    let mut names = Vec::new();
+    collect_leaf_names(&value, &mut names);
+    assert!(names.iter().any(|n| n == "(当前)正向有功费率1最大需量"));
+    assert!(names.iter().any(|n| n == "(当前)正向有功费率2最大需量"));
+    assert!(names.iter().any(|n| n == "(当前)正向有功费率3最大需量"));
+    assert!(!names.iter().any(|n| n.contains("{index}")));
+}
+
+#[test]
 fn parses_additional_candidate_id() {
     // reuse same payload shape as other candidate_id tests to ensure generated ids resolve
     let (value, consumed) = parse_case(0x00000200, &[0x23, 0x01, 0x00, 0x00]);

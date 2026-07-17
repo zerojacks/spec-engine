@@ -13,13 +13,8 @@ use super::{
     decode_time, get_custom_handler, get_spec_catalog, get_external_parser, BitSpec, Context,
     DictError, Encoding, ExternalLength, FieldLength, FieldSpec, NamedField, Value,
 };
+use crate::repeat::{eval_id_expr, format_id_expr, format_repeat_name};
 use std::collections::HashMap;
-
-fn format_repeat_name(template: &str, idx: usize, count: usize) -> String {
-    let replaced_index0 = template.replace("{index0}", &idx.to_string());
-    let replaced_index = replaced_index0.replace("{index}", &(idx + 1).to_string());
-    replaced_index.replace("{count}", &count.to_string())
-}
 
 pub const DEFAULT_REGION: &str = "default";
 
@@ -390,12 +385,91 @@ fn parse_switch(
     parse_field(buf, chosen, ctx, protocol, region, dir)
 }
 
+fn format_repeat_template(template: &str, idx: usize, count: usize) -> String {
+    template
+        .replace("{index0}", &idx.to_string())
+        .replace("{index}", &(idx + 1).to_string())
+        .replace("{count}", &count.to_string())
+}
+
+fn instantiate_named_field(nf: &NamedField, idx: usize, count: usize) -> NamedField {
+    NamedField {
+        id: nf.id.as_ref().map(|s| format_repeat_template(s, idx, count)),
+        ref_id: nf
+            .ref_id
+            .as_ref()
+            .map(|s| format_repeat_template(s, idx, count)),
+        name: format_repeat_template(&nf.name, idx, count),
+        spec: instantiate_field_spec(&nf.spec, idx, count),
+    }
+}
+
+fn instantiate_field_spec(spec: &FieldSpec, idx: usize, count: usize) -> FieldSpec {
+    match spec {
+        FieldSpec::Fixed {
+            encoding,
+            length,
+            unit,
+            enum_map,
+        } => FieldSpec::Fixed {
+            encoding: encoding.clone(),
+            length: length.clone(),
+            unit: unit.clone(),
+            enum_map: enum_map.clone(),
+        },
+        FieldSpec::BitField { length, bits } => FieldSpec::BitField {
+            length: *length,
+            bits: bits.clone(),
+        },
+        FieldSpec::Switch { on, cases, default } => FieldSpec::Switch {
+            on: format_repeat_template(on, idx, count),
+            cases: cases
+                .iter()
+                .map(|(k, v)| {
+                    (
+                        format_repeat_template(k, idx, count),
+                        Box::new(instantiate_field_spec(v, idx, count)),
+                    )
+                })
+                .collect(),
+            default: default.as_ref().map(|v| Box::new(instantiate_field_spec(v, idx, count))),
+        },
+        FieldSpec::Repeat {
+            count_ref,
+            element,
+            name_template,
+            id_expr,
+        } => FieldSpec::Repeat {
+            count_ref: format_repeat_template(count_ref, idx, count),
+            element: Box::new(instantiate_field_spec(element, idx, count)),
+            name_template: name_template
+                .as_ref()
+                .map(|tmpl| format_repeat_template(tmpl, idx, count)),
+            id_expr: id_expr.clone(),
+        },
+        FieldSpec::External { protocol, length } => FieldSpec::External {
+            protocol: protocol.clone(),
+            length: length.clone(),
+        },
+        FieldSpec::Container(fields) => FieldSpec::Container(
+            fields
+                .iter()
+                .map(|nf| instantiate_named_field(nf, idx, count))
+                .collect(),
+        ),
+        FieldSpec::Custom(handler) => FieldSpec::Custom(handler.clone()),
+        FieldSpec::DictRef { di_ref } => FieldSpec::DictRef {
+            di_ref: format_repeat_template(di_ref, idx, count),
+        },
+    }
+}
+
 fn parse_repeat(
     buf: &[u8],
     count_ref: &str,
     element: &FieldSpec,
     name_template: &Option<String>,
-    _id_expr: &Option<String>,
+    id_expr: &Option<String>,
     ctx: &mut Context,
     protocol: &str,
     region: &str,
@@ -408,10 +482,24 @@ fn parse_repeat(
     let mut offset = 0usize;
     let mut items = Vec::new();
     for idx in 0..count {
-        let (v, consumed) = parse_field(&buf[offset..], element, ctx, protocol, region, dir)?;
+        let instantiated_element = instantiate_field_spec(element, idx, count);
+        let (v, consumed) = parse_field(&buf[offset..], &instantiated_element, ctx, protocol, region, dir)?;
         let item = if let Some(template) = name_template {
+            let id_value = id_expr
+                .as_ref()
+                .and_then(|expr| eval_id_expr(expr, idx).ok())
+                .map(|id| format!("{:08X}", id));
             Value::Node {
-                name: format_repeat_name(template, idx, count),
+                name: format_repeat_name(Some(template.as_str()), id_value.as_deref(), idx, count),
+                raw: buf[offset..offset + consumed].to_vec(),
+                value: Box::new(v),
+            }
+        } else if let Some(expr) = id_expr {
+            let name = format_id_expr(expr, idx).unwrap_or_else(|e| {
+                panic!("id_expr 解析失败: {} (idx={})", e, idx)
+            });
+            Value::Node {
+                name,
                 raw: buf[offset..offset + consumed].to_vec(),
                 value: Box::new(v),
             }
@@ -456,17 +544,39 @@ fn parse_container(
         if let Some(ref_id) = &nf.ref_id {
             ctx.bind(ref_id, raw_bytes.clone(), v.clone());
         }
+        if nf.name.is_empty() {
+            match v {
+                Value::List(items) => {
+                    for item in items {
+                        if let Value::Node { name, .. } = &item {
+                            entries.push((name.clone(), item));
+                        } else {
+                            entries.push((String::new(), item));
+                        }
+                    }
+                    offset += consumed;
+                    continue;
+                }
+                Value::Node { ref name, .. } => {
+                    entries.push((name.clone(), v));
+                    offset += consumed;
+                    continue;
+                }
+                _ => {}
+            }
+        }
+
         let node_name = if let Some(id) = &nf.id {
             format!("{}_{}", id, nf.name)
         } else {
             nf.name.clone()
         };
         let node = Value::Node {
-            name: node_name,
+            name: node_name.clone(),
             raw: raw_bytes.clone(),
             value: Box::new(v.clone()),
         };
-        entries.push((nf.name.clone(), node));
+        entries.push((node_name, node));
         offset += consumed;
     }
     ctx.pop_scope();

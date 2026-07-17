@@ -27,6 +27,7 @@ mod decode;
 mod error;
 mod parser;
 mod registry;
+mod repeat;
 mod types;
 
 pub use context::Context;

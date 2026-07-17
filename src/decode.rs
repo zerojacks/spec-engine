@@ -39,20 +39,150 @@ pub fn decode_hex(raw: &[u8]) -> String {
 
 /// 解码时间（简化实现，按格式解析）
 pub fn decode_time(raw: &[u8], format: &str) -> String {
-    // 简化实现：假设 format 是 "ssmmhhDDMMYY" 这类顺序
-    if format == "ssmmhhDDMMYY" && raw.len() >= 6 {
-        let ss = decode_bcd_u64(&[raw[0]]);
-        let mm = decode_bcd_u64(&[raw[1]]);
-        let hh = decode_bcd_u64(&[raw[2]]);
-        let dd = decode_bcd_u64(&[raw[3]]);
-        let mo = decode_bcd_u64(&[raw[4]]);
-        let yy = decode_bcd_u64(&[raw[5]]);
-        return format!(
-            "20{:02}-{:02}-{:02} {:02}:{:02}:{:02}",
-            yy, mo, dd, hh, mm, ss
-        );
+    // 支持按 format 字符串解析多种时间格式。格式由两字符的 token 组成，
+    // 如 "YY","MM","DD","hh","mm","ss","ms","WW"，以及
+    // 4 字符的特殊 token "xxxx"（表示两个字节的毫秒字段）。
+    // 每个两字符 token 对应原始字节流中的 1 字节（BCD 或字节值），
+    // 而 "xxxx" 对应 2 字节（高字节在前）。
+
+    if raw.is_empty() || format.is_empty() {
+        return decode_hex(raw);
     }
-    decode_hex(raw)
+
+    // 将 format 拆分为 token 列表
+    let mut tokens: Vec<&str> = Vec::new();
+    let mut i = 0usize;
+    while i < format.len() {
+        if i + 4 <= format.len() && &format[i..i + 4] == "xxxx" {
+            tokens.push(&format[i..i + 4]);
+            i += 4;
+        } else if i + 2 <= format.len() {
+            tokens.push(&format[i..i + 2]);
+            i += 2;
+        } else {
+            // 遇到单字符时跳过以保持健壮性
+            i += 1;
+        }
+    }
+
+    // 先解析到结构化字段，再按规范顺序输出
+    let mut idx = 0usize;
+    let mut cc_val: Option<u32> = None;
+    let mut yy_val: Option<u32> = None;
+    let mut year: Option<u32> = None;
+    let mut month: Option<u32> = None;
+    let mut day: Option<u32> = None;
+    let mut hour: Option<u32> = None;
+    let mut minute: Option<u32> = None;
+    let mut second: Option<u32> = None;
+    let mut msec: Option<u32> = None;
+    let mut weekday_str: Option<String> = None;
+
+    let weekday_map = ["天", "一", "二", "三", "四", "五", "六"];
+
+    for &tok in &tokens {
+        if tok == "xxxx" {
+            if idx + 1 < raw.len() {
+                let v = ((raw[idx] as u16) << 8) | raw[idx + 1] as u16;
+                msec = Some(v as u32);
+            }
+            idx += 2;
+            continue;
+        }
+        if idx >= raw.len() {
+            break;
+        }
+        let b = raw[idx];
+        match tok {
+            "CC" => {
+                cc_val = Some(decode_bcd_u64(&[b]) as u32);
+            }
+            "YY" => {
+                yy_val = Some(decode_bcd_u64(&[b]) as u32);
+            }
+            "MM" => {
+                month = Some(decode_bcd_u64(&[b]) as u32);
+            }
+            "DD" => {
+                day = Some(decode_bcd_u64(&[b]) as u32);
+            }
+            "hh" => {
+                hour = Some(decode_bcd_u64(&[b]) as u32);
+            }
+            "mm" => {
+                minute = Some(decode_bcd_u64(&[b]) as u32);
+            }
+            "ss" => {
+                second = Some(decode_bcd_u64(&[b]) as u32);
+            }
+            "ms" => {
+                let v = decode_bcd_u64(&[b]) as u32;
+                msec = Some(v * 10);
+            }
+            "WW" => {
+                let i = (b as usize) % weekday_map.len();
+                weekday_str = Some(weekday_map[i].to_string());
+            }
+            _ => { /* ignore unknown */ }
+        }
+        idx += 1;
+    }
+
+    // 计算年
+    if let (Some(cc), Some(yy)) = (cc_val, yy_val) {
+        year = Some(cc * 100 + yy);
+    } else if let Some(yy) = yy_val {
+        year = Some(2000 + yy);
+    }
+
+    // 组装输出：优先日期（YYYY年MM月DD日），再时间（HH:MM:SS[.ms]），最后可选星期
+    let mut pieces: Vec<String> = Vec::new();
+    if let Some(y) = year {
+        pieces.push(format!("{}年", y));
+    }
+    if month.is_some() || day.is_some() {
+        let m = month.unwrap_or(0);
+        let d = day.unwrap_or(0);
+        pieces.push(format!("{:02}月{:02}日", m, d));
+    }
+
+    let mut time_part = String::new();
+    if hour.is_some() || minute.is_some() || second.is_some() {
+        if let Some(h) = hour {
+            time_part.push_str(&format!("{:02}", h));
+        } else {
+            time_part.push_str("00");
+        }
+        if let Some(mn) = minute {
+            time_part.push_str(&format!(":{:02}", mn));
+        } else if hour.is_some() {
+            time_part.push_str(":00");
+        }
+        if let Some(s) = second {
+            time_part.push_str(&format!(":{:02}", s));
+        }
+        if let Some(ms) = msec {
+            time_part.push_str(&format!(".{:03}", ms % 1000));
+        }
+    }
+
+    let mut result = String::new();
+    if !pieces.is_empty() {
+        result.push_str(&pieces.join(""));
+    }
+    if !time_part.is_empty() {
+        if !result.is_empty() {
+            result.push(' ');
+        }
+        result.push_str(&time_part);
+    }
+    if result.is_empty() {
+        if let Some(w) = weekday_str {
+            return w;
+        }
+        return decode_hex(raw);
+    }
+    result
 }
 
 /// 解码带符号位的 bin（原码）

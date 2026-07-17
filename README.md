@@ -25,11 +25,26 @@ spec-engine/
 
 ```bash
 cargo build              # 编译（build.rs 从 schema/*.yaml 生成 DI 表）
-cargo run --example demo # 跑15组端到端测试，构造真实字节验证解析结果
+cargo run --example demo # 直接输出 JSON 解析结果，按真实字节验证每个类型组合
 ```
 
-`cargo run --example demo` 的输出会对每个类型组合打印解析结果并 `assert_eq!` 核对，
-全部通过会打印 `=== 全部 16 组测试通过 ===`。
+`cargo run --example demo` 的输出现在会对每个类型组合打印解析结果的 JSON，
+无需内部断言即可观察实际解析结构。全部成功时会打印 `=== demo 运行完成 ===`。
+
+## 解析输出统一命名
+
+为了让解析结果更一致，`parse_container()` 的 `Map` key 现在和 `Value::Node.name` 一致：
+
+- 对于带 `id` 的字段，Map key 会使用完整节点名 `ID_名称`，
+- 而不是仅使用裸字段名。
+
+这样像 `0101FF00` 这种带子字段 `01010000` 的容器，
+在 JSON 输出里会出现类似：
+
+- Map key `01010000_(当前)正向有功总最大需量及发生时间`
+- 对应 `Node.name` 也会是 `01010000_(当前)正向有功总最大需量及发生时间`
+
+这项统一改动让节点寻址和输出结构更清晰，也便于后续通过 ID+名称直接定位字段。 
 
 ## 覆盖的类型组合（对应 schema/test_di.yaml 里的编号）
 
