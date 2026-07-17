@@ -1,8 +1,8 @@
-use spec_engine::{get_di_table, init_registries};
+use spec_engine::{get_spec_catalog, init_registries};
 
 fn main() {
     init_registries();
-    let table = get_di_table();
+    let table = get_spec_catalog();
     println!("DI table entries: {}", table.len());
     for ((protocol, di, region, dir), named_field) in table.iter() {
         println!(

@@ -42,7 +42,7 @@ fn parses_bitfield_values() {
     assert_eq!(consumed, 2);
     match value {
         Value::Node { value, .. } => match value.as_ref() {
-                Value::Map(entries) => {
+            Value::Map(entries) => {
                 assert!(entries.iter().any(|(k, _)| k.contains("需量积算方式")));
             }
             other => panic!("expected map payload, got {other:?}"),

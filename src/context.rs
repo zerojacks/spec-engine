@@ -53,7 +53,7 @@ impl Context {
     }
 
     /// 获取字段的原始字节（从内到外查找）—— 供 switch 按 hex key 匹配
-    pub fn get(&self, name: &str) -> Option<&Vec<u8>> {
+    pub fn get_raw(&self, name: &str) -> Option<&Vec<u8>> {
         for scope in self.scopes.iter().rev() {
             if let Some(b) = scope.get(name) {
                 return Some(&b.raw);
@@ -64,7 +64,7 @@ impl Context {
 
     /// 获取字段已解码的 Value（从内到外查找）—— 供 repeat/external/dict_ref
     /// 按数值引用，天然遵循该字段自己声明的字节序，不需要重新猜
-    pub fn get_value(&self, name: &str) -> Option<&Value> {
+    pub fn get_decoded(&self, name: &str) -> Option<&Value> {
         for scope in self.scopes.iter().rev() {
             if let Some(b) = scope.get(name) {
                 return Some(&b.value);

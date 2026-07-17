@@ -10,7 +10,7 @@
 
 use super::{
     decode_ascii, decode_bcd_u64, decode_bin_u64, decode_hex, decode_signed_bcd, decode_signed_bin,
-    decode_time, get_custom_handler, get_di_table, get_external_parser, BitSpec, Context,
+    decode_time, get_custom_handler, get_spec_catalog, get_external_parser, BitSpec, Context,
     DictError, Encoding, ExternalLength, FieldLength, FieldSpec, NamedField, Value,
 };
 use std::collections::HashMap;
@@ -72,7 +72,7 @@ pub fn parse_di(
     dir: Option<&str>,
     buf: &[u8],
 ) -> Result<(Value, usize), DictError> {
-    let table = get_di_table();
+    let table = get_spec_catalog();
     let entry = lookup_di(table, protocol, di, region, dir)?;
     let mut ctx = Context::new();
     let (value, consumed) = parse_field(buf, &entry.spec, &mut ctx, protocol, region, dir)?;
@@ -189,7 +189,7 @@ fn parse_fixed(
     let length = match length {
         FieldLength::Fixed(len) => *len,
         FieldLength::Ref(name) => ctx
-            .get_value(name)
+            .get_decoded(name)
             .and_then(|v| v.as_usize())
             .ok_or_else(|| DictError::MissingRef(name.clone()))?,
     };
@@ -336,7 +336,7 @@ fn parse_external(
         }
         ExternalLength::Ref(field_name) => {
             let count = ctx
-                .get_value(field_name)
+                .get_decoded(field_name)
                 .and_then(|v| v.as_u32())
                 .ok_or_else(|| DictError::MissingRef(field_name.to_string()))?
                 as usize;
@@ -374,7 +374,7 @@ fn parse_switch(
         buf.len().to_string()
     } else {
         let raw = ctx
-            .get(on)
+            .get_raw(on)
             .cloned()
             .ok_or_else(|| DictError::MissingRef(on.to_string()))?;
         decode_hex(&raw)
@@ -402,7 +402,7 @@ fn parse_repeat(
     dir: Option<&str>,
 ) -> Result<(Value, usize), DictError> {
     let count = ctx
-        .get_value(count_ref)
+        .get_decoded(count_ref)
         .and_then(|v| v.as_usize())
         .ok_or_else(|| DictError::MissingRef(count_ref.to_string()))?;
     let mut offset = 0usize;
@@ -484,10 +484,10 @@ fn parse_dict_ref(
     dir: Option<&str>,
 ) -> Result<(Value, usize), DictError> {
     let di = ctx
-        .get_value(di_ref)
+        .get_decoded(di_ref)
         .and_then(|v| v.as_u32())
         .ok_or_else(|| DictError::MissingRef(di_ref.to_string()))?;
-    let table = get_di_table();
+    let table = get_spec_catalog();
     let target = lookup_di(table, protocol, di, region, dir)?;
     parse_field(buf, &target.spec, ctx, protocol, region, dir)
 }

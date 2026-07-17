@@ -82,7 +82,7 @@ fn assert_bitfield_case() {
     let v = show_case("运行状态字1(bitfield,南网)", 0x04000501, &[0x00, 0x02]);
     match &v {
         Value::Node { value, .. } => match value.as_ref() {
-                Value::Map(entries) => {
+            Value::Map(entries) => {
                 assert!(entries.iter().any(|(k, _)| k.contains("需量积算方式")));
             }
             _ => panic!("期望内部 Map"),
@@ -171,7 +171,11 @@ fn assert_0001ff00_case() {
         buf.extend_from_slice(r);
     }
 
-    let v = show_case("(当前)正向有功电能数据块(0001FF00) 6 费率", 0x0001FF00, &buf);
+    let v = show_case(
+        "(当前)正向有功电能数据块(0001FF00) 6 费率",
+        0x0001FF00,
+        &buf,
+    );
 
     // 递归查找首个 Value::List（代表重复字段的解析结果）并断言内容
     fn find_first_list(v: &Value) -> Option<&Vec<Value>> {
