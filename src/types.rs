@@ -35,6 +35,13 @@ pub enum Endian {
     Big,
 }
 
+/// 时间编码方式，`type: bcd` 或 `type: bin` 影响时间字段的字节解释
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+pub enum TimeEncoding {
+    Bcd,
+    Bin { endian: Endian },
+}
+
 /// 字段长度定义
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum FieldLength {
@@ -42,6 +49,8 @@ pub enum FieldLength {
     Fixed(usize),
     /// 引用前面字段的解析结果
     Ref(String),
+    /// 表达式形式的长度，运行时求值（例如 "2*ref(pn_count)"）
+    Expr(String),
 }
 
 /// 编码方式
@@ -63,7 +72,7 @@ pub enum Encoding {
     /// 十六进制字符串
     Hex,
     /// 时间格式
-    Time { format: String },
+    Time { format: String, encoding: TimeEncoding },
     /// 原始字节
     Raw,
 }
@@ -83,9 +92,11 @@ pub enum ExternalLength {
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct BitSpec {
     /// 位范围 [start, end]
-    pub range: (u8, u8),
+    pub range: (usize, usize),
     /// 字段名称
     pub name: String,
+    /// 可选的 bit 级别 ref_id，用于按 bit 选择后续解析
+    pub ref_id: Option<String>,
     /// 枚举映射
     pub enum_map: Option<HashMap<String, String>>,
 }
@@ -113,6 +124,9 @@ pub enum Value {
         raw: Vec<u8>,
         value: Box<Value>,
     },
+    /// 显式跳过输出的占位值
+    Skip,
+    Pn(i64),
 }
 
 impl Value {
@@ -211,9 +225,16 @@ impl Value {
                 buf.push_str(&format!("{}WithUnit(unit=\"{}\")\n", pad, unit));
                 value.fmt_tree(buf, indent + 1);
             }
+            Value::Pn(n) => {
+                buf.push_str(&format!("{}Pn({})\n", pad, n));
+            }
             Value::Node { name, raw, value } => {
-                buf.push_str(&format!("{}{} [{}]\n", pad, name, format_bytes(raw)));
+                let repr = format_bytes(raw);
+                buf.push_str(&format!("{}{} [{}]\n", pad, name, repr));
                 value.fmt_tree(buf, indent + 1);
+            }
+            Value::Skip => {
+                buf.push_str(&format!("{}Skip\n", pad));
             }
         }
     }
@@ -222,6 +243,165 @@ impl Value {
 fn format_bytes(bytes: &[u8]) -> String {
     let parts: Vec<String> = bytes.iter().map(|b| format!("0x{:02X}", b)).collect();
     format!("[{}]", parts.join(", "))
+}
+
+/// 格式化规格类型
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub enum FormatType {
+    Hex,
+    Bcd,
+    Bin,
+}
+
+/// 字节格式化规格
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub enum FormatOrder {
+    Normal,
+    Reverse,
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct FormatSpec {
+    /// 格式类型：hex|bcd|bin
+    pub ftype: FormatType,
+    /// 分组字节数（默认 1）
+    pub group_bytes: Option<usize>,
+    /// 分隔符（默认 ":")
+    pub separator: Option<String>,
+    /// 是否填充到固定宽度（hex 每字节 2 位）
+    pub pad: Option<bool>,
+    /// 字节序，仅对格式化显示有效
+    pub byte_order: Option<Endian>,
+    /// 组序，normal=原序，reverse=整体组序反转
+    pub order: Option<FormatOrder>,
+}
+
+pub(crate) fn format_bytes_with_spec(bytes: &[u8], spec: &FormatSpec) -> String {
+    let group = match spec.group_bytes {
+        Some(n) if n > 0 => n,
+        _ => 1,
+    };
+    let sep = spec.separator.as_deref();
+    let pad = matches!(spec.pad, Some(true));
+    let little_endian = spec.byte_order == Some(Endian::Little);
+    let reverse_group_order = spec.order == Some(FormatOrder::Reverse);
+
+    let mut parts: Vec<String> = Vec::new();
+    for chunk in bytes.chunks(group) {
+        let chunk_iter: Box<dyn Iterator<Item = &u8>> = if little_endian && chunk.len() > 1 {
+            Box::new(chunk.iter().rev())
+        } else {
+            Box::new(chunk.iter())
+        };
+        let mut inner: Vec<String> = Vec::new();
+        for b in chunk_iter {
+            let s = match spec.ftype {
+                FormatType::Hex => {
+                    if pad {
+                        format!("{:02X}", b)
+                    } else {
+                        format!("{:X}", b)
+                    }
+                }
+                FormatType::Bcd => {
+                    // BCD display stays hex-like for raw byte formatting.
+                    if pad {
+                        format!("{:02X}", b)
+                    } else {
+                        format!("{:X}", b)
+                    }
+                }
+                FormatType::Bin => {
+                    // Binary display with formatting shows raw bytes in decimal.
+                    if pad {
+                        format!("{:03}", b)
+                    } else {
+                        format!("{}", b)
+                    }
+                }
+            };
+            inner.push(s);
+        }
+        parts.push(inner.join(""));
+    }
+    if reverse_group_order {
+        parts.reverse();
+    }
+    if let Some(sep) = sep {
+        parts.join(sep)
+    } else {
+        parts.concat()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn format_bytes_with_spec_little_endian_group_bytes_one() {
+        let spec = FormatSpec {
+            ftype: FormatType::Bin,
+            group_bytes: Some(1),
+            separator: Some(".".into()),
+            pad: Some(false),
+            byte_order: Some(Endian::Little),
+            order: None,
+        };
+        assert_eq!(format_bytes_with_spec(&[0x0A, 0x2F, 0x12, 0xE4], &spec), "10.47.18.228");
+    }
+
+    #[test]
+    fn format_bytes_with_spec_little_endian_within_chunks() {
+        let spec = FormatSpec {
+            ftype: FormatType::Bin,
+            group_bytes: Some(2),
+            separator: Some(":".into()),
+            pad: Some(false),
+            byte_order: Some(Endian::Little),
+            order: None,
+        };
+        assert_eq!(format_bytes_with_spec(&[0x01, 0x02, 0x03, 0x04], &spec), "21:43");
+    }
+
+    #[test]
+    fn format_bytes_with_spec_reverse_order() {
+        let spec = FormatSpec {
+            ftype: FormatType::Bin,
+            group_bytes: Some(1),
+            separator: Some(".".into()),
+            pad: Some(false),
+            byte_order: None,
+            order: Some(FormatOrder::Reverse),
+        };
+        assert_eq!(format_bytes_with_spec(&[0x0A, 0x2F, 0x12, 0xE4], &spec), "228.18.47.10");
+    }
+
+    #[test]
+    fn format_bytes_with_spec_no_defaults_when_none() {
+        let spec = FormatSpec {
+            ftype: FormatType::Hex,
+            group_bytes: None,
+            separator: None,
+            pad: None,
+            byte_order: None,
+            order: Some(FormatOrder::Reverse),
+        };
+        assert_eq!(format_bytes_with_spec(&[0x0A, 0x2F, 0x12], &spec), "122FA");
+    }
+
+    #[test]
+    fn format_bytes_with_spec_group_bytes_without_separator() {
+        let spec = FormatSpec {
+            ftype: FormatType::Hex,
+            group_bytes: Some(2),
+            separator: None,
+            pad: Some(true),
+            byte_order: None,
+            order: Some(FormatOrder::Reverse),
+        };
+        assert_eq!(format_bytes_with_spec(&[0x0A, 0x2F, 0x12, 0x34], &spec), "12340A2F");
+    }
 }
 
 /// 字段规格（运行时，build.rs 已展开大部分节点）
@@ -233,6 +413,7 @@ pub enum FieldSpec {
         length: FieldLength,
         unit: Option<String>,
         enum_map: Option<HashMap<String, String>>,
+        format: Option<FormatSpec>,
     },
     /// 位域
     BitField { length: usize, bits: Vec<BitSpec> },
@@ -244,15 +425,29 @@ pub enum FieldSpec {
     },
     /// 计数重复
     Repeat {
-        count_ref: String,
+        count_ref: Option<String>,
+        bits_ref: Option<String>,
+        bit_order: Option<String>,
+        bit_specs: Option<Vec<BitSpec>>,
         element: Box<FieldSpec>,
-        /// 可选的元素名称模板，支持 {index}、{index0} 和 {id} 占位符
+        /// 可选的元素名称模板，支持 {index}、{index0}、{id} 和 {bit_name} 占位符
         name_template: Option<String>,
         /// 可选的 id 表达式（如 "0x00010100 + index0*0x0100"），编译期
         /// 可用 `count`+`id_expr` 展开为具体命名字段。运行时仍保留
         /// `count_ref` 以支持动态计数。
         id_expr: Option<String>,
     },
+    /// 按位图展开
+    BitMask {
+        length: usize,
+        bit_order: Option<String>,
+        bit_specs: Vec<BitSpec>,
+        element: Box<FieldSpec>,
+        /// 可选的元素名称模板，支持 {index}、{index0}、{id} 和 {bit_name} 占位符
+        name_template: Option<String>,
+    },
+    /// 跳过该分支，不产生输出结果
+    Skip,
     /// 外部协议
     External {
         protocol: String,
@@ -264,6 +459,15 @@ pub enum FieldSpec {
     Custom(String),
     /// 运行时字典引用
     DictRef { di_ref: String },
+    /// 信息点标识 DA（6.1.3）：固定2字节，DA1(位掩码)+DA2(组号)，
+    /// 运行时按组号动态计算命中的测量点号，含 p0/全选两个哨兵值。
+    /// 不需要任何编译期配置，故为无字段的单元变体。
+    InfoPoint,
+    /// 数据标识编码 DI（6.1.4）：固定4字节，按 DI0 DI1 DI2 DI3 传输顺序
+    /// （小端）读出后，去同协议全局 DI 字典查名称，只取名字不解析该 DI
+    /// 自身的数据内容（"只有数据标识无数据标识内容"的场景，如任务定义里
+    /// 枚举包含哪些DI）。同样不需要任何编译期配置。
+    DiCode,
 }
 
 /// 命名字段
@@ -277,4 +481,6 @@ pub struct NamedField {
     pub name: String,
     /// 字段规格
     pub spec: FieldSpec,
+    /// 可选的显示格式规格（由 build.rs 从 YAML 的 `format` 字段透传）
+    pub format: Option<FormatSpec>,
 }

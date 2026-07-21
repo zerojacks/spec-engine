@@ -6,7 +6,7 @@ Rust 源码 → 运行时只有一个统一的 `parse_field` 递归函数处理�
 
 ```
 spec-engine/
-├── build.rs              # YAML → Rust 代码生成（编译期展开 template_ref/di_sequence）
+├── build.rs              # YAML → Rust 代码生成（编译期展开 template/di_sequence）
 ├── schema/
 │   └── test_di.yaml      # DI 字典源文件，覆盖全部15种类型组合
 ├── src/
@@ -55,7 +55,7 @@ cargo run --example demo # 直接输出 JSON 解析结果，按真实字节验�
 | 6 | 00020002 | bin, little, signed | 符号位位置由 endian 推导 |
 | 7 | 00020003 | bin, signed（单字节） | endian 不影响的边界情况 |
 | 9 | E0000100 | switch | 条件分支命中 case 与落到 default |
-| 10 | 00030000 | repeat + template_ref | 计数重复 + 模板复用 |
+| 10 | 00030000 | repeat + template | 计数重复 + 模板复用 |
 | 11 | 040005FF / 04000501 | 容器 + 双重身份 | 子字段可单独寻址 |
 | 13 | 00050000 | di_sequence | 跨DI拼接 |
 | 15 | 00070000 | custom | 逃生舱处理器 |

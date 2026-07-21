@@ -38,7 +38,6 @@ pub fn init_registries() {
     // 注册自定义处理器
     let mut custom: HashMap<&'static str, CustomHandler> = HashMap::new();
     custom.insert("parse_xxx_field", parse_xxx_demo);
-    custom.insert("IPWITHPORT", parse_ip_with_port);
     CUSTOM_REGISTRY.set(custom).ok();
 }
 
@@ -50,17 +49,4 @@ fn parse_dlt645_demo(raw: &[u8]) -> Result<Value, String> {
 /// 自定义解析示例
 fn parse_xxx_demo(raw: &[u8]) -> Result<(Value, usize), DictError> {
     Ok((Value::Str(super::decode_hex(raw)), raw.len()))
-}
-
-/// IP+端口自定义处理器示例
-fn parse_ip_with_port(raw: &[u8]) -> Result<(Value, usize), DictError> {
-    if raw.len() < 8 {
-        return Err(DictError::UnexpectedEof {
-            needed: 8,
-            available: raw.len(),
-        });
-    }
-    let ip = format!("{}.{}.{}.{}", raw[0], raw[1], raw[2], raw[3]);
-    let port = u16::from_be_bytes([raw[4], raw[5]]);
-    Ok((Value::Str(format!("{}:{}", ip, port)), 8))
 }

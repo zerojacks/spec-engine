@@ -1,4 +1,5 @@
-use spec_engine::{init_registries, parse_di, DictError, Value};
+use spec_engine::{init_registries, parse_di, parse_field, Context, DictError, Encoding, FieldLength, FieldSpec, BitSpec, Value};
+use std::collections::HashMap;
 use std::sync::Once;
 
 static INIT: Once = Once::new();
@@ -98,7 +99,7 @@ fn parses_repeat_structures() {
                     Value::Node { value, .. } => match value.as_ref() {
                         Value::List(items) => {
                             assert_eq!(items.len(), 1);
-                            assert!(matches!(items[0], Value::Map(_)));
+                            assert!(matches!(items[0], Value::Node { .. }));
                         }
                         other => panic!("expected repeat payload list, got {other:?}"),
                     },
@@ -106,6 +107,143 @@ fn parses_repeat_structures() {
                 }
             }
             other => panic!("expected repeat payload map, got {other:?}"),
+        },
+        other => panic!("unexpected root value: {other:?}"),
+    }
+}
+
+#[test]
+fn parses_bitmask_with_skip_branch() {
+    let field = FieldSpec::BitMask {
+        length: 1,
+        bit_order: Some("lsb".to_string()),
+        bit_specs: vec![
+            BitSpec {
+                range: (0, 0),
+                name: "low_bit".to_string(),
+                ref_id: None,
+                enum_map: None,
+            },
+            BitSpec {
+                range: (1, 1),
+                name: "high_bit".to_string(),
+                ref_id: None,
+                enum_map: None,
+            },
+        ],
+        element: Box::new(FieldSpec::Switch {
+            on: "$bit_value".to_string(),
+            cases: {
+                let mut m = HashMap::new();
+                m.insert(
+                    "0".to_string(),
+                    Box::new(FieldSpec::Skip),
+                );
+                m.insert(
+                    "1".to_string(),
+                    Box::new(FieldSpec::Fixed {
+                        encoding: Encoding::Raw,
+                        length: FieldLength::Fixed(0),
+                        unit: None,
+                        enum_map: None,
+                        format: None,
+                    }),
+                );
+                m
+            },
+            default: None,
+        }),
+        name_template: Some("{bit_name}".to_string()),
+    };
+
+    let mut ctx = Context::new();
+    let (value, consumed) = parse_field(&[0x02], &field, &mut ctx, "csg13", "南网", None)
+        .expect("parse bitmask failed");
+    assert_eq!(consumed, 1);
+    match value {
+        Value::List(items) => {
+            assert_eq!(items.len(), 1);
+            match &items[0] {
+                Value::Node { name, value, .. } => {
+                    assert_eq!(name, "high_bit");
+                    match value.as_ref() {
+                        Value::Bytes(bytes) => assert_eq!(bytes, &vec![]),
+                        other => panic!("unexpected high_bit payload: {other:?}"),
+                    }
+                }
+                other => panic!("unexpected list item: {other:?}"),
+            }
+        }
+        other => panic!("unexpected top-level bitmask value: {other:?}"),
+    }
+}
+
+#[test]
+fn parses_e1800023_topology_repeat_item_name_and_big_endian_hex() {
+    let buf = [
+        0x01, // 总记录条数
+        0x01, // 本帧记录数
+        0x01, // 起始记录序号
+        0x12, 0x34, 0x56, 0x78, 0x90, 0x12, // 节点地址
+        0x01, // 子节点数量
+        0xAA, 0xBB, 0x11, 0x22, 0x33, 0x43, // 子节点信息 (hex, big endian)
+    ];
+
+    let (value, consumed) = parse_case(0xE1800023, &buf);
+    assert_eq!(consumed, buf.len());
+
+    match value {
+        Value::Node { value, .. } => match value.as_ref() {
+            Value::Map(entries) => {
+                let node_info = entries
+                    .iter()
+                    .find(|(k, _)| k == "节点信息")
+                    .expect("节点信息 missing");
+                match &node_info.1 {
+                    Value::Node { value, .. } => match value.as_ref() {
+                        Value::List(items) => {
+                            assert_eq!(items.len(), 1);
+                            match &items[0] {
+                                Value::Node { name, value, .. } => {
+                                    assert_eq!(name, "第1条节点信息");
+                                    match value.as_ref() {
+                                        Value::Map(entries) => {
+                                            let child_list = entries
+                                                .iter()
+                                                .find(|(k, _)| k == "子节点信息")
+                                                .expect("子节点信息 missing");
+                                            match &child_list.1 {
+                                                Value::Node { value, .. } => match value.as_ref() {
+                                                    Value::List(child_items) => {
+                                                        assert_eq!(child_items.len(), 1);
+                                                        match &child_items[0] {
+                                                            Value::Node { name, value, .. } => {
+                                                                assert_eq!(name, "第1个子节点");
+                                                                assert_eq!(
+                                                                    value.as_ref(),
+                                                                    &Value::Str("AABB11223343".to_string())
+                                                                );
+                                                            }
+                                                            other => panic!("expected child node, got {other:?}"),
+                                                        }
+                                                    }
+                                                    other => panic!("expected child repeat list, got {other:?}"),
+                                                },
+                                                other => panic!("expected 子节点信息 node, got {other:?}"),
+                                            }
+                                        }
+                                        other => panic!("expected node payload map, got {other:?}"),
+                                    }
+                                }
+                                other => panic!("expected repeat item node, got {other:?}"),
+                            }
+                        }
+                        other => panic!("expected repeat payload list, got {other:?}"),
+                    },
+                    other => panic!("expected 节点信息 node, got {other:?}"),
+                }
+            }
+            other => panic!("expected root payload map, got {other:?}"),
         },
         other => panic!("unexpected root value: {other:?}"),
     }
@@ -165,13 +303,13 @@ fn parses_candidate_ids_generated_dis() {
 }
 
 #[test]
-fn parses_custom_handlers() {
+fn parses_template_ip_with_port() {
     let (value, consumed) = parse_case(
         0xE0000100,
-        &[0x0A, 0x2F, 0x12, 0xE4, 0x23, 0x29, 0x00, 0x00, 0x02],
+        &[0x0A, 0x2F, 0x12, 0xE4, 0x23, 0x29, 0x00],
     );
 
-    assert_eq!(consumed, 9);
+    assert_eq!(consumed, 7);
     match value {
         Value::Node { value, .. } => match value.as_ref() {
             Value::Map(entries) => {
@@ -179,14 +317,36 @@ fn parses_custom_handlers() {
                     .iter()
                     .find(|(k, _)| k == "主通信地址")
                     .expect("address field missing");
-                assert_eq!(
-                    address.1,
-                    Value::Node {
-                        name: "主通信地址".to_string(),
-                        raw: vec![0x0A, 0x2F, 0x12, 0xE4, 0x23, 0x29, 0x00, 0x00],
-                        value: Box::new(Value::Str("10.47.18.228:9001".to_string())),
+                match &address.1 {
+                    Value::Node { name, raw, value } => {
+                        assert_eq!(name, "主通信地址");
+                        assert_eq!(raw, &vec![0x0A, 0x2F, 0x12, 0xE4, 0x23, 0x29]);
+                        match value.as_ref() {
+                            Value::Map(subentries) => {
+                                let ip = subentries
+                                    .iter()
+                                    .find(|(k, _)| k == "IP地址")
+                                    .expect("IP地址 missing");
+                                assert_eq!(ip.1, Value::Node {
+                                    name: "IP地址".to_string(),
+                                    raw: vec![0x0A, 0x2F, 0x12, 0xE4],
+                                    value: Box::new(Value::Str("10.47.18.228".to_string())),
+                                });
+                                let port = subentries
+                                    .iter()
+                                    .find(|(k, _)| k == "端口号")
+                                    .expect("端口号 missing");
+                                assert_eq!(port.1, Value::Node {
+                                    name: "端口号".to_string(),
+                                    raw: vec![0x23, 0x29],
+                                    value: Box::new(Value::Int(9001)),
+                                });
+                            }
+                            other => panic!("expected nested map payload, got {other:?}"),
+                        }
                     }
-                );
+                    other => panic!("expected 主通信地址 node, got {other:?}"),
+                }
             }
             other => panic!("expected map payload, got {other:?}"),
         },
@@ -372,5 +532,174 @@ fn parses_0001ff00_generated_6_rates() {
             }
             other => panic!("unexpected root value for DI 0x{:08X}: {other:?}", di),
         }
+    }
+}
+
+#[test]
+fn parses_04001501_single_bit_set() {
+    // first bit set -> one element follows (1 byte BCD)
+    let mut buf = vec![0x01u8];
+    buf.extend_from_slice(&[0u8; 11]); // total 12 bytes for the bitfield
+    buf.push(0x03); // element value for the set bit
+
+    let (value, consumed) = parse_case(0x04001501, &buf);
+    assert_eq!(consumed, 13);
+
+    match value {
+        Value::Node { value, .. } => match value.as_ref() {
+            Value::Map(entries) => {
+                let mut hits = Vec::new();
+                for (k, v) in entries.iter() {
+                    if k.contains("新增次数") {
+                        if let Value::Node { value, .. } = v {
+                            if let Value::WithUnit { value: inner, unit } = value.as_ref() {
+                                if unit == "次" {
+                                    if let Value::Int(i) = inner.as_ref() {
+                                        hits.push(*i);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                assert_eq!(hits.len(), 1, "expected exactly one 新增次数 entry");
+                assert_eq!(hits[0], 3);
+            }
+            other => panic!("expected map payload, got {other:?}"),
+        },
+        other => panic!("unexpected root value: {other:?}"),
+    }
+}
+
+#[test]
+fn parses_04001501_multiple_bits_set() {
+    // first two bits set -> two elements follow
+    let mut buf = vec![0x03u8];
+    buf.extend_from_slice(&[0u8; 11]);
+    buf.push(0x05);
+    buf.push(0x07);
+
+    let (value, consumed) = parse_case(0x04001501, &buf);
+    assert_eq!(consumed, 14);
+
+    match value {
+        Value::Node { value, .. } => match value.as_ref() {
+            Value::Map(entries) => {
+                let mut hits = Vec::new();
+                for (k, v) in entries.iter() {
+                    if k.contains("新增次数") {
+                        if let Value::Node { value, .. } = v {
+                            if let Value::WithUnit { value: inner, unit } = value.as_ref() {
+                                if unit == "次" {
+                                    if let Value::Int(i) = inner.as_ref() {
+                                        hits.push(*i);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                assert_eq!(hits.len(), 2, "expected exactly two 新增次数 entries");
+                assert_eq!(hits[0], 5);
+                assert_eq!(hits[1], 7);
+            }
+            other => panic!("expected map payload, got {other:?}"),
+        },
+        other => panic!("unexpected root value: {other:?}"),
+    }
+}
+
+#[test]
+fn parses_04001501_no_bits_set() {
+    // all zeros -> no repeat elements
+    let buf = vec![0u8; 12];
+    let (value, consumed) = parse_case(0x04001501, &buf);
+    assert_eq!(consumed, 12);
+
+    match value {
+        Value::Node { value, .. } => match value.as_ref() {
+            Value::Map(entries) => {
+                // ensure no '新增次数' keys present
+                assert!(entries.iter().all(|(k, _)| !k.contains("新增次数")));
+            }
+            other => panic!("expected map payload, got {other:?}"),
+        },
+        other => panic!("unexpected root value: {other:?}"),
+    }
+}
+
+#[test]
+fn parses_basetask_template_with_info_point_and_di_code() {
+    // E0000301 "普通任务" -> template_ref: BASETASK，端到端验证
+    // 信息点标识(info_point)和数据标识编码(di_code)在真实报文树里联动工作
+    let mut buf = vec![0x01]; // 有效性标志: 有效
+    buf.extend_from_slice(&[0x00, 0x00, 0x01, 0x01, 0x26]); // 上报基准时间 mmhhDDMMYY
+    buf.push(0x00); // 定时上报周期单位: 分
+    buf.push(0x05); // 定时上报周期
+    buf.push(0x00); // 数据结构方式: 自描述格式
+    buf.extend_from_slice(&[0x00, 0x00, 0x01, 0x01, 0x26]); // 采样基准时间
+    buf.push(0x00); // 定时采样周期单位: 分
+    buf.push(0x05); // 定时采样周期
+    buf.push(0x01); // 数据抽取倍率
+    buf.extend_from_slice(&[0x00, 0x00]); // 执行次数: 永远执行
+    buf.push(0x01); // 信息点标识组数 = 1
+    buf.extend_from_slice(&[0x01, 0x01]); // 信息点标识: DA1=01H,DA2=01H -> p1
+    buf.push(0x01); // 数据标识编码组数 = 1
+    buf.extend_from_slice(&[0x01, 0x00, 0x01, 0x00]); // 数据标识编码: DI=00010001H(小端传输)
+
+    let (value, consumed) = parse_case(0xE0000301, &buf);
+    assert_eq!(consumed, buf.len());
+
+    match value {
+        Value::Node { value, .. } => match value.as_ref() {
+            Value::Map(entries) => {
+                let info_point_entry = entries
+                    .iter()
+                    .find(|(k, _)| k == "信息点标识")
+                    .expect("缺少信息点标识条目");
+                match &info_point_entry.1 {
+                    Value::Node { value, .. } => match value.as_ref() {
+                        Value::List(items) => {
+                            assert_eq!(items.len(), 1);
+                            match &items[0] {
+                                Value::Node { name, value, .. } => {
+                                    assert_eq!(name, "第1组信息点");
+                                    let expected_inner = Value::List(vec![Value::Pn(1)]);
+                                    assert_eq!(value.as_ref(), &expected_inner);
+                                }
+                                other => panic!("unexpected info_point item: {other:?}"),
+                            }
+                        }
+                        other => panic!("unexpected info_point value: {other:?}"),
+                    },
+                    other => panic!("unexpected info_point shape: {other:?}"),
+                }
+
+                let di_entry = entries
+                    .iter()
+                    .find(|(k, _)| k == "数据标识编码")
+                    .expect("缺少数据标识编码条目");
+                match &di_entry.1 {
+                    Value::Node { value, .. } => match value.as_ref() {
+                        Value::List(items) => {
+                            assert_eq!(items.len(), 1);
+                            match &items[0] {
+                                Value::Node { name, value, .. } => {
+                                    assert_eq!(name, "第1组数据标识编码");
+                                    assert_eq!(value.as_ref(), &Value::Str(
+                                        "00010001_月冻结正向有功总电能".to_string()
+                                    ));
+                                }
+                                other => panic!("unexpected di_code item: {other:?}"),
+                            }
+                        }
+                        other => panic!("unexpected di_code value: {other:?}"),
+                    },
+                    other => panic!("unexpected di_code node: {other:?}"),
+                }
+            }
+            other => panic!("expected map payload, got {other:?}"),
+        },
+        other => panic!("unexpected root value: {other:?}"),
     }
 }

@@ -6,6 +6,8 @@ pub fn format_id_expr(expr: &str, idx: usize) -> Result<String, String> {
 pub fn format_repeat_name(
     template: Option<&str>,
     id_value: Option<&str>,
+    bit_name: Option<&str>,
+    bit_ref: Option<&str>,
     idx: usize,
     count: usize,
 ) -> String {
@@ -13,6 +15,12 @@ pub fn format_repeat_name(
         let mut s = template.replace("{index0}", &idx.to_string());
         s = s.replace("{index}", &(idx + 1).to_string());
         s = s.replace("{count}", &count.to_string());
+        if let Some(bit_name_str) = bit_name {
+            s = s.replace("{bit_name}", bit_name_str);
+        }
+        if let Some(bit_ref_str) = bit_ref {
+            s = s.replace("{bit_ref}", bit_ref_str);
+        }
         if let Some(id_str) = id_value {
             if s.contains("{id}") {
                 s = s.replace("{id}", id_str);

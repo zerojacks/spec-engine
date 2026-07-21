@@ -1,6 +1,6 @@
 //! 解码函数 - 实现各种编码方式的解码
 
-use super::Endian;
+use super::{Endian, TimeEncoding};
 
 /// 解码 ASCII 字符串
 pub fn decode_ascii(raw: &[u8]) -> String {
@@ -38,12 +38,12 @@ pub fn decode_hex(raw: &[u8]) -> String {
 }
 
 /// 解码时间（简化实现，按格式解析）
-pub fn decode_time(raw: &[u8], format: &str) -> String {
+pub fn decode_time(raw: &[u8], format: &str, encoding: TimeEncoding) -> String {
     // 支持按 format 字符串解析多种时间格式。格式由两字符的 token 组成，
     // 如 "YY","MM","DD","hh","mm","ss","ms","WW"，以及
-    // 4 字符的特殊 token "xxxx"（表示两个字节的毫秒字段）。
-    // 每个两字符 token 对应原始字节流中的 1 字节（BCD 或字节值），
-    // 而 "xxxx" 对应 2 字节（高字节在前）。
+    // 4 字符的特殊 token "xxxx"（表示两个字节字段）。
+    // 每个两字符 token 对应原始字节流中的 1 字节；
+    // "xxxx" 对应 2 字节，根据 time 字段指定的编码方式解释。
 
     if raw.is_empty() || format.is_empty() {
         return decode_hex(raw);
@@ -83,7 +83,11 @@ pub fn decode_time(raw: &[u8], format: &str) -> String {
     for &tok in &tokens {
         if tok == "xxxx" {
             if idx + 1 < raw.len() {
-                let v = ((raw[idx] as u16) << 8) | raw[idx + 1] as u16;
+                let v = match encoding {
+                    TimeEncoding::Bcd => decode_bcd_u64(&raw[idx..idx + 2]) as u32,
+                    TimeEncoding::Bin { endian } =>
+                        decode_bin_u64(&raw[idx..idx + 2], endian) as u32,
+                };
                 msec = Some(v as u32);
             }
             idx += 2;
@@ -93,37 +97,52 @@ pub fn decode_time(raw: &[u8], format: &str) -> String {
             break;
         }
         let b = raw[idx];
-        match tok {
-            "CC" => {
-                cc_val = Some(decode_bcd_u64(&[b]) as u32);
-            }
-            "YY" => {
-                yy_val = Some(decode_bcd_u64(&[b]) as u32);
-            }
-            "MM" => {
-                month = Some(decode_bcd_u64(&[b]) as u32);
-            }
-            "DD" => {
-                day = Some(decode_bcd_u64(&[b]) as u32);
-            }
-            "hh" => {
-                hour = Some(decode_bcd_u64(&[b]) as u32);
-            }
-            "mm" => {
-                minute = Some(decode_bcd_u64(&[b]) as u32);
-            }
-            "ss" => {
-                second = Some(decode_bcd_u64(&[b]) as u32);
-            }
-            "ms" => {
-                let v = decode_bcd_u64(&[b]) as u32;
-                msec = Some(v * 10);
-            }
+        let value = match tok {
+            "CC" | "YY" | "MM" | "DD" | "hh" | "mm" | "ss" => match encoding {
+                TimeEncoding::Bcd => decode_bcd_u64(&[b]) as u32,
+                TimeEncoding::Bin { .. } => b as u32,
+            },
+            "ms" => match encoding {
+                TimeEncoding::Bcd => decode_bcd_u64(&[b]) as u32 * 10,
+                TimeEncoding::Bin { .. } => b as u32,
+            },
             "WW" => {
                 let i = (b as usize) % weekday_map.len();
                 weekday_str = Some(weekday_map[i].to_string());
+                idx += 1;
+                continue;
             }
-            _ => { /* ignore unknown */ }
+            _ => {
+                idx += 1;
+                continue;
+            }
+        };
+        match tok {
+            "CC" => {
+                cc_val = Some(value);
+            }
+            "YY" => {
+                yy_val = Some(value);
+            }
+            "MM" => {
+                month = Some(value);
+            }
+            "DD" => {
+                day = Some(value);
+            }
+            "hh" => {
+                hour = Some(value);
+            }
+            "mm" => {
+                minute = Some(value);
+            }
+            "ss" => {
+                second = Some(value);
+            }
+            "ms" => {
+                msec = Some(value);
+            }
+            _ => {}
         }
         idx += 1;
     }
