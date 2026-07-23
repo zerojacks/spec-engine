@@ -1,18 +1,728 @@
-# DL/T698 协议示例字典（仅用于验证 protocol 维度的隔离性，非真实协议内容）
-#
-# 故意用跟 csg1209022/test_di.yaml 里 00080000 一样的 DI 号，但给出完全不同
-# 的定义——这是用来证明"同一个 DI 号在不同协议下互不干扰、互不误退回"的
-# 反例测试数据，不代表 DL/T698 的真实字段定义。
-
 data_items:
-  - id: "00080000"
-    name: 电表运行状态（DL/T698定义，与csg1209022同DI号但完全不同协议/含义）
-    length: 1
-    type: bcd
-    enum:
-      "00": 正常
-      "01": 故障
+  - id: "E8010001"
+    name: "确认"
+    protocol: "csg16"
+    region: ["南网"]
+    length: 2
+    fields:
+      - name: "等待时间"
+        length: 2
+        unit: "秒"
+        type: bin
 
-  # 这条不写 region，落在 dlt698 协议自己的 default 桶里；用来验证
-  # "GD 在 dlt698 协议下没有专有定义时，回退的是 dlt698 自己的通用定义，
-  # 而不是误退回到 csg1209022 协议"
+  - id: "E8010002"
+    name: "否认"
+    protocol: "csg16"
+    region: ["南网"]
+    length: 1
+    fields:
+      - name: "错误状态字"
+        length: 1
+        type: bin
+
+  - id: "E8020101"
+    name: "复位硬件"
+    protocol: "csg16"
+    region: ["南网"]
+    type: bin
+    length: 0
+  - id: "E8020102"
+    name: "初始化档案"
+    protocol: "csg16"
+    region: ["南网"]
+    type: bin
+    length: 0
+  - id: "E8020103"
+    name: "初始化任务"
+    protocol: "csg16"
+    region: ["南网"]
+    type: bin
+    length: 0
+  - id: "E8020201"
+    name: "添加任务"
+    protocol: "csg16"
+    region: ["南网"]
+    fields:
+      - name: "任务ID"
+        length: 2
+        type: bin
+      - name: "任务模式字"
+        length: 1
+        type: bin
+      - name: "超时时间"
+        length: 2
+        unit: "秒"
+        type: bin
+      - name: "报文长度"
+        length: 1
+        type: bin
+        ref_id: frame_length
+      - name: "报文内容"
+        type: external
+        length_ref: frame_length
+        external_protocol: dlt-645-2007
+
+  - id: "E8020202"
+    name: "删除任务"
+    protocol: "csg16"
+    region: ["南网"]
+    length: 2
+    fields:
+      - name: "任务ID"
+        length: 2
+        type: bin
+
+  - id: "E8000203"
+    name: "查询未完成任务数"
+    protocol: "csg16"
+    dir: 0
+    region: ["南网"]
+    type: bin
+    length: 0
+  - id: "E8000203"
+    name: "查询未完成任务数"
+    protocol: "csg16"
+    region: ["南网"]
+    dir: 1
+    length: 2
+    type: bin
+  - id: "E8030204"
+    name: "查询未完成任务列表"
+    protocol: "csg16"
+    region: ["南网"]
+    length: 3
+    fields:
+      - name: "起始任务序号 m"
+        length: 2
+        type: bin
+      - name: "本次查询的任务数量 n"
+        length: 1
+        type: bin
+
+  - id: "E8040204"
+    name: "返回查询未完成任务列表"
+    protocol: "csg16"
+    region: ["南网"]
+    fields:
+      - name: "本次上报的任务数量"
+        length: 2
+        type: bin
+      - name: "任务ID"
+        length: 2
+        type: bin
+
+
+  - id: "E8030205"
+    name: "查询未完成任务详细信息"
+    protocol: "csg16"
+    region: ["南网"]
+    length: 2
+    fields:
+      - name: "任务ID"
+        length: 2
+        type: bin
+
+  - id: "E8040205"
+    name: "返回查询未完成任务详细信息"
+    protocol: "csg16"
+    region: ["南网"]
+    length: 2
+    fields:
+      - name: "任务ID"
+        length: 2
+        type: bin
+      - name: "任务模式字"
+        length: 1
+        type: bin
+      - name: "任务目的地址个数"
+        length: 2
+        type: bin
+      - name: "任务目的地址"
+        length: 6
+        type: hex
+      - name: "报文长度"
+        length: 1
+        type: bin
+        ref_id: frame_length
+      - name: "报文内容"
+        type: external
+        length_ref: frame_length
+        external_protocol: dlt-645-2007
+
+  - id: "E8000206"
+    dir: 0
+    name: "查询剩余可分配任务数"
+    protocol: "csg16"
+    region: ["南网"]
+    type: bin
+    length: 0
+  - id: "E8020207"
+    name: "添加多播任务"
+    protocol: "csg16"
+    region: ["南网"]
+    fields:
+      - name: "任务ID"
+        length: 2
+        type: bin
+      - name: "任务模式字"
+        length: 1
+        type: bin
+      - name: "从节点数量"
+        length: 2
+        type: bin
+      - name: "从节点地址"
+        length: 6
+        type: hex
+      - name: "超时时间"
+        length: 2
+        unit: "秒"
+        type: bin
+      - name: "报文长度"
+        length: 1
+        type: bin
+        ref_id: frame_length
+      - name: "报文内容"
+        length_ref: frame_length
+        type: external
+        external_protocol: dlt-645-2007
+
+  - id: "E8020208"
+    name: "启动任务"
+    protocol: "csg16"
+    region: ["南网"]
+    type: bin
+    length: 0
+  - id: "E8020209"
+    name: "暂停任务"
+    protocol: "csg16"
+    region: ["南网"]
+    type: bin
+    length: 0
+  - id: "E8000301"
+    name: "查询厂商代码和版本信息"
+    protocol: "csg16"
+    region: ["南网"]
+    dir: 0
+    type: bin
+    length: 0
+  - id: "E8000301"
+    name: "查询厂商代码和版本信息"
+    protocol: "csg16"
+    region: ["南网"]
+    dir: 1
+    length: 9
+    fields:
+      - name: "厂商代码"
+        length: 2
+        type: ASCII
+      - name: "芯片代码"
+        length: 2
+        type: ASCII
+      - name: "版本时间"
+        length: 3
+        type: bcd
+        time: DDMMYY
+      - name: "版本"
+        length: 2
+        type: BCD
+
+  - id: "E8000302"
+    name: "查询本地通信模块运行模式信息"
+    protocol: "csg16"
+    region: ["南网"]
+    dir: 0
+    type: bin
+    length: 0
+  - id: "E8000302"
+    name: "查询本地通信模块运行模式信息"
+    protocol: "csg16"
+    region: ["南网"]
+    dir: 1
+    fields:
+      - name: "本地通信模式字"
+        length: 1
+        type: bin
+      - name: "最大支持的协议报文长度"
+        length: 2
+        type: bin
+      - name: "文件传输支持的最大单包长度"
+        length: 2
+        type: bin
+      - name: "升级操作等待时间"
+        length: 1
+        unit: "分钟"
+        type: bin
+      - name: "主节点地址"
+        length: 6
+        type: hex
+      - name: "支持的最大从节点数量"
+        length: 2
+        type: bin
+      - name: "当前从节点数量"
+        length: 2
+        type: bin
+      - name: "支持单次读写从节点信息的最大数量"
+        length: 2
+        type: bin
+      - name: "通信模块接口协议发布日期"
+        length: 3
+        type: bcd
+        time: DDMMYY
+      - name: "厂商代码和版本信息"
+        length: 9
+        type: bin
+
+  - id: "E8000303"
+    name: "查询主节点地址"
+    dir: 0
+    protocol: "csg16"
+    region: ["南网"]
+    type: bin
+    length: 0
+  - id: "E8000303"
+    name: "查询主节点地址"
+    protocol: "csg16"
+    region: ["南网"]
+    dir: 1
+    length: 6
+    type: hex
+  - id: "E8030304"
+    name: "查询通信延时时长"
+    protocol: "csg16"
+    region: ["南网"]
+    length: 7
+    fields:
+      - name: "通信目的地址"
+        length: 6
+        type: hex
+      - name: "报文长度 L"
+        length: 1
+        type: bin
+
+  - id: "E8040304"
+    name: "查询通信延时时长"
+    protocol: "csg16"
+    region: ["南网"]
+    length: 9
+    fields:
+      - name: "通信目的地址"
+        length: 6
+        type: hex
+      - name: "通信延时时长"
+        length: 2
+        unit: "秒"
+        type: bin
+      - name: "报文长度 L"
+        length: 1
+        type: bin
+
+  - id: "E8000305"
+    name: "查询从节点数量"
+    protocol: "csg16"
+    region: ["南网"]
+    dir: 0
+    length: 0
+    type: bin
+  - id: "E8000305"
+    name: "查询从节点数量"
+    protocol: "csg16"
+    region: ["南网"]
+    dir: 1
+    length: 2
+    type: bin
+  - id: "E8030306"
+    name: "查询从节点信息"
+    protocol: "csg16"
+    region: ["南网"]
+    length: 3
+    fields:
+      - name: "从节点起始序号"
+        length: 2
+        type: bin
+      - name: "从节点数量"
+        length: 1
+        type: bin
+
+  - id: "E8040306"
+    name: "返回查询从节点信息"
+    protocol: "csg16"
+    region: ["南网"]
+    fields:
+      - name: "从节点总数量"
+        length: 2
+        type: bin
+      - name: "本次应答的从节点数量"
+        length: 1
+        type: bin
+        ref_id: node_count
+      - name: "从节点信息"
+        type: repeat
+        count_ref: node_count
+        name_template: "第{index}个从节点信息"
+        element:
+          fields:
+            - name: "第{index}个从节点地址"
+              type: hex
+              length: 6
+
+  - id: "E8000307"
+    name: "查询从节点主动注册进度"
+    protocol: "csg16"
+    region: ["南网"]
+    dir: 0
+    length: 0
+    type: bin
+  - id: "E8000307"
+    name: "查询从节点主动注册进度"
+    protocol: "csg16"
+    region: ["南网"]
+    dir: 1
+    length: 1
+    type: bin
+  - id: "E8030308"
+    name: "查询从节点的父节点"
+    protocol: "csg16"
+    region: ["南网"]
+    length: 6
+    type: hex
+  - id: "E8040308"
+    name: "返回查询从节点的父节点"
+    protocol: "csg16"
+    region: ["南网"]
+    length: 13
+    fields:
+      - name: "从节点地址"
+        length: 6
+        type: hex
+      - name: "父节点地址"
+        length: 6
+        type: hex
+      - name: "链路质量"
+        length: 1
+        type: bin
+
+  - id: "E8000309"
+    name: "查询映射表从节点数量"
+    protocol: "csg16"
+    region: ["南网"]
+    dir: 0
+    length: 0
+    type: bin
+  - id: "E8000309"
+    name: "查询映射表从节点数量"
+    protocol: "csg16"
+    region: ["南网"]
+    dir: 1
+    length: 2
+    unit: "个"
+    type: bin
+  - id: "E803030A"
+    name: "查询从节点通信地址映射表"
+    protocol: "csg16"
+    region: ["南网"]
+    length: 3
+    fields:
+      - name: "映射表记录起始序号"
+        length: 2
+        type: bin
+      - name: "查询的映射表数量"
+        length: 1
+        type: bin
+
+  - id: "E804030A"
+    name: "返回查询从节点通信地址映射表"
+    protocol: "csg16"
+    region: ["南网"]
+    fields:
+      - name: "映射表记录节点数量"
+        length: 2
+        type: bin
+      - name: "本次应答的映射表记录数量"
+        length: 1
+        type: bin
+        ref_id: count
+      - name: "映射表记录"
+        type: repeat
+        count_ref: count
+        name_template: "第{index}组映射表"
+        element:
+          fields:
+            - name: "第{index}组映射表"
+              fields:
+              - name: "从节点通信地址"
+                length: 6
+                type: hex
+              - name: "从节点表计地址"
+                length: 12
+                type: hex
+
+
+  - id: "E800030B"
+    name: "查询任务建议超时时间"
+    protocol: "csg16"
+    region: ["南网"]
+    dir: 0
+    length: 0
+    type: bin
+  - id: "E800030B"
+    name: "查询任务建议超时时间"
+    protocol: "csg16"
+    region: ["南网"]
+    dir: 1
+    length: 8
+    fields:
+      - name: "优先级 0 的任务建议超时时间"
+        length: 2
+        type: bin
+      - name: "优先级 1 的任务建议超时时间"
+        length: 2
+        type: bin
+      - name: "优先级 2 的任务建议超时时间"
+        length: 2
+        type: bin
+      - name: "优先级 3 的任务建议超时时间"
+        length: 2
+        type: bin
+
+  - id: "E803030C"
+    name: "查询从节点相位信息"
+    protocol: "csg16"
+    region: ["南网"]
+    fields:
+      - name: "本次查询从节点数量"
+        length: 1
+        type: bin
+        ref_id: node_count
+      - name: "节点信息"
+        type: repeat
+        count_ref: node_count
+        name_template: "第{index}节点地址"
+        element:
+            name: "第{index}节点地址"
+            length: 6
+            type: hex
+  - id: "E804030C"
+    name: "返回查询从节点相位信息"
+    protocol: "csg16"
+    region: ["南网"]
+    fields:
+      - name: "本次应答的从节点数量"
+        length: 1
+        type: bin
+        ref_id: node_count
+      - name: "节点相位信息"
+        type: repeat
+        count_ref: node_count
+        name_template: "第{index}节点相位信息"
+        element:
+          type: template
+          template_ref: NODEPHASEINFO
+
+  - id: "E803030D"
+    name: "批量查询从节点相位信息"
+    protocol: "csg16"
+    region: ["南网"]
+    length: 3
+    fields:
+      - name: "从节点起始序号"
+        length: 2
+        type: bin
+      - name: "从节点数量"
+        length: 1
+        type: bin
+
+  - id: "E804030D"
+    name: "返回批量查询从节点相位信息"
+    protocol: "csg16"
+    region: ["南网"]
+    fields:
+      - name: "从节点总数量"
+        length: 2
+        type: bin
+      - name: "本次应答的从节点数量"
+        length: 1
+        type: bin
+        ref_id: node_count
+      - name: "节点相位信息"
+        type: repeat
+        count_ref: node_count
+        name_template: "第{index}节点相位信息"
+        element:
+          type: template
+          template_ref: NODEPHASEINFO
+
+
+  - id: "E803030E"
+    name: "查询表档案的台区识别结果"
+    protocol: "csg16"
+    region: ["南网"]
+    length: 3
+    fields:
+      - name: "从节点起始序号"
+        length: 2
+        type: bin
+      - name: "从节点数量"
+        length: 1
+        type: bin
+
+  - id: "E804030E"
+    name: "返回查询表档案的台区识别结果"
+    protocol: "csg16"
+    region: ["南网"]
+    fields:
+      - name: "台区识别结果从节点总数量"
+        length: 2
+        type: bin
+      - name: "本次应答的节点总数量"
+        length: 1
+        type: bin
+        ref_id: node_count
+      - name: "台区识别结果"
+        type: repeat
+        count_ref: node_count
+        name_template: "第{index}台区识别结果"
+        element:
+          fields:
+            - name: 第{index}台区识别结果
+              length: 7
+              fields:
+                - name: "从节点地址"
+                  length: 6
+                  type: hex
+                - name: "台区识别结果"
+                  length: 1
+                  type: bin
+
+
+  - id: "E803030F"
+    name: "查询多余节点的台区识别结果"
+    protocol: "csg16"
+    region: ["南网"]
+    length: 3
+    fields:
+      - name: "从节点起始序号"
+        length: 2
+        type: bin
+      - name: "从节点数量"
+        length: 1
+        type: bin
+
+  - id: "E804030F"
+    name: "返回查询多余节点的台区识别结果"
+    protocol: "csg16"
+    region: ["南网"]
+    fields:
+      - name: "台区识别结果从节点总数量"
+        length: 2
+        type: bin
+      - name: "本次应答的节点总数量"
+        length: 1
+        type: bin
+        ref_id: node_count
+      - name: "台区识别结果"
+        type: repeat
+        count_ref: node_count
+        name_template: "第{index}台区识别结果"
+        element:
+          fields:
+            - name: 第{index}台区识别结果
+              length: 14
+              fields:
+                - name: "从节点地址"
+                  length: 6
+                  type: hex
+                - name: "节点属性"
+                  length: 8
+                  type: hex
+
+  - id: "E80303F0"
+    name: "查询网络是否支持分钟采集"
+    protocol: "csg16"
+    region: ["南网"]
+    dir: 0
+    length: 0
+    type: bin
+  - id: "E80403F0"
+    name: "返回网络是否支持分钟采集"
+    protocol: "csg16"
+    region: ["南网"]
+    dir: 1
+    length: 1
+    type: bin
+  - id: "E80303F1"
+    name: "查询上报间隔"
+    protocol: "csg16"
+    region: ["南网"]
+    dir: 0
+    length: 0
+    type: bin
+  - id: "E80403F1"
+    name: "返回查询上报间隔"
+    protocol: "csg16"
+    region: ["南网"]
+    dir: 1
+    length: 1
+    fields:
+      - name: "是否支持分钟采集"
+        length: 1
+        unit: "分"
+        type: bin
+
+  - id: "E80303F2"
+    name: "查询上报开关"
+    protocol: "csg16"
+    region: ["南网"]
+    dir: 0
+    length: 0
+    type: bin
+  - id: "E80403F2"
+    name: "返回查询上报开关"
+    protocol: "csg16"
+    region: ["南网"]
+    dir: 1
+    length: 1
+    type: bin
+  - id: "E80204F1"
+    name: "设置上报间隔"
+    protocol: "csg16"
+    region: ["南网"]
+    length: 1
+    unit: "分钟"
+    type: bin
+  - id: "E80204F2"
+    name: "设置上报开关"
+    protocol: "csg16"
+    region: ["南网"]
+    length: 1
+    type: bin
+  - id: "E8050501"
+    name: "上报任务数据"
+    protocol: "csg16"
+    region: ["南网"]
+    fields:
+      - name: "任务ID"
+        length: 2
+        type: bin
+      - name: "报文长度"
+        length: 1
+        type: bin
+        ref_id: frame_length
+      - name: "报文内容"
+        type: external
+        length_ref: frame_length
+        external_protocol: dlt-645-2007
+
+templates:
+  - id: "NODEPHASEINFO"
+    name: "从节点地址"
+    protocol: "csg16"
+    region: ["南网"]
+    length: 8
+    fields:
+      - name: "从节点地址"
+        length: 6
+        type: hex
+      - name: "从节点相位信息"
+        length: 2
+        type: bin
+

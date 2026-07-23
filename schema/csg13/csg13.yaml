@@ -1,8 +1,11 @@
+# yaml-language-server: $schema=../di.schema.json
+
 # Generated from ../../../../CSG13.xml according to docs/DI dictionary YAML schema design.
 # Nested XML dataItem ids are preserved when they are valid hexadecimal DI ids.
 # XML splitByLength nodes are expanded recursively as container fields.
 # Unknown legacy XML <type> values and non-integer lengths are preserved as custom handlers for later refinement.
 # Duplicate top-level XML (id, protocol, region) entries skipped after first definition: 0115000/csg13/南网, 0118000/csg13/南网, 0060FF00/csg13/南网, 0061FF00/csg13/南网, 0062FF00/csg13/南网, 0063FF00/csg13/南网, 0064FF00/csg13/南网, 0065FF00/csg13/南网, 0066FF00/csg13/南网, 0067FF00/csg13/南网, 0068FF00/csg13/南网, E0010182/csg13/南网, E2000029/csg13/南网, E3020001/csg13/南网, E3020002/csg13/南网, E3010001/csg13/南网, E3010002/csg13/南网, E3010003/csg13/南网, E3010007/csg13/南网, E3010008/csg13/南网
+
 
 data_items:
   - id: "0000FF00"
@@ -792,7 +795,6 @@ data_items:
             type:  bcd
             time: "mmhhDDMMYY"
       - candidate_ids:
-          name: "(当前)正向有功费率{index}最大需量及发生时间"
           count: 63
           count_ref: "rate_count"
           id_expr: "0x01010100 + index0*0x0100"
@@ -834,7 +836,6 @@ data_items:
             type: bcd
             time: "mmhhDDMMYY"
       - candidate_ids:
-          name: "(当前)反向有功费率{index}最大需量及发生时间"
           count: 63
           count_ref: "rate_count"
           id_expr: "0x01020100 + index0*0x0100"
@@ -876,7 +877,6 @@ data_items:
             type: bcd
             time: "mmhhDDMMYY"
       - candidate_ids:
-          name: "(当前)组合无功1费率{index}最大需量及发生时间"
           count: 63
           count_ref: "rate_count"
           id_expr: "0x01030100 + index0*0x0100"
@@ -918,7 +918,6 @@ data_items:
             type: bcd
             time: "mmhhDDMMYY"
       - candidate_ids:
-          name: "(当前)组合无功2费率{index}最大需量及发生时间"
           count: 63
           count_ref: "rate_count"
           id_expr: "0x01040100 + index0*0x0100"
@@ -960,7 +959,6 @@ data_items:
             type: bcd
             time: "mmhhDDMMYY"
       - candidate_ids:
-          name: "(当前)第一象限无功费率{index}最大需量及发生时间"
           count: 63
           count_ref: "rate_count"
           id_expr: "0x01050100 + index0*0x0100"
@@ -1002,7 +1000,6 @@ data_items:
             type: bcd
             time: "mmhhDDMMYY"
       - candidate_ids:
-          name: "(当前)第二象限无功费率{index}最大需量及发生时间"
           count: 63
           count_ref: "rate_count"
           id_expr: "0x01060100 + index0*0x0100"
@@ -1044,7 +1041,6 @@ data_items:
             type: bcd
             time: "mmhhDDMMYY"
       - candidate_ids:
-          name: "(当前)第三象限无功费率{index}最大需量及发生时间"
           count: 63
           count_ref: "rate_count"
           id_expr: "0x01070100 + index0*0x0100"
@@ -1086,7 +1082,6 @@ data_items:
             type: bcd
             time: "mmhhDDMMYY"
       - candidate_ids:
-          name: "(当前)第四象限无功费率{index}最大需量及发生时间"
           count: 63
           count_ref: "rate_count"
           id_expr: "0x01080100 + index0*0x0100"
@@ -1128,7 +1123,6 @@ data_items:
             type: bcd
             time: "mmhhDDMMYY"
       - candidate_ids:
-          name: "(当前)正向视在无功费率{index}最大需量及发生时间"
           count: 63
           count_ref: "rate_count"
           id_expr: "0x01090100 + index0*0x0100"
@@ -1170,7 +1164,6 @@ data_items:
             type: bcd
             time: "mmhhDDMMYY"
       - candidate_ids:
-          name: "(当前)反向视在无功费率{index}最大需量及发生时间"
           count: 63
           count_ref: "rate_count"
           id_expr: "0x010A0100 + index0*0x0100"
@@ -1668,7 +1661,6 @@ data_items:
             type: bcd
             time: "mmhhDDMMYY"
       - candidate_ids:
-          name: "(上1结算日)正向有功费率{index}最大需量及发生时间"
           count: 63
           count_ref: "rate_count"
           id_expr: "0x01010101 + index0*0x0100"
@@ -1710,7 +1702,6 @@ data_items:
             type: bcd
             time: "mmhhDDMMYY"
       - candidate_ids:
-          name: "(上1结算日)反向有功费率{index}最大需量及发生时间"
           count: 63
           count_ref: "rate_count"
           id_expr: "0x01020101 + index0*0x0100"
@@ -1753,7 +1744,6 @@ data_items:
             type: bcd
             time: "mmhhDDMMYY"
       - candidate_ids:
-          name: "(上1结算日)组合无功1费率{index}最大需量及发生时间"
           count: 63
           count_ref: "rate_count"
           id_expr: "0x01030101 + index0*0x0100"
@@ -1796,7 +1786,6 @@ data_items:
             type: bcd
             time: "mmhhDDMMYY"
       - candidate_ids:
-          name: "(上1结算日)组合无功2费率{index}最大需量及发生时间"
           count: 63
           count_ref: "rate_count"
           id_expr: "0x01040101 + index0*0x0100"
@@ -1838,7 +1827,6 @@ data_items:
             type: bcd
             time: "mmhhDDMMYY"
       - candidate_ids:
-          name: "(上1结算日)第一象限无功费率{index}最大需量及发生时间"
           count: 63
           count_ref: "rate_count"
           id_expr: "0x01050101 + index0*0x0100"
@@ -1880,7 +1868,6 @@ data_items:
             type: bcd
             time: "mmhhDDMMYY"
       - candidate_ids:
-          name: "(上1结算日)第二象限无功费率{index}最大需量及发生时间"
           count: 63
           count_ref: "rate_count"
           id_expr: "0x01060101 + index0*0x0100"
@@ -1922,7 +1909,6 @@ data_items:
             type: bcd
             time: "mmhhDDMMYY"
       - candidate_ids:
-          name: "(上1结算日)第三象限无功费率{index}最大需量及发生时间"
           count: 63
           count_ref: "rate_count"
           id_expr: "0x01070101 + index0*0x0100"
@@ -1964,7 +1950,6 @@ data_items:
             type: bcd
             time: "mmhhDDMMYY"
       - candidate_ids:
-          name: "(上1结算日)第四象限无功费率{index}最大需量及发生时间"
           count: 63
           count_ref: "rate_count"
           id_expr: "0x01080101 + index0*0x0100"
@@ -2006,7 +1991,6 @@ data_items:
             type: bcd
             time: "mmhhDDMMYY"
       - candidate_ids:
-          name: "(上1结算日)正向视在无功费率{index}最大需量及发生时间"
           count: 63
           count_ref: "rate_count"
           id_expr: "0x01090101 + index0*0x0100"
@@ -2048,7 +2032,6 @@ data_items:
             type: bcd
             time: "mmhhDDMMYY"
       - candidate_ids:
-          name: "(上1结算日)反向视在无功费率{index}最大需量及发生时间"
           count: 63
           count_ref: "rate_count"
           id_expr: "0x010A0101 + index0*0x0100"
@@ -3814,7 +3797,7 @@ data_items:
               "0": "未发生"
       - type: repeat
         bits_ref: report_status
-        bit_order: asc
+        iterate_order: asc
         name_template: "{bit_name}新增次数"
         element:
           type: switch
@@ -5721,7 +5704,6 @@ data_items:
             type: bcd
             time: "mmhhDDMMYY"
       - candidate_ids:
-          name: "日冻结正向有功费率{index}最大需量及发生时间"
           count: 63
           count_ref: "rate_count"
           id_expr: "0x05060901 + index0*0x01"
@@ -5764,7 +5746,6 @@ data_items:
             type: bcd
             time: "mmhhDDMMYY"
       - candidate_ids:
-          name: "日冻结反向有功费率{index}最大需量及发生时间"
           count: 63
           count_ref: "rate_count"
           id_expr: "0x05060A01 + index0*0x01"
@@ -5806,7 +5787,6 @@ data_items:
             type: bcd
             time: "mmhhDDMMYY"
       - candidate_ids:
-          name: "日冻结组合无功1费率{index}最大需量及发生时间"
           count: 63
           count_ref: "rate_count"
           id_expr: "0x05060B01 + index0*0x01"
@@ -5848,7 +5828,6 @@ data_items:
             type: bcd
             time: "mmhhDDMMYY"
       - candidate_ids:
-          name: "日冻结组合无功2费率{index}最大需量及发生时间"
           count: 63
           count_ref: "rate_count"
           id_expr: "0x05060C01 + index0*0x01"
@@ -19757,8 +19736,8 @@ data_items:
         element:
           type: hex
           length: 6
-          order: normal
           format:
+            order: normal
             group_bytes: 1
             separator: ":"
             pad: true
@@ -25253,7 +25232,6 @@ data_items:
     length: 45
     fields:
       - candidate_ids:
-          name: "开关{index0}多分支拉闸命令"
           count: 15
           id_expr: "0xE0000E50 + index0*0x01"
           name_template: "开关{index0}多分支拉闸命令"
@@ -27183,15 +27161,16 @@ data_items:
     protocol: "csg13"
     region: ["南网"]
     length: 256
-    type: bitpattern
-    bitpattern:
-      start_bit: 0
-      count: 2048
-      bit_order: lsb
-      name_template: "测量点{index}"
-      enum:
-        "1": "待升级"
-        "0": "无需升级"
+    type: bitmask
+    bit_direction: lsb
+    name_template: "测量点{index}"
+    element:
+      type: switch
+      on: $bit_value
+      cases:
+        "0": { name: "无需升级", length: 0, type: skip }
+        "1": { name: "需要升级", length: 0, type: fixed }
+        
   - id: "E3010007"
     name: "查询录波数据信息"
     protocol: "csg13"
@@ -27622,7 +27601,7 @@ templates:
       - name: 失败表
         length: 256
         type: bitmask
-        bit_order: msb
+        bit_direction: msb
         name_template: "失败表{index}"
         element:
           type: switch
@@ -27733,7 +27712,7 @@ templates:
         type: bin
       - name: 模块更换的电表地址
         length: 6
-        type: BCD
+        type: bcd
       - name: 更换后的模块MAC地址
         length: 6
         type: bin
@@ -27783,7 +27762,7 @@ templates:
         time: "ssmmhhDDMMYY"
       - name: 测量点数量
         length: 2
-        type: BCD
+        type: bcd
         unit: 个
         ref_id: meter_count
       - name: 断线检测结果信息
@@ -27840,13 +27819,13 @@ templates:
         time: "ssmmhhDDMMYY"
       - name: APP名称
         length: 8
-        type: ASCII
+        type: ascii
       - name: APP版本号
         length: 8
-        type: ASCII
+        type: ascii
       - name: APP厂家代码
         length: 2
-        type: ASCII
+        type: ascii
       - name: APP CPU占用率
         length: 3
         type: bin
@@ -27871,10 +27850,10 @@ templates:
     fields:
       - name: 测量点
         length: 2
-        type: BCD
+        type: bcd
       - name: 检测结果
         length: 1
-        type: BCD
+        type: bcd
         enum:
           "00": 正常
           "01": 485线异常

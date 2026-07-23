@@ -43,10 +43,14 @@ fn parses_bitfield_values() {
     assert_eq!(consumed, 2);
     match value {
         Value::Node { value, .. } => match value.as_ref() {
-            Value::Map(entries) => {
-                assert!(entries.iter().any(|(k, _)| k.contains("需量积算方式")));
+            Value::List(items) => {
+                // ensure at least one item name contains the target substring
+                assert!(items.iter().any(|item| match item {
+                    Value::Node { name, .. } => name.contains("需量积算方式"),
+                    _ => false,
+                }));
             }
-            other => panic!("expected map payload, got {other:?}"),
+            other => panic!("expected list payload, got {other:?}"),
         },
         other => panic!("unexpected root value: {other:?}"),
     }
@@ -82,7 +86,6 @@ fn parses_repeat_structures() {
     buf.extend_from_slice(b"1");
     buf.extend_from_slice(b"0000");
     buf.extend_from_slice(b"100");
-    buf.extend_from_slice(b"100");
     buf.extend_from_slice(b"0");
 
     let (value, consumed) = parse_case(0xE1800032, &buf);
@@ -116,7 +119,8 @@ fn parses_repeat_structures() {
 fn parses_bitmask_with_skip_branch() {
     let field = FieldSpec::BitMask {
         length: 1,
-        bit_order: Some("lsb".to_string()),
+        bit_direction: Some("lsb".to_string()),
+        iterate_order: Some("asc".to_string()),
         bit_specs: vec![
             BitSpec {
                 range: (0, 0),
@@ -135,10 +139,7 @@ fn parses_bitmask_with_skip_branch() {
             on: "$bit_value".to_string(),
             cases: {
                 let mut m = HashMap::new();
-                m.insert(
-                    "0".to_string(),
-                    Box::new(FieldSpec::Skip),
-                );
+                m.insert("0".to_string(), Box::new(FieldSpec::Skip));
                 m.insert(
                     "1".to_string(),
                     Box::new(FieldSpec::Fixed {
@@ -151,9 +152,15 @@ fn parses_bitmask_with_skip_branch() {
                 );
                 m
             },
+            case_names: Some({
+                let mut names = HashMap::new();
+                names.insert("0".to_string(), "无需升级".to_string());
+                names.insert("1".to_string(), "需要升级".to_string());
+                names
+            }),
             default: None,
         }),
-        name_template: Some("{bit_name}".to_string()),
+        name_template: Some("测量点{index}".to_string()),
     };
 
     let mut ctx = Context::new();
@@ -165,10 +172,16 @@ fn parses_bitmask_with_skip_branch() {
             assert_eq!(items.len(), 1);
             match &items[0] {
                 Value::Node { name, value, .. } => {
-                    assert_eq!(name, "high_bit");
+                    assert_eq!(name, "测量点2");
                     match value.as_ref() {
-                        Value::Bytes(bytes) => assert_eq!(bytes, &vec![]),
-                        other => panic!("unexpected high_bit payload: {other:?}"),
+                        Value::Bit { bit_start, bit_end, bit_value, bit_byte, value } => {
+                            assert_eq!(*bit_start, 1);
+                            assert_eq!(*bit_end, 1);
+                            assert_eq!(*bit_value, 1);
+                            assert_eq!(bit_byte, &vec![0x02]);
+                            assert_eq!(value.as_deref(), Some(&Value::Str("需要升级".to_string())));
+                        }
+                        other => panic!("unexpected inner value: {other:?}"),
                     }
                 }
                 other => panic!("unexpected list item: {other:?}"),
@@ -701,5 +714,77 @@ fn parses_basetask_template_with_info_point_and_di_code() {
             other => panic!("expected map payload, got {other:?}"),
         },
         other => panic!("unexpected root value: {other:?}"),
+    }
+}
+
+#[test]
+fn bitmask_can_replace_bitpattern_style_named_bit_list() {
+    let field = FieldSpec::BitMask {
+        length: 1,
+        bit_direction: Some("lsb".to_string()),
+        iterate_order: Some("asc".to_string()),
+        bit_specs: vec![
+            BitSpec {
+                range: (0, 0),
+                name: "bit0".to_string(),
+                ref_id: None,
+                enum_map: None,
+            },
+            BitSpec {
+                range: (1, 1),
+                name: "bit1".to_string(),
+                ref_id: None,
+                enum_map: None,
+            },
+        ],
+        element: Box::new(FieldSpec::Switch {
+            on: "$bit_value".to_string(),
+            cases: {
+                let mut m = HashMap::new();
+                m.insert("0".to_string(), Box::new(FieldSpec::Skip));
+                m.insert(
+                    "1".to_string(),
+                    Box::new(FieldSpec::Fixed {
+                        encoding: Encoding::Raw,
+                        length: FieldLength::Fixed(0),
+                        unit: None,
+                        enum_map: None,
+                        format: None,
+                    }),
+                );
+                m
+            },
+            case_names: None,
+            default: None,
+        }),
+        name_template: Some("测量点{index}".to_string()),
+    };
+
+    let mut ctx = Context::new();
+    let (value, consumed) = parse_field(&[0x02], &field, &mut ctx, "csg13", "南网", None)
+        .expect("bitmask bitpattern replacement failed");
+
+    assert_eq!(consumed, 1);
+    match value {
+        Value::List(items) => {
+            assert_eq!(items.len(), 1);
+            match &items[0] {
+                Value::Node { name, value, .. } => {
+                    assert_eq!(name, "测量点2");
+                    match value.as_ref() {
+                        Value::Bit { bit_start, bit_end, bit_value, bit_byte, value } => {
+                            assert_eq!(*bit_start, 1);
+                            assert_eq!(*bit_end, 1);
+                            assert_eq!(*bit_value, 1);
+                            assert_eq!(bit_byte, &vec![0x02]);
+                            assert!(matches!(value.as_deref(), Some(Value::Bytes(bytes)) if bytes.is_empty()));
+                        }
+                        other => panic!("unexpected inner value: {other:?}"),
+                    }
+                }
+                other => panic!("unexpected list item: {other:?}"),
+            }
+        }
+        other => panic!("unexpected top-level bitmask value: {other:?}"),
     }
 }

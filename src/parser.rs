@@ -36,13 +36,15 @@ pub fn parse_field(
             format,
         } => parse_fixed(buf, encoding, length, unit, enum_map, format, ctx),
         FieldSpec::BitField { length, bits } => parse_bitfield(buf, *length, bits),
-        FieldSpec::Switch { on, cases, default } => {
-            parse_switch(buf, on, cases, default, ctx, protocol, region, dir)
+        FieldSpec::Switch { on, cases, case_names, default } => {
+            parse_switch(buf, on, cases, case_names, default, ctx, protocol, region, dir)
         }
         FieldSpec::Repeat {
             count_ref,
+            count_expr,
             bits_ref,
-            bit_order,
+            bit_direction,
+            iterate_order,
             bit_specs,
             element,
             name_template,
@@ -50,8 +52,10 @@ pub fn parse_field(
         } => parse_repeat(
             buf,
             count_ref,
+            count_expr,
             bits_ref,
-            bit_order,
+            bit_direction,
+            iterate_order,
             bit_specs,
             element,
             name_template,
@@ -63,14 +67,16 @@ pub fn parse_field(
         ),
         FieldSpec::BitMask {
             length,
-            bit_order,
+            bit_direction,
+            iterate_order,
             bit_specs,
             element,
             name_template,
         } => parse_bitmask(
             buf,
             *length,
-            bit_order,
+            bit_direction,
+            iterate_order,
             bit_specs,
             element,
             name_template,
@@ -182,6 +188,11 @@ fn apply_enum_map(value: Value, raw: &str, enum_map: &Option<HashMap<String, Str
                 _ => String::new(),
             },
             Value::List(_) | Value::Map(_) => String::new(),
+            Value::Bit { value, .. } => value
+                .as_deref()
+                .and_then(|v| v.as_str().map(|s| s.to_string()))
+                .or_else(|| value.as_deref().and_then(|v| v.as_int().map(|i| i.to_string())))
+                .unwrap_or_default(),
         };
         if let Some(mapped) = map.get(&value_key).cloned() {
             return Value::Str(mapped);
@@ -206,7 +217,7 @@ fn extract_bits(raw: &[u8], range: (usize, usize)) -> u64 {
     result
 }
 
-fn extract_bits_ordered(raw: &[u8], range: (usize, usize), bit_order: Option<&str>) -> u64 {
+fn extract_bits_ordered(raw: &[u8], range: (usize, usize), bit_direction: Option<&str>) -> u64 {
     let (start, end) = range;
     if end < start {
         return 0;
@@ -215,7 +226,7 @@ fn extract_bits_ordered(raw: &[u8], range: (usize, usize), bit_order: Option<&st
     for bit_index in start..=end {
         let byte_index = bit_index / 8;
         let bit_in_byte = bit_index % 8;
-        let bit_position = if bit_order == Some("lsb") {
+        let bit_position = if bit_direction == Some("lsb") {
             bit_in_byte
         } else {
             7 - bit_in_byte
@@ -244,7 +255,7 @@ fn parse_fixed(
             .ok_or_else(|| DictError::MissingRef(name.clone()))?,
         FieldLength::Expr(expr) => {
             // evaluate expression which may contain ref(<ref_id>) and optional index/index0
-            let eval = eval_length_expr(expr, ctx, None).map_err(|e| {
+            let eval = eval_length_expr(expr, ctx, None, buf.len()).map_err(|e| {
                 DictError::ExternalParseError(format!("length expr eval error: {}", e))
             })?;
             eval as usize
@@ -344,7 +355,7 @@ fn parse_bitfield(
     }
     let raw = &buf[..length];
     let total_bits = raw.len() * 8;
-    let mut entries = Vec::with_capacity(bits.len());
+    let mut items = Vec::with_capacity(bits.len());
     for bit in bits {
         if bit.range.1 >= total_bits {
             return Err(DictError::UnexpectedEof {
@@ -354,7 +365,7 @@ fn parse_bitfield(
         }
         let extracted = extract_bits(raw, bit.range);
         let raw_key = extracted.to_string();
-        let value = if let Some(enum_map) = &bit.enum_map {
+        let semantic = if let Some(enum_map) = &bit.enum_map {
             if let Some(mapped) = enum_map.get(&raw_key) {
                 Value::Str(mapped.clone())
             } else {
@@ -370,15 +381,28 @@ fn parse_bitfield(
             format!("{}-{}", bit.range.0, bit.range.1)
         };
         let formatted_name = format!("BIT({})_{}", range_str, bit.name);
-        // expose numeric bit value alongside the semantic value
-        let bit_numeric = Value::Int(extracted as i64);
-        let semantic = value.clone();
-        let mut sub = Vec::with_capacity(2);
-        sub.push(("bit".to_string(), bit_numeric));
-        sub.push(("value".to_string(), semantic));
-        entries.push((formatted_name, Value::Map(sub)));
+        // compute source byte(s) for this bit range (take the first byte where the range starts)
+        let bit_start = bit.range.0;
+        let byte_index = bit_start / 8;
+        let bit_source = if byte_index < raw.len() { vec![raw[byte_index]] } else { Vec::new() };
+
+        // present each bit as Value::Bit wrapped in a Node so consumers can
+        // iterate in-order and preserve range semantics (supporting ranges)
+        let bit_item = Value::Bit {
+            bit_start: bit.range.0,
+            bit_end: bit.range.1,
+            bit_value: extracted,
+            bit_byte: bit_source.clone(),
+            value: Some(Box::new(semantic.clone())),
+        };
+        let node = Value::Node {
+            name: formatted_name,
+            raw: Vec::new(),
+            value: Box::new(bit_item),
+        };
+        items.push(node);
     }
-    Ok((Value::Map(entries), length))
+    Ok((Value::List(items), length))
 }
 
 fn parse_skip() -> Result<(Value, usize), DictError> {
@@ -388,7 +412,8 @@ fn parse_skip() -> Result<(Value, usize), DictError> {
 fn parse_bitmask(
     buf: &[u8],
     length: usize,
-    bit_order: &Option<String>,
+    bit_direction: &Option<String>,
+    iterate_order: &Option<String>,
     bit_specs: &[BitSpec],
     element: &FieldSpec,
     name_template: &Option<String>,
@@ -406,7 +431,7 @@ fn parse_bitmask(
     let raw = &buf[..length];
     let mut items = Vec::with_capacity(bit_specs.len());
     let mut bit_specs_sorted: Vec<&BitSpec> = bit_specs.iter().collect();
-    if bit_order.as_deref() == Some("msb") {
+    if iterate_order.as_deref() == Some("desc") {
         bit_specs_sorted.sort_by_key(|bit| std::cmp::Reverse(bit.range.0));
     } else {
         bit_specs_sorted.sort_by_key(|bit| bit.range.0);
@@ -414,13 +439,9 @@ fn parse_bitmask(
     let bit_count = bit_specs_sorted.len();
     let mut offset = 0usize;
     for (idx, bit_spec) in bit_specs_sorted.iter().enumerate() {
-        let bit_value = extract_bits_ordered(raw, bit_spec.range, bit_order.as_deref());
+        let bit_value = extract_bits_ordered(&raw, bit_spec.range, bit_direction.as_deref());
         ctx.push_scope();
-        ctx.bind(
-            "bit_value",
-            vec![bit_value as u8],
-            Value::Int(bit_value as i64),
-        );
+        ctx.bind("bit_value", vec![bit_value as u8], Value::Int(bit_value as i64));
         ctx.bind(
             "bit_index",
             bit_spec.range.0.to_le_bytes().to_vec(),
@@ -442,28 +463,50 @@ fn parse_bitmask(
         let instantiated_element = instantiate_field_spec(element, idx, bit_count);
         let (v, consumed) = parse_field(&buf[offset..], &instantiated_element, ctx, protocol, region, dir)?;
         ctx.pop_scope();
+
+        // compute source byte(s) for this bit range (take the first byte where the range starts)
+        let bit_start = bit_spec.range.0;
+        let byte_index = bit_start / 8;
+        let bit_source = if byte_index < raw.len() {
+            vec![raw[byte_index]]
+        } else {
+            Vec::new()
+        };
+
+        // if the instantiated element indicates Skip, still advance offset and continue
         if let Value::Skip = v {
             offset += consumed;
             continue;
         }
 
-        let item = if let Some(template) = name_template {
-            Value::Node {
-                name: format_repeat_name(
-                    Some(template.as_str()),
-                    None,
-                    Some(bit_spec.name.as_str()),
-                    bit_spec.ref_id.as_deref(),
-                    idx,
-                    bit_count,
-                ),
-                raw: buf[offset..offset + consumed].to_vec(),
-                value: Box::new(v),
-            }
+        // build the list item name from template or bit name
+        let entry_name = if let Some(template) = name_template {
+            format_repeat_name(
+                Some(template.as_str()),
+                None,
+                Some(bit_spec.name.as_str()),
+                bit_spec.ref_id.as_deref(),
+                idx,
+                bit_count,
+            )
         } else {
-            v
+            bit_spec.name.clone()
         };
-        items.push(item);
+
+        let bit_value_node = Value::Bit {
+            bit_start: bit_spec.range.0,
+            bit_end: bit_spec.range.1,
+            bit_value,
+            bit_byte: bit_source,
+            value: Some(Box::new(v)),
+        };
+
+        let node = Value::Node {
+            name: entry_name,
+            raw: Vec::new(),
+            value: Box::new(bit_value_node),
+        };
+        items.push(node);
         offset += consumed;
     }
     Ok((Value::List(items), length))
@@ -589,6 +632,7 @@ fn parse_switch(
     buf: &[u8],
     on: &str,
     cases: &std::collections::HashMap<String, Box<FieldSpec>>,
+    case_names: &Option<HashMap<String, String>>,
     default: &Option<Box<FieldSpec>>,
     ctx: &mut Context,
     protocol: &str,
@@ -634,7 +678,26 @@ fn parse_switch(
             on: on.to_string(),
             key: key.clone(),
         })?;
-    parse_field(buf, chosen, ctx, protocol, region, dir)
+    let (value, consumed) = parse_field(buf, chosen, ctx, protocol, region, dir)?;
+    if let Value::Skip = value {
+        return Ok((Value::Skip, consumed));
+    }
+    if let Some(names) = case_names {
+        if let Some(case_name) = names.get(&key) {
+            if consumed == 0 {
+                return Ok((Value::Str(case_name.clone()), consumed));
+            }
+            return Ok((
+                Value::Node {
+                    name: case_name.clone(),
+                    raw: buf[..consumed].to_vec(),
+                    value: Box::new(value),
+                },
+                consumed,
+            ));
+        }
+    }
+    Ok((value, consumed))
 }
 
 fn format_repeat_template(template: &str, idx: usize, count: usize) -> String {
@@ -644,17 +707,18 @@ fn format_repeat_template(template: &str, idx: usize, count: usize) -> String {
         .replace("{count}", &count.to_string())
 }
 
-fn eval_length_expr(expr: &str, ctx: &Context, idx_opt: Option<usize>) -> Result<u32, String> {
+fn eval_length_expr(expr: &str, ctx: &Context, idx_opt: Option<usize>, len: usize) -> Result<u32, String> {
     struct Parser<'a> {
         input: &'a str,
         pos: usize,
         idx_opt: Option<usize>,
         ctx: &'a Context,
+        len: usize,
     }
 
     impl<'a> Parser<'a> {
-        fn new(input: &'a str, idx_opt: Option<usize>, ctx: &'a Context) -> Self {
-            Parser { input, pos: 0, idx_opt, ctx }
+        fn new(input: &'a str, idx_opt: Option<usize>, ctx: &'a Context, len: usize) -> Self {
+            Parser { input, pos: 0, idx_opt, ctx, len }
         }
 
         fn peek(&self) -> Option<char> {
@@ -699,6 +763,9 @@ fn eval_length_expr(expr: &str, ctx: &Context, idx_opt: Option<usize>) -> Result
 
         fn parse_variable_or_ref(&mut self) -> Result<u32, String> {
             self.skip_ws();
+            if self.input[self.pos..].starts_with('$') {
+                self.next();
+            }
             // detect ref(name)
             if self.input[self.pos..].starts_with("ref(") {
                 self.pos += 4; // skip "ref("
@@ -718,7 +785,7 @@ fn eval_length_expr(expr: &str, ctx: &Context, idx_opt: Option<usize>) -> Result
                     .ok_or_else(|| format!("缺少引用字段: {}", name))?;
                 v.as_u32().ok_or_else(|| format!("ref({}) 不是可用的非负整数", name))
             } else {
-                // variable like index or index0
+                // variable like index, index0, remaining, or other ref_id
                 let start = self.pos;
                 while matches!(self.peek(), Some(ch) if ch.is_ascii_alphanumeric() || ch == '_') {
                     self.next();
@@ -739,7 +806,14 @@ fn eval_length_expr(expr: &str, ctx: &Context, idx_opt: Option<usize>) -> Result
                             Err("index0 仅在 repeat 上下文可用".to_string())
                         }
                     }
-                    _ => Err(format!("非法变量或 ref: {}", token)),
+                    "remaining" | "len" | "length" => self.len.try_into().map_err(|_| "剩余长度超过 u32 上限".to_string()),
+                    _ => {
+                        let v = self
+                            .ctx
+                            .get_decoded(token)
+                            .ok_or_else(|| format!("缺少引用字段: {}", token))?;
+                        v.as_u32().ok_or_else(|| format!("{} 不是可用的非负整数", token))
+                    }
                 }
             }
         }
@@ -754,9 +828,7 @@ fn eval_length_expr(expr: &str, ctx: &Context, idx_opt: Option<usize>) -> Result
                     return Err("缺少 )".to_string());
                 }
                 Ok(value)
-            } else if self.input[self.pos..].starts_with("ref(") {
-                self.parse_variable_or_ref()
-            } else if self.input[self.pos..].starts_with("index0") || self.input[self.pos..].starts_with("index") {
+            } else if matches!(self.peek(), Some(ch) if ch == '$' || ch.is_ascii_alphabetic()) {
                 self.parse_variable_or_ref()
             } else if matches!(self.peek(), Some(ch) if ch.is_ascii_digit()) {
                 self.parse_number()
@@ -815,7 +887,7 @@ fn eval_length_expr(expr: &str, ctx: &Context, idx_opt: Option<usize>) -> Result
         }
     }
 
-    let mut parser = Parser::new(expr, idx_opt, ctx);
+    let mut parser = Parser::new(expr, idx_opt, ctx, len);
     let result = parser.parse_expr()?;
     parser.skip_ws();
     if parser.peek().is_some() {
@@ -856,7 +928,7 @@ fn instantiate_field_spec(spec: &FieldSpec, idx: usize, count: usize) -> FieldSp
             length: *length,
             bits: bits.clone(),
         },
-        FieldSpec::Switch { on, cases, default } => FieldSpec::Switch {
+        FieldSpec::Switch { on, cases, case_names, default } => FieldSpec::Switch {
             on: format_repeat_template(on, idx, count),
             cases: cases
                 .iter()
@@ -867,20 +939,27 @@ fn instantiate_field_spec(spec: &FieldSpec, idx: usize, count: usize) -> FieldSp
                     )
                 })
                 .collect(),
+            case_names: case_names.as_ref().map(|m|
+                m.iter().map(|(k,v)| (format_repeat_template(k, idx, count), format_repeat_template(v, idx, count))).collect()
+            ),
             default: default.as_ref().map(|v| Box::new(instantiate_field_spec(v, idx, count))),
         },
         FieldSpec::Repeat {
             count_ref,
+            count_expr,
             bits_ref,
-            bit_order,
+            bit_direction,
+            iterate_order,
             bit_specs,
             element,
             name_template,
             id_expr,
         } => FieldSpec::Repeat {
             count_ref: count_ref.as_ref().map(|s| format_repeat_template(s, idx, count)),
+            count_expr: count_expr.as_ref().map(|s| format_repeat_template(s, idx, count)),
             bits_ref: bits_ref.clone(),
-            bit_order: bit_order.clone(),
+            bit_direction: bit_direction.clone(),
+            iterate_order: iterate_order.clone(),
             bit_specs: bit_specs.clone(),
             element: Box::new(instantiate_field_spec(element, idx, count)),
             name_template: name_template
@@ -894,13 +973,15 @@ fn instantiate_field_spec(spec: &FieldSpec, idx: usize, count: usize) -> FieldSp
         },
         FieldSpec::BitMask {
             length,
-            bit_order,
+            bit_direction,
+            iterate_order,
             bit_specs,
             element,
             name_template,
         } => FieldSpec::BitMask {
             length: *length,
-            bit_order: bit_order.clone(),
+            bit_direction: bit_direction.clone(),
+            iterate_order: iterate_order.clone(),
             bit_specs: bit_specs.clone(),
             element: Box::new(instantiate_field_spec(element, idx, count)),
             name_template: name_template
@@ -927,8 +1008,10 @@ fn instantiate_field_spec(spec: &FieldSpec, idx: usize, count: usize) -> FieldSp
 fn parse_repeat(
     buf: &[u8],
     count_ref: &Option<String>,
+    count_expr: &Option<String>,
     bits_ref: &Option<String>,
-    bit_order: &Option<String>,
+    bit_direction: &Option<String>,
+    iterate_order: &Option<String>,
     bit_specs: &Option<Vec<BitSpec>>,
     element: &FieldSpec,
     name_template: &Option<String>,
@@ -941,11 +1024,19 @@ fn parse_repeat(
     let mut offset = 0usize;
     let mut items = Vec::new();
 
-    if let Some(count_ref) = count_ref {
-        let count = ctx
-            .get_decoded(count_ref)
+    let count = if let Some(count_ref) = count_ref {
+        ctx.get_decoded(count_ref)
             .and_then(|v| v.as_usize())
-            .ok_or_else(|| DictError::MissingRef(count_ref.to_string()))?;
+            .ok_or_else(|| DictError::MissingRef(count_ref.to_string()))?
+    } else if let Some(expr) = count_expr {
+        eval_length_expr(expr, ctx, None, buf.len())
+            .map_err(|e| DictError::ExternalParseError(format!("count_expr 解析失败: {}", e)))?
+            as usize
+    } else {
+        usize::MAX
+    };
+
+    if count != usize::MAX {
         for idx in 0..count {
             let instantiated_element = instantiate_field_spec(element, idx, count);
             let (v, consumed) = parse_field(&buf[offset..], &instantiated_element, ctx, protocol, region, dir)?;
@@ -1002,7 +1093,7 @@ fn parse_repeat(
         .cloned()
         .ok_or_else(|| DictError::MissingRef(bits_ref.to_string()))?;
     let mut bit_specs_sorted: Vec<&BitSpec> = specs.iter().collect();
-    if bit_order.as_deref() == Some("desc") {
+    if iterate_order.as_deref() == Some("desc") {
         bit_specs_sorted.sort_by_key(|bit| std::cmp::Reverse(bit.range.0));
     } else {
         bit_specs_sorted.sort_by_key(|bit| bit.range.0);
@@ -1010,13 +1101,9 @@ fn parse_repeat(
 
     let bit_count = bit_specs_sorted.len();
     for (idx, bit_spec) in bit_specs_sorted.iter().enumerate() {
-        let bit_value = extract_bits(&raw, bit_spec.range);
+        let bit_value = extract_bits_ordered(&raw, bit_spec.range, bit_direction.as_deref());
         ctx.push_scope();
-        ctx.bind(
-            "bit_value",
-            vec![bit_value as u8],
-            Value::Int(bit_value as i64),
-        );
+        ctx.bind("bit_value", vec![bit_value as u8], Value::Int(bit_value as i64));
         ctx.bind(
             "bit_index",
             bit_spec.range.0.to_le_bytes().to_vec(),
@@ -1037,8 +1124,8 @@ fn parse_repeat(
 
         let instantiated_element = instantiate_field_spec(element, idx, bit_count);
         let (v, consumed) = parse_field(&buf[offset..], &instantiated_element, ctx, protocol, region, dir)?;
+        ctx.pop_scope();
         if let Value::Skip = v {
-            ctx.pop_scope();
             offset += consumed;
             continue;
         }
@@ -1057,7 +1144,7 @@ fn parse_repeat(
                     Some(bit_spec.name.as_str()),
                     bit_spec.ref_id.as_deref(),
                     idx,
-                    bit_specs_sorted.len(),
+                    bit_count,
                 ),
                 raw: buf[offset..offset + consumed].to_vec(),
                 value: Box::new(v),

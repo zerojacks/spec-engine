@@ -113,19 +113,20 @@ struct RawBit {
 }
 
 #[derive(Debug, Deserialize, Clone, Default)]
-struct RawBitPattern {
-    #[serde(default)]
-    start_bit: Option<usize>,
+struct RawCandidate {
     #[serde(default)]
     count: Option<usize>,
     #[serde(default)]
-    bit_order: Option<String>, // "lsb" or "msb"
+    count_ref: Option<String>,
+    #[serde(default)]
+    count_expr: Option<String>,
+    #[serde(default)]
+    id_expr: Option<String>,
     #[serde(default)]
     name_template: Option<String>,
+    /// 内嵌的 element 定义，放在 `candidate_ids.element:` 下
     #[serde(default)]
-    byte_mask: Option<String>, // hex string like "0000FF00"
-    #[serde(rename = "enum", default)]
-    enum_map: Option<HashMap<String, String>>,
+    element: Option<Box<RawField>>,
 }
 
 #[derive(Debug, Deserialize, Clone)]
@@ -157,23 +158,6 @@ struct FormatObject {
     endian: Option<String>,
     #[serde(default)]
     order: Option<String>,
-}
-
-// `extended` 已弃用，使用 `candidate_ids` 在编译期注册候选 id
-
-#[derive(Debug, Deserialize, Clone, Default)]
-struct RawCandidate {
-    #[serde(default)]
-    count: Option<usize>,
-    #[serde(default)]
-    count_ref: Option<String>,
-    #[serde(default)]
-    id_expr: Option<String>,
-    #[serde(default)]
-    name_template: Option<String>,
-    /// 内嵌的 element 定义，放在 `candidate_ids.element:` 下
-    #[serde(default)]
-    element: Option<Box<RawField>>,
 }
 
 #[derive(Debug, Deserialize, Clone, Default)]
@@ -215,8 +199,6 @@ struct RawField {
     #[serde(default)]
     bits: Option<Vec<RawBit>>,
     #[serde(default)]
-    bitpattern: Option<RawBitPattern>,
-    #[serde(default)]
     on: Option<String>,
     #[serde(default)]
     cases: Option<HashMap<String, RawCaseTarget>>,
@@ -225,9 +207,13 @@ struct RawField {
     #[serde(default)]
     count_ref: Option<String>,
     #[serde(default)]
+    count_expr: Option<String>,
+    #[serde(default)]
     bits_ref: Option<String>,
     #[serde(default)]
-    bit_order: Option<String>,
+    bit_direction: Option<String>,
+    #[serde(default)]
+    iterate_order: Option<String>,
     #[serde(default)]
     count: Option<usize>,
     #[serde(default)]
@@ -236,6 +222,8 @@ struct RawField {
     element: Option<Box<RawField>>,
     #[serde(rename = "ref", default)]
     ref_: Option<String>,
+    #[serde(default)]
+    dict_ref: Option<serde_yaml::Value>,
     #[serde(default)]
     template_ref: Option<String>,
     #[serde(default)]
@@ -603,9 +591,19 @@ fn main() {
         let top_dir = rf.dir.clone();
         for top_region in top_regions {
             let mut scope = BuildScope::new();
-            // debug: dump child fields YAML for diagnosis
+            // 必须显式把这次要用的 rf 的 region 收窄成只含 top_region 的
+            // 单元素列表，否则 gen_named_field -> effective_region 会优先
+            // 采用 rf 自身完整的多元素 region 列表（取其 first()），导致
+            // 不管这里循环到第几个 top_region，实际注册进去的永远是同一个
+            // （列表里第一个）region——后面的 region 全部被静默丢弃、查
+            // 不到。（templates 的展开循环在下面已经这么处理了，这里之前
+            // 漏掉了，多 region 的顶层条目实际上从来没真正生效过多个
+            // region，只是因为过去字典里几乎没人写超过一个 region 才没
+            // 暴露出来。）
+            let mut rf_for_region = rf.clone();
+            rf_for_region.region = Some(vec![top_region.clone()]);
             let _ = gen_named_field(
-                rf,
+                &rf_for_region,
                 &top_protocol,
                 &top_region,
                 top_dir.as_deref(),
@@ -1309,9 +1307,14 @@ fn gen_field(
 ) -> FieldSpec {
     // 支持作为子字段出现的 `candidate_ids`：结构化包含 count/id_expr/name_template
     if let Some(cand) = &rf.candidate_ids {
-        let count = cand
-            .count
-            .unwrap_or_else(|| panic!("candidate_ids 在字段 {} 中缺少 count", field_label(rf)));
+        let count = cand.count;
+        let count_expr = cand.count_expr.clone();
+        if cand.count_ref.is_some() && cand.count_expr.is_some() {
+            panic!(
+                "candidate_ids 在字段 {} 中不能同时指定 count_ref 和 count_expr",
+                field_label(rf)
+            );
+        }
         let id_expr = cand
             .id_expr
             .as_ref()
@@ -1321,74 +1324,75 @@ fn gen_field(
             .as_ref()
             .unwrap_or_else(|| panic!("candidate_ids 在字段 {} 中缺少 element", field_label(rf)));
 
-        // 无条件按 count（编译期上限）注册全部候选，供以后单独寻址；
-        // 跟下面本节点自己在父容器里怎么解析完全独立。
-        for idx in 0..count {
-            let generated_id = format_id_expr(id_expr, idx)
-                .unwrap_or_else(|e| panic!("id_expr 解析失败: {:?}", e));
-            let mut repeated_rf = (**element_rf).clone();
-            repeated_rf.id = Some(generated_id.clone());
-            repeated_rf.name = Some(format_repeat_name(
-                cand.name_template.as_deref(),
-                Some(&generated_id),
-                None,
-                None,
-                idx,
-                count,
-            ));
-            // 生成的 candidate_ids 也要进入 di_raw_map，供 later di_sequence 查找。
-            ctx.di_raw_map.insert(
-                (
-                    generated_id.clone(),
-                    protocol.to_string(),
-                    region.to_string(),
-                    dir.map(|s| s.to_string()),
-                ),
-                repeated_rf.clone(),
-            );
-            gen_named_field(&repeated_rf, protocol, region, dir, ctx, scope); // 仅登记，返回值丢弃
+        // 如果提供了 count，则按 count 注册全部候选，供以后单独寻址；
+        // 如果没有 count，但提供了 count_expr，则只能在运行时解析时计算实际数量。
+        if let Some(count) = count {
+            for idx in 0..count {
+                let generated_id = format_id_expr(id_expr, idx)
+                    .unwrap_or_else(|e| panic!("id_expr 解析失败: {:?}", e));
+                let mut repeated_rf = (**element_rf).clone();
+                repeated_rf.id = Some(generated_id.clone());
+                repeated_rf.name = Some(format_repeat_name(
+                    cand.name_template.as_deref(),
+                    Some(&generated_id),
+                    None,
+                    None,
+                    idx,
+                    count,
+                ));
+                // 生成的 candidate_ids 也要进入 di_raw_map，供 later di_sequence 查找。
+                ctx.di_raw_map.insert(
+                    (
+                        generated_id.clone(),
+                        protocol.to_string(),
+                        region.to_string(),
+                        dir.map(|s| s.to_string()),
+                    ),
+                    repeated_rf.clone(),
+                );
+                gen_named_field(&repeated_rf, protocol, region, dir, ctx, scope); // 仅登记，返回值丢弃
+            }
         }
 
-        return match &cand.count_ref {
-            // 变长：这次报文实际读几组，交给运行时 count_ref，
-            // 跟上面已经注册满 count 个候选是两回事——一个管"能查到多少"，一个管"这次读多少"
-            Some(count_ref) => FieldSpec::Repeat {
-                count_ref: Some(count_ref.clone()),
+        return if cand.count_ref.is_some() || cand.count_expr.is_some() {
+            let count_ref = cand.count_ref.clone();
+            FieldSpec::Repeat {
+                count_ref,
+                count_expr,
                 bits_ref: None,
-                bit_order: None,
+                bit_direction: None,
+                iterate_order: None,
                 bit_specs: None,
                 element: Box::new(gen_field(element_rf, protocol, region, dir, ctx, scope)),
                 name_template: cand.name_template.clone(),
                 id_expr: Some(id_expr.clone()),
-            },
-            // 定长：没有 count_ref，说明协议里这组就是固定 count 个，
-            // 编译期注册的这批本身就是实际要解析的全部，直接复用
-            None => {
-                let mut named = Vec::with_capacity(count);
-                for idx in 0..count {
-                    let generated_id = format_id_expr(id_expr, idx)
-                        .unwrap_or_else(|e| panic!("id_expr 解析失败: {:?}", e));
-                    let mut repeated_rf = (**element_rf).clone();
-                    repeated_rf.id = Some(generated_id.clone());
-                    repeated_rf.name = Some(format_repeat_name(
-                        cand.name_template.as_deref(),
-                        Some(&generated_id),
-                        None,
-                        None,
-                        idx,
-                        count,
-                    ));
-                    named.push(gen_named_field(
-                        &repeated_rf,
-                        protocol,
-                        region,
-                        dir,
-                        ctx,
-                        scope,
-                    ));
-                }
-                FieldSpec::Container(named)
             }
+        } else {
+            let count = count.unwrap_or_else(|| panic!("candidate_ids 在字段 {} 中缺少 count", field_label(rf)));
+            let mut named = Vec::with_capacity(count);
+            for idx in 0..count {
+                let generated_id = format_id_expr(id_expr, idx)
+                    .unwrap_or_else(|e| panic!("id_expr 解析失败: {:?}", e));
+                let mut repeated_rf = (**element_rf).clone();
+                repeated_rf.id = Some(generated_id.clone());
+                repeated_rf.name = Some(format_repeat_name(
+                    cand.name_template.as_deref(),
+                    Some(&generated_id),
+                    None,
+                    None,
+                    idx,
+                    count,
+                ));
+                named.push(gen_named_field(
+                    &repeated_rf,
+                    protocol,
+                    region,
+                    dir,
+                    ctx,
+                    scope,
+                ));
+            }
+            FieldSpec::Container(named)
         };
     }
 
@@ -1416,7 +1420,6 @@ fn gen_field(
             format: None,
         },
         "bitfield" => gen_bitfield(rf),
-        "bitpattern" => gen_bitpattern(rf),
         "switch" => gen_switch(rf, protocol, region, dir, ctx, scope),
         "repeat" => gen_repeat(rf, protocol, region, dir, ctx, scope),
         "bitmask" => gen_bitmask(rf, protocol, region, dir, ctx, scope),
@@ -1494,9 +1497,34 @@ fn validate_id_ref(rf: &RawField, ref_name: &str, kind: &str, scope: &BuildScope
     }
 }
 
+fn resolve_dict_ref(rf: &RawField) -> Option<String> {
+    if let Some(dict_ref) = &rf.dict_ref {
+        match dict_ref {
+            serde_yaml::Value::Mapping(map) => {
+                if let Some(key) = map.get(&serde_yaml::Value::String("ref_id".to_string())) {
+                    if let serde_yaml::Value::String(s) = key {
+                        return Some(s.clone());
+                    }
+                }
+                panic!(
+                    "dict_ref 字段 {:?} 的 dict_ref 对象必须包含 ref_id 字段",
+                    rf.name
+                );
+            }
+            other => panic!(
+                "dict_ref 字段 {:?} 的 dict_ref 必须是对象 {{ ref_id: ... }}，实际是 {:?}",
+                rf.name, other
+            ),
+        }
+    }
+    None
+}
+
 fn validate_field_refs(rf: &RawField, scope: &BuildScope) {
     if let Some(length_ref) = &rf.length_ref {
-        validate_id_ref(rf, length_ref, "length_ref", scope);
+        if length_ref != "$remaining" && length_ref != "$len" && length_ref != "$length" {
+            validate_id_ref(rf, length_ref, "length_ref", scope);
+        }
     }
     if let Some(length_rule) = &rf.lengthrule {
         // 验证表达式里用到的 ref(...) 引用是否存在
@@ -1525,7 +1553,15 @@ fn validate_field_refs(rf: &RawField, scope: &BuildScope) {
     }
     if let Some(ref_name) = &rf.ref_ {
         if rf.ty.as_deref() == Some("dict_ref") {
-            validate_id_ref(rf, ref_name, "dict_ref.ref", scope);
+            panic!(
+                "dict_ref 字段 {:?} 不支持 ref: {:?}，请改用 dict_ref: {{ ref_id: ... }}",
+                rf.name, ref_name
+            );
+        }
+    }
+    if let Some(dict_ref_name) = resolve_dict_ref(rf) {
+        if rf.ty.as_deref() == Some("dict_ref") {
+            validate_id_ref(rf, &dict_ref_name, "dict_ref.ref", scope);
         }
     }
     if let Some(serde_yaml::Value::String(s)) = &rf.length {
@@ -1653,79 +1689,6 @@ fn gen_bitfield(rf: &RawField) -> FieldSpec {
     FieldSpec::BitField { length, bits }
 }
 
-fn gen_bitpattern(rf: &RawField) -> FieldSpec {
-    let length = get_len(rf);
-    let bp = rf
-        .bitpattern
-        .as_ref()
-        .unwrap_or_else(|| panic!("bitpattern 字段 {:?} 缺少 bitpattern 配置", rf.name));
-    let bit_order = bp.bit_order.as_deref().unwrap_or("lsb");
-    let mut bits_out: Vec<BitSpec> = Vec::new();
-    if let Some(mask_hex) = &bp.byte_mask {
-        // parse hex string into bytes
-        let s = mask_hex.trim();
-        let mut bytes: Vec<u8> = Vec::new();
-        let mut i = 0;
-        while i < s.len() {
-            let hi = u8::from_str_radix(&s[i..i + 2], 16)
-                .unwrap_or_else(|_| panic!("bitpattern byte_mask 不是合法的 hex: {}", s));
-            bytes.push(hi);
-            i += 2;
-        }
-        for (byte_idx, &b) in bytes.iter().enumerate() {
-            for bit_in_byte in 0..8 {
-                let mask_bit = if bit_order == "lsb" {
-                    (b >> bit_in_byte) & 1
-                } else {
-                    (b >> (7 - bit_in_byte)) & 1
-                };
-                if mask_bit != 0 {
-                    let bit_index = (byte_idx * 8) + bit_in_byte;
-                    let name = if let Some(tmpl) = &bp.name_template {
-                        tmpl.replace("{index0}", &bit_index.to_string())
-                            .replace("{index}", &(bit_index + 1).to_string())
-                    } else {
-                        format!("bit{}", bit_index + 1)
-                    };
-                    bits_out.push(BitSpec {
-                        range: (bit_index, bit_index),
-                        name,
-                        ref_id: None,
-                        enum_map: bp.enum_map.clone(),
-                    });
-                }
-            }
-        }
-    } else if let Some(count) = bp.count {
-        let start = bp.start_bit.unwrap_or(0);
-        for k in 0..count {
-            let bit_index = start + k;
-            let name = if let Some(tmpl) = &bp.name_template {
-                tmpl.replace("{index0}", &k.to_string())
-                    .replace("{index}", &(k + 1).to_string())
-            } else {
-                format!("bit{}", k + 1)
-            };
-            bits_out.push(BitSpec {
-                range: (bit_index, bit_index),
-                name,
-                ref_id: None,
-                enum_map: bp.enum_map.clone(),
-            });
-        }
-    } else {
-        panic!(
-            "bitpattern 字段 {:?} 需要 byte_mask 或 start_bit+count",
-            rf.name
-        );
-    }
-    // computed length in bytes: use declared length for safety
-    FieldSpec::BitField {
-        length,
-        bits: bits_out,
-    }
-}
-
 fn build_bit_specs(rf: &RawField, length: usize) -> Vec<BitSpec> {
     if let Some(bits) = &rf.bits {
         bits.iter()
@@ -1736,11 +1699,6 @@ fn build_bit_specs(rf: &RawField, length: usize) -> Vec<BitSpec> {
                 enum_map: b.enum_map.clone(),
             })
             .collect()
-    } else if rf.bitpattern.is_some() {
-        match gen_bitpattern(rf) {
-            FieldSpec::BitField { bits, .. } => bits,
-            _ => unreachable!(),
-        }
     } else {
         let bit_count = length * 8;
         (0..bit_count)
@@ -1770,9 +1728,16 @@ fn gen_bitmask(
         .unwrap_or_else(|| panic!("bitmask 字段 {:?} 缺少 element", rf.name));
     let element = Box::new(gen_field(element_rf, protocol, region, dir, ctx, scope));
     let name_template = rf.name_template.clone();
+    let bit_direction = rf
+        .bit_direction
+        .clone();
+    let iterate_order = rf
+        .iterate_order
+        .clone();
     FieldSpec::BitMask {
         length,
-        bit_order: rf.bit_order.clone(),
+        bit_direction,
+        iterate_order,
         bit_specs,
         element,
         name_template,
@@ -1844,10 +1809,16 @@ fn gen_switch(
     let default_target = rf.default.clone().or_else(|| cases.remove("default"));
 
     let mut cases_map: HashMap<String, Box<FieldSpec>> = HashMap::new();
+    let mut case_names_map: HashMap<String, String> = HashMap::new();
     for (key, target) in &cases {
         let target_spec =
             resolve_switch_target(target, switch_len, protocol, region, dir, ctx, scope);
         cases_map.insert(key.clone(), Box::new(target_spec));
+        if let RawCaseTarget::Field(field) = target {
+            if let Some(n) = &field.name {
+                case_names_map.insert(key.clone(), n.clone());
+            }
+        }
     }
     let default = default_target.map(|target| {
         Box::new(resolve_switch_target(
@@ -1855,9 +1826,16 @@ fn gen_switch(
         ))
     });
 
+    let case_names = if case_names_map.is_empty() {
+        None
+    } else {
+        Some(case_names_map)
+    };
+
     FieldSpec::Switch {
         on,
         cases: cases_map,
+        case_names,
         default,
     }
 }
@@ -1940,18 +1918,32 @@ fn gen_repeat(
     };
 
     let count_ref = rf.count_ref.clone();
+    let count_expr = rf.count_expr.clone();
+    if rf.count_ref.is_some() && rf.count_expr.is_some() {
+        panic!(
+            "repeat 字段 {:?} 不能同时指定 count_ref 和 count_expr，请取其一",
+            rf.name
+        );
+    }
     // 如果 repeat 本身没有明确的 name_template，而 element 的定义里有 name，
     // 我们在编译期选择性地把 element.name 作为 name_template 继承下来，
     // 但仅在 element 不是 Container（即解析结果为非映射/非子字段集合）时才继承，
     // 以避免把多字段的 container 类型重复项包一层额外的 node，破坏既有
     // 对容器重复的解析结构（测试依赖）。
     let name_template = rf.name_template.clone().or_else(|| element_rf.name.clone());
-    let bit_order = rf.bit_order.clone();
+    let bit_direction = rf
+        .bit_direction
+        .clone();
+    let iterate_order = rf
+        .iterate_order
+        .clone();
     let bits_ref = rf.bits_ref.clone();
     FieldSpec::Repeat {
         count_ref,
+        count_expr,
         bits_ref,
-        bit_order,
+        bit_direction,
+        iterate_order,
         bit_specs,
         element: Box::new(element),
         name_template,
@@ -2151,10 +2143,12 @@ fn gen_di_sequence(
 }
 
 fn gen_dict_ref(rf: &RawField) -> FieldSpec {
-    let di_ref = rf
-        .ref_
-        .clone()
-        .unwrap_or_else(|| panic!("dict_ref 字段 {:?} 缺少 ref", rf.name));
+    let di_ref = resolve_dict_ref(rf).unwrap_or_else(|| {
+        panic!(
+            "dict_ref 字段 {:?} 缺少 dict_ref: {{ ref_id: ... }}",
+            rf.name
+        )
+    });
     FieldSpec::DictRef { di_ref }
 }
 

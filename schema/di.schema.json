@@ -1,0 +1,351 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "./di.schema.json",
+  "title": "DI 字典 YAML Schema",
+  "description": "对应 build.rs 里 RawDict/RawField/RawTemplate 的结构，字段名、必填关系、取值范围都跟 Rust 端反序列化逻辑严格对齐。接入 VSCode 的 redhat.vscode-yaml 插件后，能在编辑 schema/<protocol>/*.yaml 时实时标红非法写法、给字段名和 type 取值自动补全，不用等 cargo build 才发现问题。用法：在 yaml 文件第一行加 `# yaml-language-server: $schema=../di.schema.json`（相对路径按实际目录层级调整）。",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "templates": {
+      "type": "array",
+      "description": "可复用的字段组模板列表（不是以 template_id 为 key 的字典！同一个 id 可以在不同 protocol/region 下重复出现，按 (id, protocol, region, dir) 四元组区分）。",
+      "items": { "$ref": "#/$defs/template" }
+    },
+    "data_items": {
+      "type": "array",
+      "description": "真正的 DI 字典条目列表。",
+      "items": { "$ref": "#/$defs/topLevelField" }
+    }
+  },
+
+  "$defs": {
+    "regionList": {
+      "type": "array",
+      "description": "省份/局方/功能分组标识列表，每个元素代表【一个】分组，不能把多个名字拼成一个逗号分隔的字符串（region: [\"南网,广东\"] 是错的，会导致广东单独查询时查不到这条定义，必须写成 region: [\"南网\", \"广东\"]）。省略该字段时落在通用桶（DEFAULT_REGION），嵌套子字段省略时继承父级已生效的 region。",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^\\S[^,，]*\\S$|^\\S$",
+        "not": { "pattern": "[,，]" }
+      },
+      "examples": [["南网"], ["南网", "广东", "海南"]]
+    },
+
+    "lengthRuleExpr": {
+      "type": "string",
+      "description": "长度表达式，只认 ref(ref_id) / index / index0 / 十进制数字 / 0x十六进制 / 四则运算 (+ - * /) / 括号。禁止写裸字段名（例如 \"1 * 报文长度\" 是非法的，必须先给被引用字段打上 ref_id，再写成 \"1 * ref(frame_length)\"）。",
+      "pattern": "^\\s*(0[xX][0-9a-fA-F]+|[0-9]+|ref\\([A-Za-z_][A-Za-z0-9_]*\\)|index0|index|[()+\\-*/\\s])+$",
+      "examples": ["ref(frame_length)", "ref(char_count) * 2", "ref(a) + ref(b) - 1"]
+    },
+
+    "length": {
+      "description": "字段长度：非负整数字节数，或者 \"remaining\"（吃掉容器内剩余的全部字节）。变长场景请改用同级的 length_ref 或 lengthrule，不要在 length 里写 \"unknown\" 之类的占位字符串（那不是合法值，只有 remaining 是）。",
+      "oneOf": [
+        { "type": "integer", "minimum": 0 },
+        { "type": "string", "enum": ["remaining"] }
+      ]
+    },
+
+    "fieldType": {
+      "type": "string",
+      "description": "字段类型。省略 type 时默认为 hex。大小写不敏感（Rust 端会先 to_lowercase() 再匹配），但请统一按小写书写，不要在字典里出现 BCD/ASCII 这种大写写法（历史上出现过，纯属风格不统一，不是刻意为之）。",
+      "enum": [
+        "bcd", "bin", "ascii", "hex", "time",
+        "fixed", "normal",
+        "bitfield", "switch", "repeat", "bitmask",
+        "skip",
+        "template",
+        "external",
+        "di_sequence",
+        "dict_ref",
+        "custom",
+        "info_point",
+        "di_code",
+        "container"
+      ]
+    },
+
+    "bit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["range", "name"],
+      "properties": {
+        "range": {
+          "type": "array",
+          "description": "闭区间 [起始bit, 结束bit]。",
+          "prefixItems": [
+            { "type": "integer", "minimum": 0 },
+            { "type": "integer", "minimum": 0 }
+          ],
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "name": { "type": "string" },
+        "ref_id": { "type": "string" },
+        "enum": {
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        }
+      }
+    },
+
+    "format": {
+      "description": "多字节数值的展示格式，可以是内置格式名字符串，也可以是详细配置对象（比如 IP 地址：group_bytes=1, separator=\".\"）。",
+      "oneOf": [
+        { "type": "string" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "type": { "type": "string" },
+            "group_bytes": { "type": "integer", "minimum": 1 },
+            "separator": { "type": "string" },
+            "pad": { "type": "boolean" },
+            "endian": { "type": "string", "enum": ["big", "little"] },
+            "order": { "type": "string" }
+          }
+        }
+      ]
+    },
+
+    "candidateIds": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "编译期批量注册候选 DI id（比如费率1~63各自是独立可寻址的DI）。count 与 count_ref 二选一：count 是编译期已知的固定个数，count_ref 是运行时才知道、引用另一个字段的值。",
+      "properties": {
+        "count": { "type": "integer", "minimum": 0 },
+        "count_ref": { "type": "string" },
+        "id_expr": {
+          "type": "string",
+          "description": "例如 \"0x00030100 + index0*0x0100\"，用 index/index0 表示第几个候选。"
+        },
+        "name_template": {
+          "type": "string",
+          "description": "例如 \"费率{index}\"，{index} 会被替换成从1开始的序号。"
+        },
+        "element": { "$ref": "#/$defs/field" }
+      }
+    },
+
+    "caseTarget": {
+      "description": "switch 的 cases/default 取值：要么是一个已定义模板名或内置编码名（bcd/bin/ascii/hex）的字符串，要么直接内联一个完整的字段定义。",
+      "oneOf": [
+        { "type": "string" },
+        { "$ref": "#/$defs/field" }
+      ]
+    },
+
+    "field": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "一个字段节点，可以是顶层 DI、模板里的字段，也可以是任意嵌套的子字段（fields/element/candidate_ids.element/cases 内联值都复用这份定义）。",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "DI 码（8位十六进制字符串，如 \"E0001003\"）。只有能解析成合法十六进制数的 id 才会被额外注册为独立可寻址的 DI（见设计文档 8 节“双重身份”）；模板内部纯粹当结构用的子字段可以不写 id。"
+        },
+        "ref_id": {
+          "type": "string",
+          "description": "给这个字段起一个内部引用名，供同容器内其它字段的 length_ref/lengthrule/count_ref/bits_ref 引用。跟 id 是两回事：id 是对外可寻址的 DI 码，ref_id 只在展开时的作用域内可见。"
+        },
+        "name": { "type": "string" },
+        "type": { "$ref": "#/$defs/fieldType" },
+        "length": { "$ref": "#/$defs/length" },
+        "length_ref": {
+          "type": "string",
+          "description": "长度等于某个已经打了 ref_id 的字段的值（原样，不做换算）。需要换算请用 lengthrule。"
+        },
+        "lengthrule": { "$ref": "#/$defs/lengthRuleExpr" },
+        "group_bytes": { "type": "integer", "minimum": 1 },
+        "separator": { "type": "string" },
+        "pad": { "type": "boolean" },
+        "unit": { "type": "string" },
+        "decimal": { "type": "integer", "minimum": 0, "maximum": 255 },
+        "enum": {
+          "type": "object",
+          "description": "键值枚举，key 是原始编码后的字符串（BCD十进制或十六进制，视字段编码而定），value 是含义。",
+          "additionalProperties": { "type": "string" }
+        },
+        "endian": { "type": "string", "enum": ["big", "little"] },
+        "signed": { "type": "boolean" },
+        "format": { "$ref": "#/$defs/format" },
+        "time": {
+          "type": "string",
+          "description": "BCD/BIN 编码的时间格式串，例如 \"ssmmhhDDMMYY\"。"
+        },
+        "bits": {
+          "type": "array",
+          "description": "bitfield 专用：按位切分的状态字。",
+          "items": { "$ref": "#/$defs/bit" }
+        },
+        "on": {
+          "type": "string",
+          "description": "switch 专用：依据同容器内哪个字段的值做分支；也可以是 $remaining/$len/$length 表示按剩余字节长度分支。"
+        },
+        "cases": {
+          "type": "object",
+          "description": "switch 专用：分支表。",
+          "additionalProperties": { "$ref": "#/$defs/caseTarget" }
+        },
+        "default": { "$ref": "#/$defs/caseTarget" },
+        "count_ref": {
+          "type": "string",
+          "description": "repeat 专用：引用前面某个已打 ref_id 的字段的值作为重复次数（运行时才知道）。"
+        },
+        "count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "repeat/candidate_ids 专用：编译期已知的固定重复次数。"
+        },
+        "bits_ref": {
+          "type": "string",
+          "description": "repeat 专用：由某个位域字段驱动重复次数（每个置位的 bit 对应一个元素），见设计文档 7.6 节。"
+        },
+        "bit_direction": {
+          "type": "string",
+          "description": "bitmask/repeat 专用：位提取方向，取 lsb 或 msb。",
+          "enum": ["lsb", "msb"]
+        },
+        "iterate_order": {
+          "type": "string",
+          "description": "bitmask/repeat 专用：元素迭代顺序，取 asc（默认）或 desc。",
+          "enum": ["asc", "desc"]
+        },
+        "name_template": {
+          "type": "string",
+          "description": "repeat/bitmask/candidate_ids 展开出来的每个元素怎么命名，用 {index}（从1开始）占位。"
+        },
+        "element": {
+          "description": "repeat/bitmask 专用：重复单元的字段定义。",
+          "$ref": "#/$defs/field"
+        },
+        "ref": {
+          "type": "string",
+          "description": "template_ref 的别名（旧写法，建议统一用 template_ref）。"
+        },
+        "template_ref": {
+          "type": "string",
+          "description": "type: template 专用：引用哪个模板 id。"
+        },
+        "id_expr": {
+          "type": "string",
+          "description": "candidate_ids 专用：算出每个候选 id 的表达式，可用 index/index0。"
+        },
+        "candidate_ids": { "$ref": "#/$defs/candidateIds" },
+        "protocol": {
+          "type": "string",
+          "description": "这条 DI/模板归属哪个协议标准（如 csg13）。顶层条目省略时按所在子目录名兜底，嵌套子字段省略时继承父级。"
+        },
+        "external_protocol": {
+          "type": "string",
+          "description": "type: external 专用：内嵌报文该用哪个外部协议解析器（registry.rs 里注册的名字，如 dlt645-2007）。注意不是 protocol —— protocol 表示这条 DI 自己归属哪个协议标准，两者语义不同，写成 protocol 会在编译期直接 panic。"
+        },
+        "items": {
+          "type": "array",
+          "description": "type: di_sequence 专用：按顺序拼接的已知 DI 码列表。",
+          "items": { "type": "string" }
+        },
+        "fields": {
+          "type": "array",
+          "description": "内联子字段列表（容器结构）。",
+          "items": { "$ref": "#/$defs/field" }
+        },
+        "handler": {
+          "type": "string",
+          "description": "type: custom 专用：挂到 registry.rs 里注册的处理函数名。"
+        },
+        "region": { "$ref": "#/$defs/regionList" },
+        "dir": {
+          "type": "string",
+          "description": "报文方向覆盖（单值，不是数组）。省略表示跟方向无关。"
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "type": { "const": "switch" } }, "required": ["type"] },
+          "then": { "required": ["on", "cases"] }
+        },
+        {
+          "if": { "properties": { "type": { "const": "external" } }, "required": ["type"] },
+          "then": { "required": ["external_protocol"] }
+        },
+        {
+          "if": { "properties": { "type": { "const": "template" } }, "required": ["type"] },
+          "then": {
+            "anyOf": [{ "required": ["template_ref"] }, { "required": ["ref"] }]
+          }
+        },
+        {
+          "if": { "properties": { "type": { "const": "di_sequence" } }, "required": ["type"] },
+          "then": { "required": ["items"] }
+        },
+        {
+          "if": { "properties": { "type": { "const": "custom" } }, "required": ["type"] },
+          "then": { "required": ["handler"] }
+        },
+        {
+          "if": { "properties": { "type": { "const": "bitfield" } }, "required": ["type"] },
+          "then": { "required": ["bits"] }
+        },
+        {
+          "if": {
+            "properties": { "type": { "enum": ["repeat", "bitmask"] } },
+            "required": ["type"]
+          },
+          "then": { "required": ["element"] }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "enum": ["bcd", "bin", "ascii", "hex", "time", "fixed", "normal"]
+              }
+            },
+            "required": ["type"]
+          },
+          "then": {
+            "anyOf": [
+              { "required": ["length"] },
+              { "required": ["length_ref"] },
+              { "required": ["lengthrule"] }
+            ]
+          }
+        }
+      ]
+    },
+
+    "topLevelField": {
+      "description": "data_items 里的顶层条目：跟嵌套字段用的是同一套 field 定义，但要求必须有 id（顶层条目存在的意义就是给一个可寻址的 DI 码）。",
+      "allOf": [
+        { "$ref": "#/$defs/field" },
+        { "required": ["id"] }
+      ]
+    },
+
+    "template": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "fields"],
+      "properties": {
+        "id": { "type": "string", "description": "模板名，供 template_ref 引用。" },
+        "protocol": { "type": "string" },
+        "region": { "$ref": "#/$defs/regionList" },
+        "dir": { "type": "string" },
+        "length": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "历史遗留字段，仅作文档用途，实际长度由 fields 累加决定，不参与展开逻辑。"
+        },
+        "name": {
+          "type": "string",
+          "description": "非必需，部分模板顺手写了 name 做说明用，不影响展开。"
+        },
+        "fields": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/field" }
+        }
+      }
+    }
+  }
+}

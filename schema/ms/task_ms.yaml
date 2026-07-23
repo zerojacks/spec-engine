@@ -1,0 +1,197 @@
+data_items:
+  - id: "01"
+    name: "全部用户类型"
+    protocol: "ms"
+    region: ["南网"]
+    length: 0
+    type: bin
+  - id: "02"
+    name: "一组用户类型"
+    protocol: "ms"
+    region: ["南网"]
+    fields:
+      - name: "用户组数"
+        length: 1
+        type: bin
+      - name: "用户类型"
+        length: 1
+        type: bin
+
+  - id: "03"
+    name: "一组用户地址"
+    protocol: "ms"
+    region: ["南网"]
+    fields:
+      - name: "地址个数"
+        length: 1
+        type: bin
+      - name: "用户地址"
+        length: 6
+        type: hex
+
+  - id: "04"
+    name: "一组配置序号"
+    protocol: "ms"
+    region: ["南网"]
+    fields:
+      - name: "地址个数"
+        length: 1
+        type: bin
+        ref_id: count
+      - name: "测量点号"
+        type: repeat
+        count_ref: count
+        name_template: "第{index}个测量点号"
+        element:
+          fields:
+            - name: 测量点号
+              type: bin
+              endian: big
+              length: 2
+
+  - id: "05"
+    name: "一组用户类型区间"
+    protocol: "ms"
+    region: ["南网"]
+    fields:
+      - name: "区间个数"
+        length: 1
+        type: bin
+        ref_id: count
+      - name: "用户区间"
+        type: repeat
+        count_ref: count
+        name_template: "第{index}个用户区间"
+        element:
+          fields:
+          - name: "区间类型"
+            length: 1
+            type: bin
+          - name: "用户类型"
+            length: 1
+            type: bin
+          - name: "用户类型"
+            length: 1
+            type: bin
+
+  - id: "07"
+    name: "一组配置序号区间"
+    protocol: "ms"
+    region: ["南网"]
+    fields:
+      - name: "区间个数"
+        length: 1
+        type: bin
+        ref_id: count
+      - name: "测量点区间"
+        type: repeat
+        count_ref: count
+        name_template: "第{index}个测量点区间"
+        element:
+         fields:
+          - name: "区间类型"
+            length: 1
+            type: bin
+          - name: "数据类型"
+            length: 1
+            type: bin
+          - name: "测量点号"
+            length: 2
+            type: bin
+            endian: big
+          - name: "数据类型"
+            length: 1
+            type: bin
+          - name: "测量点号"
+            length: 2
+            type: bin
+            endian: big
+
+
+  - id: "F5"
+    name: "一组电表类型"
+    protocol: "ms"
+    region: ["南网"]
+    fields:
+      - name: "类型组数"
+        length: 1
+        type: bin
+        ref_id: count
+      - name: "电表类型"
+        type: repeat
+        count_ref: count
+        name_template: "第{index}电表类型"
+        element:
+          fields:
+            - name: 电表类型
+              length: 1
+              type: bin
+  - id: "F7"
+    name: "除交采外的所有表"
+    protocol: "ms"
+    region: ["南网"]
+    type: bin
+    length: 0
+  - id: "F8"
+    name: "一组重点用户类型区分端口(任务号属于[300,500]:载波，其他：非载波)"
+    protocol: "ms"
+    region: ["南网"]
+    fields:
+      - name: "用户类型个数"
+        length: 1
+        type: bin
+      - name: "用户类型"
+        length: 1
+        type: bin
+
+  - id: "F9"
+    name: "一组重点用户类型区分端口(任务号属于[300,500]:载波，其他：非载波)"
+    protocol: "ms"
+    region: ["南网"]
+    fields:
+      - name: "用户类型个数"
+        length: 1
+        type: bin
+      - name: "用户类型"
+        length: 1
+        type: bin
+
+  - id: "FB"
+    name: "一组重点用户类型"
+    protocol: "ms"
+    region: ["南网"]
+    length: 1
+    fields:
+      - name: "用户类型"
+        length: 1
+        type: bin
+
+  - id: "FC"
+    name: "一组用户事件等级"
+    protocol: "ms"
+    region: ["南网"]
+    fields:
+      - name: "等级个数"
+        length: 1
+        type: bin
+      - name: "事件等级"
+        length: 1
+        type: bin
+
+  - id: "FD"
+    name: "重点用户"
+    protocol: "ms"
+    region: ["南网"]
+    type: bin
+    length: 0
+  - id: "FE"
+    name: "一组端口号"
+    protocol: "ms"
+    region: ["南网"]
+    fields:
+      - name: "端口个数"
+        length: 1
+        type: bin
+      - name: "端口"
+        length: 1
+        type: hex

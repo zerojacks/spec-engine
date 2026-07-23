@@ -2,7 +2,11 @@
 //! 并将解析结果直接输出为 JSON。
 
 use serde_json::to_string_pretty;
-use spec_engine::{init_registries, parse_di};
+use spec_engine::{
+    init_registries, parse_di, parse_field, Context, Encoding, Endian, FieldLength, FieldSpec,
+    BitSpec, NamedField,
+};
+use std::collections::HashMap;
 
 /// 默认协议名称
 const DEFAULT_PROTOCOL: &str = "csg13";
@@ -21,6 +25,41 @@ fn show_json_case(label: &str, di: u32, buf: &[u8]) {
         }
         Err(e) => {
             println!("[ERR] {label} (DI=0x{di:08X}, region={DEFAULT_REGION}): {e}");
+            panic!("解析失败: {label}: {e}");
+        }
+    }
+}
+
+fn show_json_case_with_protocol(label: &str, protocol: &str, di: u32, region: &str, buf: &[u8]) {
+    match parse_di(protocol, di, region, DEFAULT_DIR, buf) {
+        Ok((value, consumed)) => {
+            println!(
+                "[OK] {label} (protocol={protocol}, DI=0x{di:08X}, consumed={consumed}/{len})",
+                len = buf.len()
+            );
+            let json = to_string_pretty(&value).expect("序列化 JSON 失败");
+            println!("{json}\n");
+        }
+        Err(e) => {
+            println!("[ERR] {label} (protocol={protocol}, DI=0x{di:08X}, region={region}): {e}");
+            panic!("解析失败: {label}: {e}");
+        }
+    }
+}
+
+fn show_bitmask_case(label: &str, field: &FieldSpec, buf: &[u8]) {
+    let mut ctx = Context::new();
+    match parse_field(buf, field, &mut ctx, DEFAULT_PROTOCOL, DEFAULT_REGION, DEFAULT_DIR) {
+        Ok((value, consumed)) => {
+            println!(
+                "[OK] {label} (consumed={consumed}/{len})",
+                len = buf.len()
+            );
+            let json = to_string_pretty(&value).expect("序列化 JSON 失败");
+            println!("{json}\n");
+        }
+        Err(e) => {
+            println!("[ERR] {label}: {e}");
             panic!("解析失败: {label}: {e}");
         }
     }
@@ -59,6 +98,123 @@ fn main() {
     container_buf.extend_from_slice(&[0; 4]);
     show_json_case("运行状态字数据块(容器,040005FF)", 0x040005FF, &container_buf);
 
+    // dict_ref object syntax demo: multiple data items, each with multiple points.
+    // item_count: 2
+    //   - first item uses DI 0x00010001 and one point
+    //   - second item uses DI 0x00020001 and two points
+    let dict_ref_field = FieldSpec::Container(vec![
+        NamedField {
+            id: None,
+            ref_id: Some("item_count".to_string()),
+            name: "数据项数量".to_string(),
+            spec: FieldSpec::Fixed {
+                encoding: Encoding::Bin {
+                    endian: Endian::Little,
+                    signed: false,
+                },
+                length: FieldLength::Fixed(1),
+                unit: None,
+                enum_map: None,
+                format: None,
+            },
+            format: None,
+        },
+        NamedField {
+            id: None,
+            ref_id: None,
+            name: "数据项列表".to_string(),
+            spec: FieldSpec::Repeat {
+                count_ref: Some("item_count".to_string()),
+                count_expr: None,
+                bits_ref: None,
+                bit_direction: None,
+                iterate_order: None,
+                bit_specs: None,
+                element: Box::new(FieldSpec::Container(vec![
+                    NamedField {
+                        id: None,
+                        ref_id: Some("current_di".to_string()),
+                        name: "数据标识".to_string(),
+                        spec: FieldSpec::Fixed {
+                            encoding: Encoding::Bin {
+                                endian: Endian::Little,
+                                signed: false,
+                            },
+                            length: FieldLength::Fixed(4),
+                            unit: None,
+                            enum_map: None,
+                            format: None,
+                        },
+                        format: None,
+                    },
+                    NamedField {
+                        id: None,
+                        ref_id: Some("point_count".to_string()),
+                        name: "采集点数量".to_string(),
+                        spec: FieldSpec::Fixed {
+                            encoding: Encoding::Bin {
+                                endian: Endian::Little,
+                                signed: false,
+                            },
+                            length: FieldLength::Fixed(1),
+                            unit: None,
+                            enum_map: None,
+                            format: None,
+                        },
+                        format: None,
+                    },
+                    NamedField {
+                        id: None,
+                        ref_id: None,
+                        name: "采集数据列表".to_string(),
+                        spec: FieldSpec::Repeat {
+                            count_ref: Some("point_count".to_string()),
+                            count_expr: None,
+                            bits_ref: None,
+                            bit_direction: None,
+                            iterate_order: None,
+                            bit_specs: None,
+                            element: Box::new(FieldSpec::DictRef {
+                                di_ref: "current_di".to_string(),
+                            }),
+                            name_template: None,
+                            id_expr: None,
+                        },
+                        format: None,
+                    },
+                ])),
+                name_template: None,
+                id_expr: None,
+            },
+            format: None,
+        },
+    ]);
+
+    let mut dict_ref_buf = vec![0x02];
+    dict_ref_buf.extend_from_slice(&[0x01, 0x00, 0x01, 0x00]);
+    dict_ref_buf.extend_from_slice(&[0x01]);
+    dict_ref_buf.extend_from_slice(&[0x01, 0x00, 0x01, 0x00]);
+    dict_ref_buf.extend_from_slice(&[0x01, 0x00, 0x02, 0x00]);
+    dict_ref_buf.extend_from_slice(&[0x02]);
+    dict_ref_buf.extend_from_slice(&[0x00, 0x05, 0x00, 0x00]);
+    dict_ref_buf.extend_from_slice(&[0x23, 0x01, 0x00, 0x00]);
+    let mut ctx = Context::new();
+    let (dict_ref_value, dict_ref_consumed) = parse_field(
+        &dict_ref_buf,
+        &dict_ref_field,
+        &mut ctx,
+        DEFAULT_PROTOCOL,
+        DEFAULT_REGION,
+        DEFAULT_DIR,
+    )
+    .expect("dict_ref demo 解析失败");
+    println!(
+        "[OK] dict_ref object syntax demo (consumed={}/{})",
+        dict_ref_consumed,
+        dict_ref_buf.len()
+    );
+    println!("{}\n", to_string_pretty(&dict_ref_value).expect("序列化 JSON 失败"));
+
     show_json_case(
         "组合无功1总电能(子字段,南网)",
         0x00030000,
@@ -81,23 +237,16 @@ fn main() {
         &[0x23, 0x01, 0x00, 0x00],
     );
 
-    let mut ff00_buf = vec![0x06u8];
-    ff00_buf.extend_from_slice(&[0x00, 0x12, 0x34, 0x56]);
-    let ff00_rates: [[u8; 4]; 6] = [
-        [0x23, 0x01, 0x00, 0x00],
-        [0x34, 0x02, 0x00, 0x00],
-        [0x45, 0x03, 0x00, 0x00],
-        [0x56, 0x04, 0x00, 0x00],
-        [0x67, 0x05, 0x00, 0x00],
-        [0x78, 0x06, 0x00, 0x00],
-    ];
-    for r in &ff00_rates {
-        ff00_buf.extend_from_slice(r);
+    let mut dlt645_0001ff00_buf = vec![0x01, 0x00, 0x00, 0x00]; // 总电能 0.01 kWh
+    for _ in 0..2 {
+        dlt645_0001ff00_buf.extend_from_slice(&[0x02, 0x00, 0x00, 0x00]); // 每个费率项 0.02 kWh
     }
-    show_json_case(
-        "(当前)正向有功电能数据块(0001FF00) 6 费率",
+    show_json_case_with_protocol(
+        "dlt645-2007 0001FF00 (length_ref + candidate_ids)",
+        "dlt645-2007",
         0x0001FF00,
-        &ff00_buf,
+        DEFAULT_REGION,
+        &dlt645_0001ff00_buf,
     );
 
     show_json_case(
@@ -111,6 +260,10 @@ fn main() {
     );
 
     show_json_case("终端登录消息(switch)", 0xE0001001, &[]);
+
+    let mut e301_buf = vec![0u8; 256];
+    e301_buf[0] = 0x02; // 仅第 2 个测量点需要升级
+    show_json_case("E3010006 待升级电表地址列表", 0xE3010006, &e301_buf);
 
     // 用户示例：终端以太网 MAC 地址
     // - 以太网接口数量: 1 byte, bcd
@@ -186,5 +339,64 @@ fn main() {
         0xE0000100,
         &[0x0A, 0x2F, 0x12, 0xE4, 0x23, 0x29, 0x00],
     );
+
+    // 注意：DI 0x0101FF00 和其候选费率项在字典里都使用了 runtime length_ref。
+    // 这里用真实的 DI show_json_case 演示，而不是自构造 Context。 
+
+    // 电表管理单元透传上送告警（ARD42模板）：报文内容长度由前面的"报文长度"
+    // 字段驱动（length_ref），验证变长尾部能正确按引用字段的值切出来。
+    let mut ard42_buf = vec![0x00u8]; // 告警状态: 恢复
+    ard42_buf.extend_from_slice(&[0x01, 0x02, 0x03, 0x04, 0x05, 0x06]); // 告警发生时间
+    ard42_buf.extend_from_slice(&[0x03, 0x00]); // 报文长度 = 3（bin，小端）
+    ard42_buf.extend_from_slice(&[0xAA, 0xBB, 0xCC]); // 报文内容，应正好被吃掉3字节
+    show_json_case("电表管理单元透传上送告警(ARD42)", 0xE2000084, &ard42_buf);
     println!("=== demo 运行完成 ===");
+
+    // bitmask demo
+    let mut bitmask_buf = vec![0x00u8];
+    bitmask_buf.extend_from_slice(&[0x01, 0x02, 0x03, 0x04, 0x05, 0x06]);
+    bitmask_buf.extend_from_slice(&[0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
+    show_json_case("bitmask demo", 0x00000000, &bitmask_buf);
+
+    let bitmask_field = FieldSpec::BitMask {
+        length: 1,
+        bit_direction: Some("lsb".to_string()),
+        iterate_order: Some("asc".to_string()),
+        bit_specs: vec![
+            BitSpec {
+                range: (0, 0),
+                name: "bit0".to_string(),
+                ref_id: None,
+                enum_map: None,
+            },
+            BitSpec {
+                range: (1, 1),
+                name: "bit1".to_string(),
+                ref_id: None,
+                enum_map: None,
+            },
+        ],
+        element: Box::new(FieldSpec::Switch {
+            on: "$bit_value".to_string(),
+            cases: {
+                let mut m = HashMap::new();
+                m.insert("0".to_string(), Box::new(FieldSpec::Skip));
+                m.insert(
+                    "1".to_string(),
+                    Box::new(FieldSpec::Fixed {
+                        encoding: Encoding::Raw,
+                        length: FieldLength::Fixed(0),
+                        unit: None,
+                        enum_map: None,
+                        format: None,
+                    }),
+                );
+                m
+            },
+            case_names: None,
+            default: None,
+        }),
+        name_template: Some("测量点{index}".to_string()),
+    };
+    show_bitmask_case("bitmask 替代 bitpattern 示例", &bitmask_field, &[0x02]);
 }

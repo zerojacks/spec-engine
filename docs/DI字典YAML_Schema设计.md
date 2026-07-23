@@ -8,12 +8,31 @@
 
 ```yaml
 templates:      # 可复用的字段组模板，供 template 类型字段引用
-  <template_id>: ...
+  - id: <template_id>
+    protocol: <协议名>   # 可选，缺省时按所在目录名兜底（如 schema/csg13/ 下缺省是 csg13）
+    region: ["南网"]     # 可选，缺省时落在通用桶（DEFAULT_REGION），支持按省份覆盖同名模板
+    fields: [...]
 
 data_items:      # 真正的 DI 字典条目
   - id: <DI码>
+    protocol: <协议名>   # 同上，可选
+    region: ["南网"]     # 可选，见下方"region 语法"
     ...
 ```
+
+`templates` 是**列表**而不是以 `template_id` 为 key 的字典：同一个 `id` 可以在不同 `protocol`/`region` 下重复出现、各自定义不同内容（跟 `data_items` 是同一套覆盖规则），`build.rs` 按 `(id, protocol, region, dir)` 四元组去重/查找。写模板时不要图省事把它当成字典写。
+
+### region 语法（务必看仔细，写错不会报错，只会让某些省份查不到）
+
+- `region` 是一个 **YAML 列表**，列表里每一个元素代表**一个**省份/局方/功能分组标识（如 `"南网"`、`"广东"`、`"topo"`）。一个 DI/模板要覆盖多个省份，就在列表里写多个元素：
+  ```yaml
+  region: ["南网", "广东", "海南"]   # 正确：3 个省份
+  region: ["南网,广东,海南"]         # 错误！这是"1 个省份"，名字恰好叫"南网,广东,海南"，
+                                      # 广东/海南实际查不到这条定义
+  ```
+  `build.rs` 现在会在 `region` 元素里检测到逗号时直接编译期 panic，不会再让这种写法悄悄溜过去了（历史上这类问题不报错，只在跑到具体省份时才发现查不到数据）。
+- 顶层 `data_items`/`templates` 条目省略 `region` 时，落在通用桶（`DEFAULT_REGION` 常量对应的桶）；嵌套子字段省略 `region` 时，继承父级已经生效的 region，不会再退回通用桶。
+- 同一个 `id` 允许在**不重叠**的 region 之间各写一份完全不同的定义（这是设计上支持的"按省份覆盖"）；如果两份定义的 `name` 不一致，`cargo build` 会给出 warning 提示人工复核是不是复制粘贴 id 时打错了（历史上 `E0001210`/`E1800034` 两处真实的 id 冲突就是这么漏进来的）。
 
 ---
 
@@ -209,20 +228,37 @@ data_items:      # 真正的 DI 字典条目
 - name: 失败表
   length: 256
   type: bitmask
-  bit_order: msb
+  bit_direction: msb
   name_template: "失败表{index}"
   element:
     type: switch
     on: $bit_value
     cases:
       "0": { length: 0, type: skip }
+
+### 运行时剩余长度标记（`$remaining`）
+
+另外，转换器与运行时实现约定了一个方便的短写：有时上位协议在 XML 字典里用一个总长度值声明了一个容器，但实际字段之和并不覆盖整个容器——报文尾部存在运行时才知道的不定长尾部。为了可读性与兼容性，转换器在检测到这种情况时会把容器的长度写成：
+
+- `length_ref: "$remaining"`
+
+语义等同于表格顶端提到的 `length: remaining`（即“用掉当前容器剩余的全部字节”），但在 YAML 中以 `length_ref` 形式表现，便于和普通的 `length_ref: <ref_id>` 统一处理。具体行为：
+
+- 触发条件：XML 中声明的 `length`（若为整数）大于其子字段已知固定长度之和（转换器无法在编译期覆盖的尾部字节被视作剩余）。
+- 输出位置：`length_ref: "$remaining"` 会被放在容器映射中 `fields` 之前，便于阅读与后续代码生成查找。
+- 运行时处理：解析器应把 `"$remaining"` 看作一个特殊标记，语义为“当前容器剩余字节数”；实现可以直接把它等同于 `length: remaining` 的运行时解释。
+
+示例转换器与演示文件：转换脚本路径：`scripts/convert_dlt645_xml.py`，演示示例：`examples/length_ref_demo.yaml`（转换器会在检测到上面触发条件时生成该写法）。
+
       "1": { length: 0, type: bin, name: "失败表{index}" }
 ```
 
 - `bitmask` 适用于“先给出一个位图/掩码字节序列，再根据每一位是否置位决定后续是否还有跟随内容”的场景。
 - 解析时会按 `length` 指定的总字节数，把每一位依次遍历；对每个 bit，运行时会把当前 bit 的值绑定为 `$bit_value`，然后用 `element` 里的 `switch`/`repeat`/`fixed` 等子结构继续解析。
 - 这类字段常用于“告警项目位图”“失败表”“状态掩码”这类协议结构：位为 0 时跳过，不占用字节；位为 1 时继续读后续字段。
-- `bit_order` 控制从 LSB 还是 MSB 开始遍历，默认通常按 `asc`/`lsb` 语义即可；若协议文档明确是从高位到低位，写 `bit_order: msb`。
+- `bit_direction` 控制从 LSB 还是 MSB 开始遍历；默认通常按 `lsb` 语义即可；若协议文档明确是从高位到低位，写 `bit_direction: msb`。
+- `iterate_order` 控制按 `bits_ref`/`bitmask` 里元素定义的升序（`asc`）或降序（`desc`）遍历，默认 `asc`。
+- `bitmask` 统一替代了旧的 `bitpattern` 语义，用于按位展开/跳过后续字段的可变结构。
 
 ## 2.6 `skip` —— 直接跳过、不生成节点
 
@@ -401,16 +437,54 @@ templates:
 ```yaml
 - name: 内嵌报文
   type: external
-  protocol: dlt645-2007     # 只声明"归哪个协议管"
-  length: remaining          # 或具体长度 / 长度引用
+  external_protocol: dlt645-2007   # 只声明"内容归哪个协议管"——注意是 external_protocol，
+                                    # 不是 protocol！顶层的 protocol 已经用来表示"这条 DI
+                                    # 本身属于哪个协议标准"（比如 csg13），两者语义不同，
+                                    # 写成 protocol 会在编译期直接 panic
+  length: remaining                # 或具体长度 / length_ref / lengthrule，见下一节
 ```
 
-- Rust 侧维护协议解析器注册表，按 `protocol` 名分发：
+- Rust 侧维护协议解析器注册表，按 `external_protocol` 名分发：
   ```rust
   type ExternalParser = fn(&[u8]) -> Result<Value>;
   static EXTERNAL_REGISTRY: Lazy<HashMap<&str, ExternalParser>> = ...;
   ```
 - 复用单位是"整个协议"，不是单个字段，与 `custom` 的区别在此
+
+---
+
+## 6.5 变长字段：`length_ref` 与 `lengthrule`
+
+`length` 除了写成固定整数，还有三种变长写法：
+
+| 写法 | 含义 | 适用场景 |
+| --- | --- | --- |
+| `length: remaining` | 用掉当前容器剩余的全部字节 | 报文末尾的不定长尾部 |
+| `length_ref: <ref_id>` | 长度等于另一个已经解析出来的字段的值 | 最常见：前面有个"长度"字段，后面紧跟对应长度的内容 |
+| `lengthrule: "<表达式>"` | 长度由一个数学表达式算出来，表达式里可以引用字段值、做四则运算 | 长度需要做换算（比如"报文长度"字段存的是字数不是字节数）时 |
+
+`length_ref` 和 `lengthrule` 都要求被引用的字段提前用 `ref_id` 显式打好标记——**光写 `name` 不够**，`ref_id` 才是被引用的钩子：
+
+```yaml
+- name: 报文长度
+  length: 2
+  type: bin
+  ref_id: frame_length     # 必须显式声明 ref_id，才能被后面的字段引用
+- name: 报文内容
+  length_ref: frame_length # 直接引用，等值使用
+  type: hex
+
+# 需要换算时用 lengthrule，语法只认 ref(ref_id) / index / index0 / 数字（含 0x 十六进制）
+# / 四则运算 / 括号——不认裸字段名，`lengthrule: "1 * 报文长度"` 这种写法编译期就会
+# 被 build.rs 的语法校验直接拒绝，必须写成 ref(...)：
+- name: 字数
+  length: 1
+  type: bin
+  ref_id: char_count
+- name: 内容
+  lengthrule: "ref(char_count) * 2"   # 字数 * 2 = 字节数
+  type: hex
+```
 
 ---
 
@@ -471,7 +545,7 @@ templates:
     type: container
     fields:
       - name: 数据标识
-        id: current_di        # 绑定给内层 dict_ref 引用
+        ref_id: current_di        # 绑定给内层 dict_ref 引用
         length: 4
         type: bin
       - name: 采集数据列表
@@ -479,8 +553,13 @@ templates:
         count_ref: point_count
         element:
           type: dict_ref
-          ref: current_di      # 用 current_di 的运行时值去全局DI表查格式
+          dict_ref: 
+            ref_id: current_di      # 用 current_di 的运行时值去全局DI表查格式
 ```
+
+- `dict_ref` 只认 `ref_id` 作为运行时引用钩子。被引用字段必须显式写 `ref_id`，字段 `name` 本身仅用于显示，不可替代引用标识。
+- `dict_ref` 的正确写法是 `dict_ref: { ref_id: current_di }`，不能写成 `dict_ref: current_di`、`dict_ref: { name: 数据标识 }` 或 `dict_ref: { ref: current_di }`。
+- 这条规则同样适用于其它运行时引用：`count_ref` / `length_ref` / `bits_ref` / `switch.on` 等都应引用目标字段的 `ref_id`，而不是 bare `name`。
 
 **注意事项：**
 - `dict_ref` 引用目标的字节长度可能因DI不同而不同（比如电能量4字节BCD、开关量1字节），内层 `repeat` **不能按"count × 定长"预先推导总长度**，必须逐次调用 `dict_ref` 解析、按实际吃掉的字节数累加偏移——`parse_field` 骨架本来就是按实际解析长度累加offset，天然支持，不需要额外改动，只是这里不能做定长优化假设
@@ -514,7 +593,7 @@ templates:
 ```yaml
 - type: repeat
   bits_ref: report_status      # 对应上面 ref_id
-  bit_order: asc               # 可选，'asc' 或 'desc'（默认 asc）
+  iterate_order: asc               # 可选，'asc' 或 'desc'（默认 asc）
   name_template: "{bit_name}新增次数"
   element:
     type: switch
@@ -524,17 +603,23 @@ templates:
       "1": { length: 1, type: bcd, unit: 次 }
 ```
 
+
 解释与语义：
 
 - `bits_ref`：运行时取名为 `report_status` 的 bitfield 的原始 bytes，并按该 bitfield 的 `bits` 描述逐位（或位段）迭代。此字段在 `build.rs` 阶段需验证 `bits_ref` 指向已存在的 `ref_id`，并把被引用的 `BitSpec` 列表嵌入到 repeat 的 `bit_specs` 字段，以便运行时直接使用（无需再次查 schema）。
 
-- `bit_order`：控制按 `bits` 定义的升序（`asc`）或降序（`desc`）迭代，默认为 `asc`。
+- `iterate_order`：控制按 `bits` 定义的升序（`asc`）或降序（`desc`）迭代，默认为 `asc`。
 
 - `name_template`：和其它 repeat 一致，支持占位符 `{index}`、`{index0}`、`{id}`，并新增 `{bit_name}` 与 `{bit_ref}`（如果 bit 定义带有 `ref_id`）。例如 `"{bit_name}新增次数"` 会在每个已置位的 bit 上生成相应名称。
 
+- 运行时输出形态（注意）:
+  - `bitfield` 类型现在在运行时被解析为一个有序的 `List`（按 `bits` 描述的顺序/iterate_order），其中每项为 `Node(name, raw, value)`，`value` 为 `Bit` 对象。
+  - `Bit` 对象使用位区间表示，字段包括 `bit_start` / `bit_end`（都为 usize），`bit_value`（合并后的整数值），`bit_byte`（相关原始字节），以及可选的 `value`（按 `enum_map` 或 case 解析得到的语义值）。
+  - 之所以使用 `List(Node(Bit))` 而非 `Map`，是为了保留位定义的顺序、允许重复/重叠区间并更自然地表示多位段（例如 `6-15`）。如果需要可以在序列化层将 List 映射为 Map 视图。
+
 - 运行时绑定的合成变量（可被 `switch.on` 或其它模板引用）：
   - `bit_value`：该 bit/位段的数值（整数）；在 `switch.on` 中可以写成 `$bit_value` 来匹配 case。运行时也把其原始 bytes 绑定为 raw，可通过 `ctx.get_raw` 访问。
-  - `bit_index`：位段的起始 bit 索引（整数）。
+  - `bit_start` / `bit_end`：位段的起始/结束 bit 索引（整数），单个位可以用 `bit_start == bit_end` 表示。
   - `bit_name`：该 bit 在 schema 中的 `name`（字符串）。
   - `bit_ref`：若该 bit 声明了 `ref_id`，该字段的字符串值；可用于进一步的 `dict_ref` 或模板替换。
 
@@ -567,7 +652,7 @@ templates:
       bits: ...
     - type: repeat
       bits_ref: report_status
-      bit_order: asc
+      iterate_order: asc
       name_template: "{bit_name}新增次数"
       element:
         type: switch
@@ -772,3 +857,5 @@ fn parse_field(buf: &[u8], spec: &FieldSpec, ctx: &mut Context) -> Result<(Value
 7. **字段有方向/正负含义（功率方向、线损率、校时误差等）** → 核实是否用最高位表示符号（原码而非补码），标注 `signed: true`；位置由 `endian`（bin）或固定首字节（bcd）自动推导，不需要额外手填位置
 8. **字段的位/字节含义要靠"运行时才知道的另一部分数据"动态计算，但结构本身是协议里明确定义、会被多处复用的通用规则**（如 `info_point` 信息点标识DA：位的含义要等读到组号字节才能算，不是编译期能展开的静态位域；`di_code` 数据标识编码：字节需要按约定顺序重新排列才能得到可查字典的码）→ 不要因为"通用机制表达不了"就直接摊手扔进 `custom`。这种情况应该做成跟 `bitfield`/`repeat` 同级的**内置类型**：`types.rs` 加一个无字段的 `FieldSpec` 单元变体、`build.rs` 加一行类型分发、`parser.rs` 写解析函数——**同时**在两处 `match FieldSpec` 补上新分支（`parse_field` 分发 + repeat 展开时的克隆函数 `instantiate_field_spec`，编译器的 exhaustive match 检查会在漏改时直接报错，不会静默漏掉）。真正判断"值不值得做成内置类型"的标准是复用次数：只在协议里出现一次、语义还无法从表格推断的字段留给 `custom` 逃生舱；协议明确定义、以后还会被别的DI/模板引用的结构（DA、DI 都符合）就该数据驱动
 9. **真正遇到第13种结构模式**（现有13类：`fixed`及其`bcd`/`bin`/`ascii`/`hex`/`time`子形态算一类、`bitfield`、`bitmask`、`switch`、`repeat`、`template`、`external`、`di_sequence`、`dict_ref`、`custom`、`skip`、`info_point`、`di_code`，都无法表达）→ 才需要扩展 schema 本身，这种情况应该很少发生
+10. **一个 DI/模板要覆盖多个省份** → `region` 写成列表、每个省份一个元素（见"顶层结构"一节的 region 语法），不要拼成一个逗号分隔的字符串
+11. **字段长度依赖另一个字段的值（前面有长度字段、后面跟对应长度的内容）** → 查 6.5 节，给长度字段打 `ref_id`，后面用 `length_ref` 或 `lengthrule` 引用，不要直接写裸字段名

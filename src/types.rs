@@ -124,6 +124,15 @@ pub enum Value {
         raw: Vec<u8>,
         value: Box<Value>,
     },
+    /// 位项：便于表示 bitmask/bitpattern 的单个位信息和可选的后续元素
+    /// 使用区间表示位范围（支持单个位和多位区间）
+    Bit {
+        bit_start: usize,
+        bit_end: usize,
+        bit_value: u64,
+        bit_byte: Vec<u8>,
+        value: Option<Box<Value>>,
+    },
     /// 显式跳过输出的占位值
     Skip,
     Pn(i64),
@@ -135,6 +144,7 @@ impl Value {
         match self {
             Value::WithUnit { unit, .. } => Some(unit),
             Value::Node { value, .. } => value.unit(),
+            Value::Bit { .. } => None,
             _ => None,
         }
     }
@@ -145,6 +155,7 @@ impl Value {
             Value::Str(s) => Some(s.as_str()),
             Value::WithUnit { value, .. } => value.as_str(),
             Value::Node { value, .. } => value.as_str(),
+            Value::Bit { .. } => None,
             _ => None,
         }
     }
@@ -155,6 +166,7 @@ impl Value {
             Value::Int(i) => Some(*i),
             Value::WithUnit { value, .. } => value.as_int(),
             Value::Node { value, .. } => value.as_int(),
+            Value::Bit { value, .. } => value.as_deref().and_then(|v| v.as_int()),
             _ => None,
         }
     }
@@ -166,6 +178,7 @@ impl Value {
             Value::Int(i) => Some(*i as f64),
             Value::WithUnit { value, .. } => value.as_float(),
             Value::Node { value, .. } => value.as_float(),
+            Value::Bit { value, .. } => value.as_deref().and_then(|v| v.as_float()),
             _ => None,
         }
     }
@@ -177,6 +190,7 @@ impl Value {
             Value::Float(f) if *f >= 0.0 => Some(*f as u32),
             Value::WithUnit { value, .. } => value.as_u32(),
             Value::Node { value, .. } => value.as_u32(),
+            Value::Bit { value, .. } => value.as_deref().and_then(|v| v.as_u32()),
             _ => None,
         }
     }
@@ -232,6 +246,29 @@ impl Value {
                 let repr = format_bytes(raw);
                 buf.push_str(&format!("{}{} [{}]\n", pad, name, repr));
                 value.fmt_tree(buf, indent + 1);
+            }
+            Value::Bit {
+                bit_start,
+                bit_end,
+                bit_value,
+                bit_byte,
+                value,
+            } => {
+                let repr = format_bytes(bit_byte);
+                if bit_start == bit_end {
+                    buf.push_str(&format!(
+                        "{}BIT(bit={} bit_value={}) [{}]\n",
+                        pad, bit_start, bit_value, repr
+                    ));
+                } else {
+                    buf.push_str(&format!(
+                        "{}BIT(range={}..{} bit_value={}) [{}]\n",
+                        pad, bit_start, bit_end, bit_value, repr
+                    ));
+                }
+                if let Some(elem) = value {
+                    elem.fmt_tree(buf, indent + 1);
+                }
             }
             Value::Skip => {
                 buf.push_str(&format!("{}Skip\n", pad));
@@ -421,13 +458,19 @@ pub enum FieldSpec {
     Switch {
         on: String,
         cases: HashMap<String, Box<FieldSpec>>,
+        /// 可选的 case 名称映射（case key -> name，从 YAML 的 case.name 处获取）
+        case_names: Option<HashMap<String, String>>,
         default: Option<Box<FieldSpec>>,
     },
     /// 计数重复
     Repeat {
         count_ref: Option<String>,
+        count_expr: Option<String>,
         bits_ref: Option<String>,
-        bit_order: Option<String>,
+        /// 位读取方向：`msb` 或 `lsb`（如果需要）
+        bit_direction: Option<String>,
+        /// 位定义的迭代顺序：`asc` 或 `desc`
+        iterate_order: Option<String>,
         bit_specs: Option<Vec<BitSpec>>,
         element: Box<FieldSpec>,
         /// 可选的元素名称模板，支持 {index}、{index0}、{id} 和 {bit_name} 占位符
@@ -440,7 +483,10 @@ pub enum FieldSpec {
     /// 按位图展开
     BitMask {
         length: usize,
-        bit_order: Option<String>,
+        /// 位读取方向：`msb` 或 `lsb`
+        bit_direction: Option<String>,
+        /// 位定义的迭代顺序：`asc` 或 `desc`
+        iterate_order: Option<String>,
         bit_specs: Vec<BitSpec>,
         element: Box<FieldSpec>,
         /// 可选的元素名称模板，支持 {index}、{index0}、{id} 和 {bit_name} 占位符
