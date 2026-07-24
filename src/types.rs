@@ -135,6 +135,8 @@ pub enum Value {
     },
     /// 显式跳过输出的占位值
     Skip,
+    /// 解析失败结果
+    Invalid { reason: String },
     Pn(i64),
 }
 
@@ -238,6 +240,9 @@ impl Value {
             Value::WithUnit { value, unit } => {
                 buf.push_str(&format!("{}WithUnit(unit=\"{}\")\n", pad, unit));
                 value.fmt_tree(buf, indent + 1);
+            }
+            Value::Invalid { reason } => {
+                buf.push_str(&format!("{}Invalid(reason=\"{}\")\n", pad, reason));
             }
             Value::Pn(n) => {
                 buf.push_str(&format!("{}Pn({})\n", pad, n));

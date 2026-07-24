@@ -178,6 +178,7 @@ fn apply_enum_map(value: Value, raw: &str, enum_map: &Option<HashMap<String, Str
             Value::Bytes(bytes) => decode_hex(bytes),
             Value::Pn(i) => i.to_string(),
             Value::Skip => String::new(),
+            Value::Invalid { .. } => String::new(),
             Value::WithUnit { value, .. } | Value::Node { value, .. } => match value.as_ref() {
                 Value::Int(i) => i.to_string(),
                 Value::Float(f) => f.to_string(),
@@ -302,19 +303,25 @@ fn parse_fixed(
             } else {
                 (false, ordered_raw)
             };
-            let decoded = decode_bcd_u64(&cleared);
-            if *decimals == 0 {
-                let int_value = if negative {
-                    -(decoded as i64)
-                } else {
-                    decoded as i64
-                };
-                Value::Int(int_value)
-            } else {
-                let divisor = 10u64.pow(*decimals as u32) as f64;
-                let float_value = decoded as f64 / divisor;
-                let value = if negative { -float_value } else { float_value };
-                Value::Float(value)
+            match decode_bcd_u64(&cleared) {
+                Ok(decoded) => {
+                    if *decimals == 0 {
+                        let int_value = if negative {
+                            -(decoded as i64)
+                        } else {
+                            decoded as i64
+                        };
+                        Value::Int(int_value)
+                    } else {
+                        let divisor = 10u64.pow(*decimals as u32) as f64;
+                        let float_value = decoded as f64 / divisor;
+                        let value = if negative { -float_value } else { float_value };
+                        Value::Float(value)
+                    }
+                }
+                Err(err) => Value::Invalid {
+                    reason: format!("BCD decode failed: {}", err),
+                },
             }
         }
         Encoding::Ascii => Value::Str(decode_ascii(raw)),
@@ -1132,7 +1139,6 @@ fn parse_repeat(
         // 如果该 case 长度为 0（consumed == 0），则视为不需要产生解析结果（例如 switch 的 "0" 分支），
         // 此时不创建节点也不加入 items，只弹出作用域并继续下一个 bit。
         if consumed == 0 {
-            ctx.pop_scope();
             continue;
         }
 
@@ -1152,7 +1158,6 @@ fn parse_repeat(
         } else {
             v
         };
-        ctx.pop_scope();
         items.push(item);
         offset += consumed;
     }

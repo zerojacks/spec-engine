@@ -19,17 +19,17 @@ pub fn decode_bin_u64(raw: &[u8], endian: Endian) -> u64 {
 }
 
 /// 解码 BCD 为 u64
-pub fn decode_bcd_u64(raw: &[u8]) -> u64 {
+pub fn decode_bcd_u64(raw: &[u8]) -> Result<u64, String> {
     let mut result = 0u64;
     for &b in raw {
         let high = (b >> 4) as u64;
         let low = (b & 0x0F) as u64;
         if high > 9 || low > 9 {
-            return 0; // 非法 BCD
+            return Err(format!("invalid BCD byte 0x{:02X}", b));
         }
         result = result * 100 + high * 10 + low;
     }
-    result
+    Ok(result)
 }
 
 /// 解码为十六进制字符串
@@ -84,7 +84,10 @@ pub fn decode_time(raw: &[u8], format: &str, encoding: TimeEncoding) -> String {
         if tok == "xxxx" {
             if idx + 1 < raw.len() {
                 let v = match encoding {
-                    TimeEncoding::Bcd => decode_bcd_u64(&raw[idx..idx + 2]) as u32,
+                    TimeEncoding::Bcd => match decode_bcd_u64(&raw[idx..idx + 2]) {
+                        Ok(v) => v as u32,
+                        Err(_) => return decode_hex(raw),
+                    },
                     TimeEncoding::Bin { endian } =>
                         decode_bin_u64(&raw[idx..idx + 2], endian) as u32,
                 };
@@ -99,11 +102,17 @@ pub fn decode_time(raw: &[u8], format: &str, encoding: TimeEncoding) -> String {
         let b = raw[idx];
         let value = match tok {
             "CC" | "YY" | "MM" | "DD" | "hh" | "mm" | "ss" => match encoding {
-                TimeEncoding::Bcd => decode_bcd_u64(&[b]) as u32,
+                TimeEncoding::Bcd => match decode_bcd_u64(&[b]) {
+                    Ok(v) => v as u32,
+                    Err(_) => return decode_hex(raw),
+                },
                 TimeEncoding::Bin { .. } => b as u32,
             },
             "ms" => match encoding {
-                TimeEncoding::Bcd => decode_bcd_u64(&[b]) as u32 * 10,
+                TimeEncoding::Bcd => match decode_bcd_u64(&[b]) {
+                    Ok(v) => v as u32 * 10,
+                    Err(_) => return decode_hex(raw),
+                },
                 TimeEncoding::Bin { .. } => b as u32,
             },
             "WW" => {

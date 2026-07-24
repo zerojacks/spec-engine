@@ -37,6 +37,28 @@ fn parses_fixed_bcd_values_normally() {
 }
 
 #[test]
+fn parses_fixed_bcd_values_invalid_bcd_returns_invalid() {
+    let (value, consumed) = parse_case(0x00010001, &[0xFF, 0xFF, 0xFF, 0xFF]);
+
+    assert_eq!(consumed, 4);
+    match value {
+        Value::Node { value, .. } => match value.as_ref() {
+            Value::WithUnit { value, unit } => {
+                assert_eq!(unit, "kWh");
+                match value.as_ref() {
+                    Value::Invalid { reason } => {
+                        assert!(reason.contains("BCD decode failed"));
+                    }
+                    other => panic!("expected invalid payload, got {other:?}"),
+                }
+            }
+            other => panic!("unexpected value shape: {other:?}"),
+        },
+        other => panic!("unexpected root value: {other:?}"),
+    }
+}
+
+#[test]
 fn parses_bitfield_values() {
     let (value, consumed) = parse_case(0x04000501, &[0x00, 0x02]);
 
