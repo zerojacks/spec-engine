@@ -46677,43 +46677,323 @@ data_items:
     time: ssmmhh
   - id: "040005FF"
     name: "运行状态字数据块"
-    protocol: "dlt645-2007"
+    protocol: "csg13"
     region: ["南网"]
-    length_ref: "$remaining"
+    length: 14
     fields:
-      - candidate_ids:
-          count: 3
-          count_expr: "$remaining / 4"
-          id_expr: "0x04000501 + index0*0x1"
-          name_template: "运行状态字{index}"
-          element:
-            length: 2
-            type: bitfield
-            bits: []
+      - id: "04000501"
+        name: "运行状态字1"
+        length: 2
+        type: bitfield
+        bits:
+          - range: [0, 0]
+            name: "保留"
+          - range: [1, 1]
+            name: "需量积算方式"
+            enum:
+              "1": "区间"
+              "0": "滑差"
+          - range: [2, 2]
+            name: "时钟电池"
+            enum:
+              "1": "欠压"
+              "0": "正常"
+          - range: [3, 3]
+            name: "停电抄表电池"
+            enum:
+              "1": "欠压"
+              "0": "正常"
+          - range: [4, 4]
+            name: "有功功率方向"
+            enum:
+              "1": "反向"
+              "0": "正向"
+          - range: [5, 5]
+            name: "无功功率方向"
+            enum:
+              "1": "反向"
+              "0": "正向"
+          - range: [6, 15]
+            name: "保留"
+      - id: "04000502"
+        name: "运行状态字2"
+        length: 2
+        type: bitfield
+        bits:
+          - range: [0, 0]
+            name: "A相有功功率方向"
+            enum:
+              "1": "反向"
+              "0": "正向"
+          - range: [1, 1]
+            name: "B相有功功率方向"
+            enum:
+              "1": "反向"
+              "0": "正向"
+          - range: [2, 2]
+            name: "C相有功功率方向"
+            enum:
+              "1": "反向"
+              "0": "正向"
+          - range: [3, 3]
+            name: "保留"
+          - range: [4, 4]
+            name: "A相无功功率方向"
+            enum:
+              "1": "反向"
+              "0": "正向"
+          - range: [5, 5]
+            name: "B相无功功率方向"
+            enum:
+              "1": "反向"
+              "0": "正向"
+          - range: [6, 6]
+            name: "C相无功功率方向"
+            enum:
+              "1": "反向"
+              "0": "正向"
+          - range: [7, 15]
+            name: "保留"
+      - id: "04000503"
+        name: "运行状态字3"
+        length: 2
+        type: bitfield
+        bits:
+          - range: [0, 0]
+            name: "当前运行时段"
+            enum:
+              "1": "第二套"
+              "0": "第一套"
+          - range: [1, 2]
+            name: "供电方式"
+            enum:
+              "00": "主电源"
+              "01": "辅助电源"
+              "10": "电池供电"
+          - range: [3, 3]
+            name: "编程允许"
+            enum:
+              "1": "许可"
+              "0": "禁止"
+          - range: [4, 4]
+            name: "继电器状态"
+            enum:
+              "1": "断"
+              "0": "通"
+          - range: [5, 15]
+            name: "保留"
       - id: "04000504"
         name: "运行状态字4(A相故障状态)"
         length: 2
         type: bitfield
-        bits: []
+        bits:
+          - range: [0, 0]
+            name: "失压"
+            enum:
+              "1": "是"
+              "0": "否"
+          - range: [1, 1]
+            name: "欠压"
+            enum:
+              "1": "是"
+              "0": "否"
+          - range: [2, 2]
+            name: "过压"
+            enum:
+              "1": "是"
+              "0": "否"
+          - range: [3, 3]
+            name: "失流"
+            enum:
+              "1": "是"
+              "0": "否"
+          - range: [4, 4]
+            name: "过流"
+            enum:
+              "1": "是"
+              "0": "否"
+          - range: [5, 5]
+            name: "过载"
+            enum:
+              "1": "是"
+              "0": "否"
+          - range: [6, 6]
+            name: "潮流反向"
+            enum:
+              "1": "是"
+              "0": "否"
+          - range: [7, 7]
+            name: "断相"
+            enum:
+              "1": "是"
+              "0": "否"
+          - range: [8, 8]
+            name: "断流"
+            enum:
+              "1": "是"
+              "0": "否"
+          - range: [9, 15]
+            name: "保留"
       - id: "04000505"
         name: "运行状态字5(B相故障状态)"
         length: 2
         type: bitfield
-        bits: []
+        bits:
+          - range: [0, 0]
+            name: "失压"
+            enum:
+              "1": "是"
+              "0": "否"
+          - range: [1, 1]
+            name: "欠压"
+            enum:
+              "1": "是"
+              "0": "否"
+          - range: [2, 2]
+            name: "过压"
+            enum:
+              "1": "是"
+              "0": "否"
+          - range: [3, 3]
+            name: "失流"
+            enum:
+              "1": "是"
+              "0": "否"
+          - range: [4, 4]
+            name: "过流"
+            enum:
+              "1": "是"
+              "0": "否"
+          - range: [5, 5]
+            name: "过载"
+            enum:
+              "1": "是"
+              "0": "否"
+          - range: [6, 6]
+            name: "潮流反向"
+            enum:
+              "1": "是"
+              "0": "否"
+          - range: [7, 7]
+            name: "断相"
+            enum:
+              "1": "是"
+              "0": "否"
+          - range: [8, 8]
+            name: "断流"
+            enum:
+              "1": "是"
+              "0": "否"
+          - range: [9, 15]
+            name: "保留"
       - id: "04000506"
         name: "运行状态字6(C相故障状态)"
         length: 2
         type: bitfield
-        bits: []
+        bits:
+          - range: [0, 0]
+            name: "失压"
+            enum:
+              "1": "是"
+              "0": "否"
+          - range: [1, 1]
+            name: "欠压"
+            enum:
+              "1": "是"
+              "0": "否"
+          - range: [2, 2]
+            name: "过压"
+            enum:
+              "1": "是"
+              "0": "否"
+          - range: [3, 3]
+            name: "失流"
+            enum:
+              "1": "是"
+              "0": "否"
+          - range: [4, 4]
+            name: "过流"
+            enum:
+              "1": "是"
+              "0": "否"
+          - range: [5, 5]
+            name: "过载"
+            enum:
+              "1": "是"
+              "0": "否"
+          - range: [6, 6]
+            name: "潮流反向"
+            enum:
+              "1": "是"
+              "0": "否"
+          - range: [7, 7]
+            name: "断相"
+            enum:
+              "1": "是"
+              "0": "否"
+          - range: [8, 8]
+            name: "断流"
+            enum:
+              "1": "是"
+              "0": "否"
+          - range: [9, 15]
+            name: "保留"
       - id: "04000507"
         name: "运行状态字7(合相故障状态)"
         length: 2
         type: bitfield
-        bits: []
-      - id: "密钥状态"
-        name: "密钥状态"
+        bits:
+          - range: [0, 0]
+            name: "失压"
+            enum:
+              "1": "是"
+              "0": "否"
+          - range: [1, 1]
+            name: "欠压"
+            enum:
+              "1": "是"
+              "0": "否"
+          - range: [2, 2]
+            name: "过压"
+            enum:
+              "1": "是"
+              "0": "否"
+          - range: [3, 3]
+            name: "失流"
+            enum:
+              "1": "是"
+              "0": "否"
+          - range: [4, 4]
+            name: "过流"
+            enum:
+              "1": "是"
+              "0": "否"
+          - range: [5, 5]
+            name: "过载"
+            enum:
+              "1": "是"
+              "0": "否"
+          - range: [6, 6]
+            name: "潮流反向"
+            enum:
+              "1": "是"
+              "0": "否"
+          - range: [7, 7]
+            name: "断相"
+            enum:
+              "1": "是"
+              "0": "否"
+          - range: [8, 8]
+            name: "断流"
+            enum:
+              "1": "是"
+              "0": "否"
+          - range: [9, 15]
+            name: "保留"
+      - name: "密钥状态"
         length: 4
-        type: bin
+        type: bcd
+
   - id: "04001501"
     name: "主动上报状态字"
     protocol: "dlt645-2007"

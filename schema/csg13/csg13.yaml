@@ -3308,6 +3308,7 @@ data_items:
       - name: "密钥状态"
         length: 4
         type: bcd
+
   - id: "04001501"
     name: "主动上报状态字"
     protocol: "csg13"
