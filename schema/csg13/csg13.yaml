@@ -3305,9 +3305,6 @@ data_items:
               "0": "否"
           - range: [9, 15]
             name: "保留"
-      - name: "密钥状态"
-        length: 4
-        type: bcd
 
   - id: "04001501"
     name: "主动上报状态字"
