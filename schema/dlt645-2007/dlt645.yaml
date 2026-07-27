@@ -46677,7 +46677,7 @@ data_items:
     time: ssmmhh
   - id: "040005FF"
     name: "运行状态字数据块"
-    protocol: "csg13"
+    protocol: "dlt645-2007"
     region: ["南网"]
     length: 14
     fields:
