@@ -358,7 +358,6 @@ data_items:
       - name: "从节点信息"
         type: repeat
         count_ref: node_count
-        name_template: "第{index}个从节点信息"
         element:
           fields:
             - name: "第{index}个从节点地址"
@@ -444,7 +443,6 @@ data_items:
       - name: "映射表记录"
         type: repeat
         count_ref: count
-        name_template: "第{index}组映射表"
         element:
           fields:
             - name: "第{index}组映射表"
@@ -496,7 +494,6 @@ data_items:
       - name: "节点信息"
         type: repeat
         count_ref: node_count
-        name_template: "第{index}节点地址"
         element:
             name: "第{index}节点地址"
             length: 6
@@ -580,7 +577,6 @@ data_items:
       - name: "台区识别结果"
         type: repeat
         count_ref: node_count
-        name_template: "第{index}台区识别结果"
         element:
           fields:
             - name: 第{index}台区识别结果
@@ -622,7 +618,6 @@ data_items:
       - name: "台区识别结果"
         type: repeat
         count_ref: node_count
-        name_template: "第{index}台区识别结果"
         element:
           fields:
             - name: 第{index}台区识别结果
@@ -711,6 +706,27 @@ data_items:
         type: external
         length_ref: frame_length
         external_protocol: dlt-645-2007
+  
+  - id: "E8020402"
+    name: "添加从节点"
+    protocol: "csg16"
+    region: ["南网"]
+    fields:
+      - name: "从节点数量"
+        length: 1
+        type: bin
+        ref_id: count
+      - name: "从节点地址"
+        type: repeat
+        count_ref: count
+        element:
+          fields: 
+            - name: "从节点{index}地址"
+              length: 6
+              type: hex
+              format:
+                order: reverse
+                pad: true
 
 templates:
   - id: "NODEPHASEINFO"
@@ -722,6 +738,9 @@ templates:
       - name: "从节点地址"
         length: 6
         type: hex
+        format:
+          order: reverse
+          pad: true
       - name: "从节点相位信息"
         length: 2
         type: bin

@@ -26089,7 +26089,6 @@ data_items:
       - name: "拓扑识别终端地址"
         type: repeat
         count_ref: ertu_count
-        name_template: "第{index}终端地址"
         element:
           name: "第{index}终端地址"
           type: hex
@@ -26107,7 +26106,6 @@ data_items:
       - name: "APP信息"
         type: repeat
         count_ref: app_count
-        name_template: "第{index}个APP签名信息"
         element:
           name: "第{index}个APP签名信息"
           fields:
@@ -26929,7 +26927,6 @@ data_items:
       - name: "限定功率信息"
         type: repeat
         count_ref: rate_count
-        name_template: "{index}枪限定功率值"
         element:
           name: "{index}枪限定功率值"
           fields:
@@ -26954,7 +26951,6 @@ data_items:
       - name: "额定功率信息"
         type: repeat
         count_ref: rate_count
-        name_template: "第{index}个枪号额定功率值"
         element:
           fields:
             - name: 枪号
@@ -26997,7 +26993,6 @@ data_items:
       - name: "注册码信息"
         type: repeat
         count_ref: code_count
-        name_template: "第{index}个注册码信息"
         element:
           fields:
             - name: APP ID
@@ -27260,6 +27255,133 @@ data_items:
           template_ref: APPINFO
 
 
+
+  - id: "06E80002"
+    name: "最近一个负荷辨识数据记录块"
+    protocol: "csg13"
+    region: ["南网"]
+    fields:
+      - name: "负荷记录起始码"
+        length: 2
+        type: bin
+        
+      - name: "负荷记录字节数"
+        length: 1
+        type: bin
+        ref_id: "record_length"
+      
+      - name: "存储时间"
+        length: 5
+        type: bcd
+        time: mmhhDDMMYY
+      
+      - name: "周期内总电量"
+        length: 4
+        unit: "kWh"
+        decimal: 4
+        type: bcd
+      
+      - name: "电器设备数量"
+        length: 1
+        type: bin
+        ref_id: "appliance_count"
+      
+      - type: repeat
+        count_ref: "appliance_count"
+        name_template: "电器{index}记录单元"
+        element:
+          length: 17
+          fields:
+            - name: "电器记录数据"
+              length: 16
+              type: bin
+            - name: "块分隔码"
+              length: 1
+              type: bin
+      
+      - name: "负荷记录累加校验码"
+        length: 1
+        type: bin
+      
+      - name: "负荷记录结束码"
+        length: 1
+        type: bin
+
+  - id: "06E80102"
+    name: "最近一个负荷辨识数据记录块"
+    protocol: "csg13"
+    region: ["南网"]
+    fields:
+      - name: "长度"
+        length: 1
+        type: bin
+        ref_id: "data_length"
+      
+      - name: "存储时间"
+        length: 5
+        type: bcd
+        time: mmhhDDMMYY
+      
+      - type: repeat
+        count: 6
+        name_template: "电器类型{index}"
+        element:
+          length: 7
+          fields:
+            - name: "电器类型{index}编号"
+              length: 1
+              type: bin
+            
+            - name: "电器类型{index}用电量"
+              length: 4
+              unit: "kWh"
+              decimal: 4
+              type: bcd
+              endian: little
+            
+            - name: "电器类型{index}用电时间"
+              length: 2
+              unit: "分钟"
+              type: bin
+              endian: little
+
+  - id: "05E80001"
+    name: "（上1日）冻结数据块（长度+数据）"
+    protocol: "csg13"
+    region: ["南网"]
+    fields:
+      - name: "长度"
+        length: 1
+        type: bin
+        ref_id: "data_length"
+      
+      - name: "存储时间"
+        length: 5
+        type: bcd
+        time: mmhhDDMMYY
+      
+      - type: repeat
+        count: 6
+        name_template: "电器类型{index}"
+        element:
+          length: 7
+          fields:
+            - name: "电器类型{index}编号"
+              length: 1
+              type: bin
+            
+            - name: "电器类型{index}用电量"
+              length: 4
+              unit: "kWh"
+              decimal: 4
+              type: bcd
+              endian: little
+            
+            - name: "电器类型{index}用电时间"
+              length: 2
+              unit: "分钟"
+              type: bin
+              endian: little
 templates:
   - id: IP_WITH_PORT
     protocol: csg13
@@ -27684,8 +27806,8 @@ templates:
       - name: 电能表通信模块信息(模块出厂MAC地址)
         type: repeat
         count_ref: moudle_count
-        name_template: "第{index}个模块MAC地址"
         element:
+          name: "第{index}个模块MAC地址"
           type: hex
           length: 6
 
@@ -27766,7 +27888,6 @@ templates:
       - name: 断线检测结果信息
         type: repeat
         count_ref: meter_count
-        name_template: "第{index}个测量点断线检测结果"
         element:
           name: "第{index}个模块信息"
           fields:

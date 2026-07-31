@@ -99,6 +99,7 @@ fn repeat_count_expr_runtime_demo() {
             ref_id: None,
             name: "values".to_string(),
             spec: FieldSpec::Repeat {
+                count: None,
                 count_ref: None,
                 count_expr: Some("$remaining / 4".to_string()),
                 bits_ref: None,

@@ -26,6 +26,40 @@
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
+/// 报文方向
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Direction {
+    /// 下行（主站→终端）
+    Downlink = 0,
+    /// 上行（终端→主站）
+    Uplink = 1,
+}
+
+impl Direction {
+    /// 从字符串解析方向
+    pub fn from_str(s: &str) -> Option<Self> {
+        match s {
+            "downlink" | "下行" | "0" => Some(Direction::Downlink),
+            "uplink" | "上行" | "1" => Some(Direction::Uplink),
+            _ => None,
+        }
+    }
+
+    /// 转换为字符串
+    pub fn as_str(&self) -> &'static str {
+        match self {
+            Direction::Downlink => "下行",
+            Direction::Uplink => "上行",
+        }
+    }
+}
+
+impl std::fmt::Display for Direction {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.as_str())
+    }
+}
+
 /// 字节序
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Endian {
@@ -469,6 +503,7 @@ pub enum FieldSpec {
     },
     /// 计数重复
     Repeat {
+        count: Option<usize>,
         count_ref: Option<String>,
         count_expr: Option<String>,
         bits_ref: Option<String>,

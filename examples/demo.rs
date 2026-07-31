@@ -95,7 +95,6 @@ fn main() {
     let mut container_buf = vec![0x00u8, 0x02];
     container_buf.extend_from_slice(&[0xFF, 0xFF, 0xFF, 0xFF]);
     container_buf.extend_from_slice(&[0; 8]);
-    container_buf.extend_from_slice(&[0; 4]);
     show_json_case("运行状态字数据块(容器,040005FF)", 0x040005FF, &container_buf);
 
     // dict_ref object syntax demo: multiple data items, each with multiple points.
@@ -124,6 +123,7 @@ fn main() {
             ref_id: None,
             name: "数据项列表".to_string(),
             spec: FieldSpec::Repeat {
+                count: None,
                 count_ref: Some("item_count".to_string()),
                 count_expr: None,
                 bits_ref: None,
@@ -168,6 +168,7 @@ fn main() {
                         ref_id: None,
                         name: "采集数据列表".to_string(),
                         spec: FieldSpec::Repeat {
+                            count: None,
                             count_ref: Some("point_count".to_string()),
                             count_expr: None,
                             bits_ref: None,
@@ -247,6 +248,25 @@ fn main() {
         0x0001FF00,
         DEFAULT_REGION,
         &dlt645_0001ff00_buf,
+    );
+
+    let dlt645_05060101_buf = vec![0x68, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x68, 0x91, 0x18, 0x34, 0x34, 0x39, 0x38, 0x37, 0x36, 0x35, 0x34, 0x33, 0x33, 0x33, 0x34, 0x33, 0x33, 0x35, 0x33, 0x33, 0x36, 0x33, 0x33, 0x37, 0x33, 0x33, 0x33, 0x63, 0x16];
+    show_json_case_with_protocol(
+        "dlt645-2007 05060101",
+        "dlt645-2007",
+        0x05060101,
+        DEFAULT_REGION,
+        &dlt645_05060101_buf,
+    );
+
+
+    let dlt645_05060101_buf = vec![0x2F, 0x25, 0x07, 0x28, 0x15, 0x30, 0x01, 0xA0, 0x86, 0x01, 0x00, 0x2D, 0x00, 0x02, 0xA8, 0x61, 0x00, 0x00, 0x1E, 0x00, 0x03, 0x10, 0x27, 0x00, 0x00, 0x3C, 0x00, 0x04, 0x7C, 0x92, 0x00, 0x00, 0x19, 0x00, 0x05, 0x88, 0x13, 0x00, 0x00, 0x0F, 0x00, 0x06, 0x24, 0xF4, 0x00, 0x00, 0x32, 0x00];
+    show_json_case_with_protocol(
+        "dlt645-2007 05E80001",
+        "dlt645-2007",
+        0x05E80001,
+        DEFAULT_REGION,
+        &dlt645_05060101_buf,
     );
 
     show_json_case(

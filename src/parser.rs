@@ -17,7 +17,7 @@ use super::{
 use crate::repeat::{eval_id_expr, format_id_expr, format_repeat_name};
 use std::collections::HashMap;
 
-pub const DEFAULT_REGION: &str = "default";
+pub const DEFAULT_REGION: &str = "南网";
 
 pub fn parse_field(
     buf: &[u8],
@@ -40,6 +40,7 @@ pub fn parse_field(
             parse_switch(buf, on, cases, case_names, default, ctx, protocol, region, dir)
         }
         FieldSpec::Repeat {
+            count,
             count_ref,
             count_expr,
             bits_ref,
@@ -51,6 +52,7 @@ pub fn parse_field(
             id_expr,
         } => parse_repeat(
             buf,
+            count,
             count_ref,
             count_expr,
             bits_ref,
@@ -163,6 +165,8 @@ fn lookup_di<'a>(
     Err(DictError::UnknownDi {
         protocol: protocol.to_string(),
         di,
+        region: region.to_string(),
+        dir: crate::error::DirectionDisplay(dir.and_then(crate::types::Direction::from_str)),
     })
 }
 
@@ -952,6 +956,7 @@ fn instantiate_field_spec(spec: &FieldSpec, idx: usize, count: usize) -> FieldSp
             default: default.as_ref().map(|v| Box::new(instantiate_field_spec(v, idx, count))),
         },
         FieldSpec::Repeat {
+            count: count_field,
             count_ref,
             count_expr,
             bits_ref,
@@ -962,6 +967,7 @@ fn instantiate_field_spec(spec: &FieldSpec, idx: usize, count: usize) -> FieldSp
             name_template,
             id_expr,
         } => FieldSpec::Repeat {
+            count: *count_field,
             count_ref: count_ref.as_ref().map(|s| format_repeat_template(s, idx, count)),
             count_expr: count_expr.as_ref().map(|s| format_repeat_template(s, idx, count)),
             bits_ref: bits_ref.clone(),
@@ -1014,6 +1020,7 @@ fn instantiate_field_spec(spec: &FieldSpec, idx: usize, count: usize) -> FieldSp
 
 fn parse_repeat(
     buf: &[u8],
+    count_fixed: &Option<usize>,
     count_ref: &Option<String>,
     count_expr: &Option<String>,
     bits_ref: &Option<String>,
@@ -1031,7 +1038,9 @@ fn parse_repeat(
     let mut offset = 0usize;
     let mut items = Vec::new();
 
-    let count = if let Some(count_ref) = count_ref {
+    let count = if let Some(fixed) = count_fixed {
+        *fixed
+    } else if let Some(count_ref) = count_ref {
         ctx.get_decoded(count_ref)
             .and_then(|v| v.as_usize())
             .ok_or_else(|| DictError::MissingRef(count_ref.to_string()))?

@@ -1357,6 +1357,7 @@ fn gen_field(
         return if cand.count_ref.is_some() || cand.count_expr.is_some() {
             let count_ref = cand.count_ref.clone();
             FieldSpec::Repeat {
+                count: None,
                 count_ref,
                 count_expr,
                 bits_ref: None,
@@ -1919,6 +1920,8 @@ fn gen_repeat(
 
     let count_ref = rf.count_ref.clone();
     let count_expr = rf.count_expr.clone();
+    let count_value = rf.count;
+    
     if rf.count_ref.is_some() && rf.count_expr.is_some() {
         panic!(
             "repeat 字段 {:?} 不能同时指定 count_ref 和 count_expr，请取其一",
@@ -1939,6 +1942,7 @@ fn gen_repeat(
         .clone();
     let bits_ref = rf.bits_ref.clone();
     FieldSpec::Repeat {
+        count: count_value,
         count_ref,
         count_expr,
         bits_ref,
