@@ -1,0 +1,14 @@
+[package]
+name = "spec-compiler"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "DI字典编译器 - 将YAML定义编译为运行时FieldSpec"
+
+[dependencies]
+serde = { workspace = true }
+serde_yaml = { workspace = true }
+bincode = { workspace = true }
+thiserror = { workspace = true }

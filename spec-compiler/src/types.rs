@@ -26,7 +26,20 @@
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
-/// 报文方向
+/// 报文方向（主站与终端之间的通信方向）
+///
+/// 在电力通信协议中，报文分为下行（主站发送给终端）和上行（终端发送给主站）两种方向。
+/// 部分数据项的定义在不同方向下可能有所不同。
+///
+/// # 示例
+///
+/// ```rust
+/// use spec_compiler::types::Direction;
+///
+/// let dir = Direction::from_str("下行").unwrap();
+/// assert_eq!(dir, Direction::Downlink);
+/// assert_eq!(dir.as_str(), "下行");
+/// ```
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Direction {
     /// 下行（主站→终端）
@@ -60,7 +73,25 @@ impl std::fmt::Display for Direction {
     }
 }
 
-/// 字节序
+/// 字节序（Endianness）
+///
+/// 指定多字节数值在内存或报文中的存储顺序。
+///
+/// # 变体说明
+///
+/// - `Little`: 小端字节序，低字节在前（Intel x86 架构默认）
+/// - `Big`: 大端字节序，高字节在前（网络字节序、Motorola 架构）
+///
+/// # 示例
+///
+/// ```rust
+/// use spec_compiler::Endian;
+///
+/// // 16进制 0x1234 在不同字节序下的字节表示
+/// // Little: [0x34, 0x12]
+/// // Big:    [0x12, 0x34]
+/// let endian = Endian::Little;
+/// ```
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Endian {
     /// 小端（低字节在前）
@@ -76,7 +107,43 @@ pub enum TimeEncoding {
     Bin { endian: Endian },
 }
 
-/// 字段长度定义
+/// 字段长度定义（支持固定值、引用和表达式）
+///
+/// 字段长度可以是编译期确定的固定值，也可以在运行时根据前面字段的解析结果动态计算。
+///
+/// # 变体说明
+///
+/// - `Fixed(n)`: 固定长度 n 字节
+/// - `Ref(id)`: 引用前面已解析字段的值作为长度（通过 `ref_id` 绑定）
+/// - `Expr(expr)`: 表达式形式的长度，支持简单的算术运算
+///
+/// # 示例
+///
+/// ```rust
+/// use spec_compiler::FieldLength;
+///
+/// // 固定4字节
+/// let fixed = FieldLength::Fixed(4);
+///
+/// // 引用 `data_length` 字段的值
+/// let ref_len = FieldLength::Ref("data_length".to_string());
+///
+/// // 表达式：2倍的 pn_count
+/// let expr = FieldLength::Expr("2*ref(pn_count)".to_string());
+/// ```
+///
+/// # YAML 配置示例
+///
+/// ```yaml
+/// fields:
+///   - name: "数据长度"
+///     ref_id: data_length
+///     length: 1
+///     type: bin
+///   - name: "数据内容"
+///     length: {ref: data_length}  # 引用前面的字段
+///     type: hex
+/// ```
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum FieldLength {
     /// 固定长度
@@ -87,7 +154,47 @@ pub enum FieldLength {
     Expr(String),
 }
 
-/// 编码方式
+/// 编码方式（数据在报文中的编码格式）
+///
+/// 定义字段数据在报文字节流中的编码方式。不同的编码方式决定了如何将
+/// 字节序列转换为实际的数值或字符串。
+///
+/// # 变体说明
+///
+/// - `Bin`: 二进制整数（支持有符号/无符号、大端/小端）
+/// - `Bcd`: BCD（Binary-Coded Decimal）编码，每个字节表示两位十进制数
+/// - `Ascii`: ASCII 字符串
+/// - `Hex`: 十六进制字符串
+/// - `Time`: 时间格式（支持多种编码和格式字符串）
+/// - `Raw`: 原始字节，不做解析
+///
+/// # 示例
+///
+/// ```rust
+/// use spec_compiler::{Encoding, Endian};
+///
+/// // 小端无符号整数
+/// let bin = Encoding::Bin {
+///     endian: Endian::Little,
+///     signed: false,
+/// };
+///
+/// // BCD 编码，2位小数
+/// let bcd = Encoding::Bcd {
+///     decimals: 2,
+///     signed: false,
+///     endian: None,  // 默认逆序
+/// };
+/// ```
+///
+/// # BCD 编码说明
+///
+/// BCD 编码中，每个字节的高4位和低4位分别表示一位十进制数：
+/// - 字节 `0x12` 表示十进制 `12`
+/// - 字节 `0x34 0x56` 可表示 `3456` 或 `5634`（取决于字节序）
+///
+/// 如果 `endian` 为 `None`，则按逆序解析（从最后一个字节开始）。
+/// 如果指定了 `endian`，则按给定的字节序解析。
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum Encoding {
     /// 二进制数值
@@ -352,7 +459,7 @@ pub struct FormatSpec {
     pub order: Option<FormatOrder>,
 }
 
-pub(crate) fn format_bytes_with_spec(bytes: &[u8], spec: &FormatSpec) -> String {
+pub fn format_bytes_with_spec(bytes: &[u8], spec: &FormatSpec) -> String {
     let group = match spec.group_bytes {
         Some(n) if n > 0 => n,
         _ => 1,
@@ -480,7 +587,121 @@ mod tests {
     }
 }
 
-/// 字段规格（运行时，build.rs 已展开大部分节点）
+/// 字段规格（运行时字段类型的核心枚举）
+///
+/// `FieldSpec` 定义了所有支持的字段类型和解析规则。它是整个解析引擎的核心数据结构，
+/// 描述了如何从字节流中提取和解释数据。
+///
+/// # 设计原则
+///
+/// - **可序列化**: 所有变体都实现了 `Serialize`/`Deserialize`，可以序列化为二进制
+/// - **编译期展开**: 大部分重复结构在编译期已展开，运行时只需按结构解析
+/// - **动态长度**: 支持引用前面字段的值来确定当前字段的长度或数量
+///
+/// # 变体说明
+///
+/// ## 基础字段
+///
+/// - `Fixed`: 定长字段，最常用的类型，支持各种编码方式
+/// - `BitField`: 位域，将一个字节或多字节拆分为多个位字段
+/// - `Skip`: 跳过不输出，用于填充字段
+///
+/// ## 条件与分支
+///
+/// - `Switch`: 条件分支，根据前面字段的值选择不同的解析规则
+///
+/// ## 重复结构
+///
+/// - `Repeat`: 计数重复，解析多个相同结构的元素
+/// - `BitMask`: 位图重复，根据位图中的置位决定哪些元素存在
+///
+/// ## 高级功能
+///
+/// - `Container`: 容器，包含一系列命名字段
+/// - `External`: 外部协议嵌入，用于解析内嵌的其他协议报文
+/// - `DictRef`: 运行时字典引用，根据 DI 动态查找解析规则
+/// - `InfoPoint`: 信息点标识（DA），特殊的2字节结构
+/// - `DiCode`: 数据标识编码（DI），4字节 DI 标识
+/// - `Custom`: 自定义处理器（预留）
+///
+/// # 示例
+///
+/// ## 定长字段
+///
+/// ```rust
+/// use spec_compiler::{FieldSpec, Encoding, FieldLength, Endian};
+/// use std::collections::HashMap;
+///
+/// let spec = FieldSpec::Fixed {
+///     encoding: Encoding::Bin {
+///         endian: Endian::Little,
+///         signed: false,
+///     },
+///     length: FieldLength::Fixed(4),
+///     unit: Some("W".to_string()),
+///     enum_map: None,
+///     format: None,
+/// };
+/// ```
+///
+/// ## 条件分支
+///
+/// ```rust
+/// use spec_compiler::{FieldSpec, Encoding, FieldLength, Endian};
+/// use std::collections::HashMap;
+///
+/// let mut cases = HashMap::new();
+/// cases.insert(
+///     "1".to_string(),
+///     Box::new(FieldSpec::Fixed {
+///         encoding: Encoding::Bcd {
+///             decimals: 2,
+///             signed: false,
+///             endian: None,
+///         },
+///         length: FieldLength::Fixed(4),
+///         unit: Some("kWh".to_string()),
+///         enum_map: None,
+///         format: None,
+///     }),
+/// );
+///
+/// let switch = FieldSpec::Switch {
+///     on: "data_type".to_string(),  // 根据 data_type 字段的值分支
+///     cases,
+///     case_names: None,
+///     default: None,
+/// };
+/// ```
+///
+/// ## 计数重复
+///
+/// ```rust
+/// use spec_compiler::{FieldSpec, Encoding, FieldLength, Endian};
+///
+/// let repeat = FieldSpec::Repeat {
+///     count: None,
+///     count_ref: Some("rate_count".to_string()),  // 引用 rate_count 字段的值
+///     count_expr: None,
+///     bits_ref: None,
+///     bit_direction: None,
+///     iterate_order: None,
+///     bit_specs: None,
+///     element: Box::new(FieldSpec::Fixed {
+///         encoding: Encoding::Bcd {
+///             decimals: 2,
+///             signed: false,
+///             endian: None,
+///         },
+///         length: FieldLength::Fixed(4),
+///         unit: Some("kWh".to_string()),
+///         enum_map: None,
+///         format: None,
+///     }),
+///     name_template: Some("费率{index}电能".to_string()),
+///     id_expr: None,
+/// };
+/// ```
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum FieldSpec {
     /// 定长字段，支持静态或引用其它字段的长度
@@ -556,7 +777,54 @@ pub enum FieldSpec {
     DiCode,
 }
 
-/// 命名字段
+/// 命名字段（带元数据的字段定义）
+///
+/// `NamedField` 是 `FieldSpec` 的容器，为字段添加名称、ID 和其他元数据。
+/// 这是字典表（`DiTable`）中存储的值类型。
+///
+/// # 字段说明
+///
+/// - `id`: DI 标识（可选），如 `"00010000"`，用于在字典中查找
+/// - `ref_id`: 引用 ID（可选），用于运行时引用绑定（如 `count_ref` 引用此 ID）
+/// - `name`: 字段名称，用于显示和调试
+/// - `spec`: 字段规格，定义解析规则
+/// - `format`: 显示格式规格（可选），定义如何格式化输出
+///
+/// # 示例
+///
+/// ```rust
+/// use spec_compiler::{NamedField, FieldSpec, Encoding, FieldLength, Endian};
+///
+/// let field = NamedField {
+///     id: Some("00010000".to_string()),
+///     ref_id: Some("total_energy".to_string()),
+///     name: "组合有功总电能".to_string(),
+///     spec: FieldSpec::Fixed {
+///         encoding: Encoding::Bcd {
+///             decimals: 2,
+///             signed: false,
+///             endian: None,
+///         },
+///         length: FieldLength::Fixed(4),
+///         unit: Some("kWh".to_string()),
+///         enum_map: None,
+///         format: None,
+///     },
+///     format: None,
+/// };
+/// ```
+///
+/// # YAML 配置示例
+///
+/// ```yaml
+/// - id: "00010000"
+///   ref_id: total_energy
+///   name: "组合有功总电能"
+///   length: 4
+///   type: bcd
+///   decimal: 2
+///   unit: "kWh"
+/// ```
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct NamedField {
     /// DI 标识（可选）

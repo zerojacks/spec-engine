@@ -1,0 +1,25 @@
+[package]
+name = "spec-engine"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "计量自动化终端上行通信规约 DI 字典解析库"
+keywords = ["di","dictionary","protocol","metering","bcd","bitfield"]
+categories = ["parsing","protocols"]
+
+[dependencies]
+serde = { workspace = true }
+thiserror = { workspace = true }
+bincode = { workspace = true }
+spec-compiler = { path = "../spec-compiler" }
+
+[build-dependencies]
+spec-compiler = { path = "../spec-compiler" }
+serde = { workspace = true }
+serde_yaml = { workspace = true }
+bincode = { workspace = true }
+
+[dev-dependencies]
+serde_json = "1.0"

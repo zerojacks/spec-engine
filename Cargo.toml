@@ -1,36 +1,20 @@
-[package]
-name = "spec-engine"
-version = "0.1.0"
+[workspace]
+members = [
+    "spec-compiler",
+    "spec-engine",
+    "spec-tools",
+]
+resolver = "2"
+
+[workspace.package]
+version = "0.2.0"
 edition = "2021"
 authors = ["Your Name <you@example.com>"]
-description = "计量自动化终端上行通信规约 DI 字典解析库"
 license = "MIT"
-readme = "README.md"
 repository = "https://github.com/yourusername/spec-engine"
-homepage = "https://github.com/yourusername/spec-engine"
-documentation = "https://docs.rs/spec-engine"
-keywords = ["di","dictionary","protocol","metering","bcd","bitfield"]
-categories = ["parsing","protocols"]
-include = [
-	"src/**",
-	"schema/**",
-	"build.rs",
-	"README.md",
-	"LICENSE",
-	"examples/**",
-	"Cargo.toml",
-]
 
-[dependencies]
-serde = { version = "1.0", features = ["derive"] }
-thiserror = "1.0"
-bincode = "1.3"
-
-[build-dependencies]
+[workspace.dependencies]
 serde = { version = "1.0", features = ["derive"] }
 serde_yaml = "0.9"
 bincode = "1.3"
-
-[dev-dependencies]
-serde_json = "1.0"
-
+thiserror = "1.0"

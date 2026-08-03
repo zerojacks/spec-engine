@@ -166,7 +166,7 @@ fn lookup_di<'a>(
         protocol: protocol.to_string(),
         di,
         region: region.to_string(),
-        dir: crate::error::DirectionDisplay(dir.and_then(crate::types::Direction::from_str)),
+        dir: crate::error::DirectionDisplay(dir.and_then(spec_compiler::types::Direction::from_str)),
     })
 }
 
@@ -277,7 +277,7 @@ fn parse_fixed(
     let value = match encoding {
         Encoding::Bin { endian, signed } => {
             if let Some(spec) = format {
-                return Ok((Value::Str(crate::types::format_bytes_with_spec(raw, spec)), length));
+                return Ok((Value::Str(spec_compiler::types::format_bytes_with_spec(raw, spec)), length));
             }
             let int = if *signed {
                 let (negative, cleared) = decode_signed_bin(raw, *endian);
@@ -331,7 +331,7 @@ fn parse_fixed(
         Encoding::Ascii => Value::Str(decode_ascii(raw)),
         Encoding::Hex => {
             if let Some(spec) = format {
-                Value::Str(crate::types::format_bytes_with_spec(raw, spec))
+                Value::Str(spec_compiler::types::format_bytes_with_spec(raw, spec))
             } else {
                 Value::Str(raw_hex.clone())
             }
