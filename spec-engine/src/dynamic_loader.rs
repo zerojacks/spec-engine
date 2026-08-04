@@ -973,6 +973,116 @@ impl DynamicCatalog {
     pub fn layer_count(&self) -> usize {
         self.layers.len()
     }
+
+    /// 迭代所有条目（包括嵌入字典和所有动态层）
+    ///
+    /// 返回一个迭代器，遍历所有层的所有条目。
+    /// 注意：可能包含重复的 DI（不同层定义了相同的 DI）。
+    ///
+    /// # 返回值
+    ///
+    /// 迭代器，每项为 `(&DiKey, &NamedField)`
+    ///
+    /// # 示例
+    ///
+    /// ```rust,ignore
+    /// for ((protocol, di, region, dir), field) in catalog.iter_all() {
+    ///     println!("{}: {} - {}", protocol, di, field.name);
+    /// }
+    /// ```
+    pub fn iter_all(&self) -> impl Iterator<Item = (&DiKey, &NamedField)> {
+        self.embedded
+            .iter()
+            .chain(self.layers.iter().flat_map(|layer| layer.table.iter()))
+    }
+
+    /// 列出所有协议
+    ///
+    /// 返回所有已定义的协议名称列表（去重）。
+    ///
+    /// # 返回值
+    ///
+    /// 协议名称的向量，已排序。
+    ///
+    /// # 示例
+    ///
+    /// ```rust,ignore
+    /// let protocols = catalog.list_protocols();
+    /// println!("支持的协议: {:?}", protocols);
+    /// // 输出: ["csg13", "csg16", "dlt645-2007"]
+    /// ```
+    pub fn list_protocols(&self) -> Vec<String> {
+        use std::collections::HashSet;
+        let mut protocols = HashSet::new();
+        for ((protocol, _, _, _), _) in self.iter_all() {
+            protocols.insert(protocol.clone());
+        }
+        let mut result: Vec<String> = protocols.into_iter().collect();
+        result.sort();
+        result
+    }
+
+    /// 列出指定协议的所有 DI
+    ///
+    /// 返回指定协议的所有 DI 标识列表（去重）。
+    ///
+    /// # 参数
+    ///
+    /// - `protocol`: 协议名称
+    ///
+    /// # 返回值
+    ///
+    /// DI 标识的向量，已排序。
+    ///
+    /// # 示例
+    ///
+    /// ```rust,ignore
+    /// let dis = catalog.list_dis_for_protocol("csg13");
+    /// println!("csg13 协议有 {} 个 DI", dis.len());
+    /// ```
+    pub fn list_dis_for_protocol(&self, protocol: &str) -> Vec<u32> {
+        use std::collections::HashSet;
+        let mut dis = HashSet::new();
+        for ((p, di, _, _), _) in self.iter_all() {
+            if p == protocol {
+                dis.insert(*di);
+            }
+        }
+        let mut result: Vec<u32> = dis.into_iter().collect();
+        result.sort();
+        result
+    }
+
+    /// 列出指定协议的所有区域
+    ///
+    /// 返回指定协议支持的所有区域列表（去重）。
+    ///
+    /// # 参数
+    ///
+    /// - `protocol`: 协议名称
+    ///
+    /// # 返回值
+    ///
+    /// 区域名称的向量，已排序。
+    ///
+    /// # 示例
+    ///
+    /// ```rust,ignore
+    /// let regions = catalog.list_regions_for_protocol("csg13");
+    /// println!("csg13 支持的区域: {:?}", regions);
+    /// ```
+    pub fn list_regions_for_protocol(&self, protocol: &str) -> Vec<String> {
+        use std::collections::HashSet;
+        let mut regions = HashSet::new();
+        for ((p, _, region, _), _) in self.iter_all() {
+            if p == protocol {
+                regions.insert(region.clone());
+            }
+        }
+        let mut result: Vec<String> = regions.into_iter().collect();
+        result.sort();
+        result
+    }
 }
 
 /// 目录统计信息
