@@ -16,6 +16,7 @@ fn length_ref_remaining_runtime_demo() {
                 encoding: Encoding::Bin {
                     endian: Endian::Little,
                     signed: false,
+                    decimals: 0,
                 },
                 length: FieldLength::Fixed(2),
                 unit: None,
@@ -91,6 +92,7 @@ fn repeat_count_expr_runtime_demo() {
                 encoding: Encoding::Bin {
                     endian: Endian::Little,
                     signed: false,
+                    decimals: 0,
                 },
                 length: FieldLength::Fixed(4),
                 unit: None,
@@ -115,6 +117,7 @@ fn repeat_count_expr_runtime_demo() {
                     encoding: Encoding::Bin {
                         endian: Endian::Little,
                         signed: false,
+                        decimals: 0,
                     },
                     length: FieldLength::Fixed(4),
                     unit: None,

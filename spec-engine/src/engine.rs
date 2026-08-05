@@ -770,7 +770,7 @@ impl Engine {
         let raw = &buf[..length];
         let raw_hex = decode_hex(raw);
         let value = match encoding {
-            Encoding::Bin { endian, signed } => {
+            Encoding::Bin { endian, signed, decimals } => {
                 if let Some(spec) = format {
                     return Ok((
                         Value::Str(spec_compiler::types::format_bytes_with_spec(raw, spec)),
@@ -788,7 +788,14 @@ impl Engine {
                 } else {
                     decode_bin_u64(raw, *endian) as i64
                 };
-                Value::Int(int)
+                
+                // 处理小数位
+                if *decimals == 0 {
+                    Value::Int(int)
+                } else {
+                    let divisor = 10i64.pow(*decimals as u32) as f64;
+                    Value::Float(int as f64 / divisor)
+                }
             }
             Encoding::Bcd {
                 decimals,

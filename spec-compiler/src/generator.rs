@@ -672,10 +672,14 @@ pub fn gen_fixed(rf: &RawField, ty: &str) -> FieldSpec {
     }
     
     let encoding = match ty {
-        "bin" => Encoding::Bin {
-            endian: resolve_endian(rf),
-            signed,
-        },
+        "bin" => {
+            let decimals = rf.decimals.unwrap_or(0);
+            Encoding::Bin {
+                endian: resolve_endian(rf),
+                signed,
+                decimals,
+            }
+        }
         "bcd" => {
             let decimals = rf.decimals.unwrap_or(0);
             let endian = match rf.endian.as_deref() {

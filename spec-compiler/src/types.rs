@@ -173,10 +173,18 @@ pub enum FieldLength {
 /// ```rust
 /// use spec_compiler::{Encoding, Endian};
 ///
-/// // 小端无符号整数
+/// // 小端无符号整数，无小数位
 /// let bin = Encoding::Bin {
 ///     endian: Endian::Little,
 ///     signed: false,
+///     decimals: 0,
+/// };
+///
+/// // 小端无符号整数，4位小数
+/// let bin_decimal = Encoding::Bin {
+///     endian: Endian::Little,
+///     signed: false,
+///     decimals: 4,
 /// };
 ///
 /// // BCD 编码，2位小数
@@ -198,7 +206,11 @@ pub enum FieldLength {
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum Encoding {
     /// 二进制数值
-    Bin { endian: Endian, signed: bool },
+    Bin {
+        endian: Endian,
+        signed: bool,
+        decimals: u8,
+    },
     /// BCD 编码
     ///
     /// 如果没有在 YAML 里显式设置 endian，则按逆序（reverse byte order）解析。
@@ -636,6 +648,7 @@ mod tests {
 ///     encoding: Encoding::Bin {
 ///         endian: Endian::Little,
 ///         signed: false,
+///         decimals: 0,
 ///     },
 ///     length: FieldLength::Fixed(4),
 ///     unit: Some("W".to_string()),

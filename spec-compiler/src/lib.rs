@@ -300,6 +300,7 @@ pub use compiler::{Compiler, CompilerConfig};
 ///     encoding: Encoding::Bin {
 ///         endian: Endian::Little,
 ///         signed: false,
+///         decimals: 0,
 ///     },
 ///     length: FieldLength::Fixed(4),
 ///     unit: Some("W".to_string()),

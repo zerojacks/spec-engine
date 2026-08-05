@@ -124,6 +124,7 @@ fn main() {
                 encoding: Encoding::Bin {
                     endian: Endian::Little,
                     signed: false,
+                    decimals: 0,
                 },
                 length: FieldLength::Fixed(1),
                 unit: None,
@@ -153,6 +154,7 @@ fn main() {
                             encoding: Encoding::Bin {
                                 endian: Endian::Little,
                                 signed: false,
+                                decimals: 0,
                             },
                             length: FieldLength::Fixed(4),
                             unit: None,
@@ -169,6 +171,7 @@ fn main() {
                             encoding: Encoding::Bin {
                                 endian: Endian::Little,
                                 signed: false,
+                                decimals: 0,
                             },
                             length: FieldLength::Fixed(1),
                             unit: None,
