@@ -10,6 +10,7 @@ pub const DEFAULT_REGION: &str = "南网";
 
 /// 位域定义
 #[derive(Debug, Deserialize, Serialize, Clone, Default)]
+#[serde(deny_unknown_fields)]
 pub struct RawBit {
     pub range: (usize, usize),
     pub name: String,
@@ -21,6 +22,7 @@ pub struct RawBit {
 
 /// 候选 DI 定义
 #[derive(Debug, Deserialize, Serialize, Clone, Default)]
+#[serde(deny_unknown_fields)]
 pub struct RawCandidate {
     #[serde(default)]
     pub count: Option<usize>,
@@ -55,6 +57,7 @@ pub enum RawFormat {
 
 /// 格式化对象
 #[derive(Debug, Deserialize, Serialize, Clone, Default)]
+#[serde(deny_unknown_fields)]
 pub struct FormatObject {
     #[serde(rename = "type")]
     #[serde(default)]
@@ -73,6 +76,7 @@ pub struct FormatObject {
 
 /// 字段定义（原始 AST）
 #[derive(Debug, Deserialize, Serialize, Clone, Default)]
+#[serde(deny_unknown_fields)]
 pub struct RawField {
     #[serde(default)]
     pub id: Option<String>,
@@ -176,8 +180,11 @@ pub struct RawField {
 
 /// 模板定义
 #[derive(Debug, Deserialize, Serialize, Clone)]
+#[serde(deny_unknown_fields)]
 pub struct RawTemplate {
     pub id: String,
+    #[serde(default)]
+    pub name: Option<String>,
     #[serde(default)]
     pub protocol: Option<String>,
     #[serde(default)]
@@ -194,6 +201,7 @@ impl Default for RawTemplate {
     fn default() -> Self {
         Self {
             id: String::new(),
+            name: None,
             protocol: None,
             region: None,
             dir: None,
