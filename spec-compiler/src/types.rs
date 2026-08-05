@@ -495,7 +495,7 @@ pub fn format_bytes_with_spec(bytes: &[u8], spec: &FormatSpec) -> String {
                     }
                 }
                 FormatType::Bin => {
-                    // Binary display with formatting shows raw bytes in decimal.
+                    // Binary display with formatting shows raw bytes in decimals.
                     if pad {
                         format!("{:03}", b)
                     } else {
@@ -822,7 +822,7 @@ pub enum FieldSpec {
 ///   name: "组合有功总电能"
 ///   length: 4
 ///   type: bcd
-///   decimal: 2
+///   decimals: 2
 ///   unit: "kWh"
 /// ```
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]

@@ -75,7 +75,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kW"
-    decimal: 2
+    decimals: 2
 ```
 
 ### 2. 修改示例代码

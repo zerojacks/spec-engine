@@ -104,7 +104,7 @@
 //!   element:
 //!     length: 4
 //!     type: bcd
-//!     decimal: 2
+//!     decimals: 2
 //!     unit: "kWh"
 //! ```
 //!

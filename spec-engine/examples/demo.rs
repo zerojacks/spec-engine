@@ -1,9 +1,17 @@
-//! 端到端测试：对字典里覆盖到的每一种组合类型构造真实字节，跑一遍 parse_di，
-//! 并将解析结果直接输出为 JSON。
+//! 端到端测试示例
+//!
+//! 演示各种 DI 解析场景，包括：
+//! - 基本数据类型（BCD、Bin、ASCII）
+//! - 位字段和位掩码
+//! - 容器和嵌套结构
+//! - 重复结构
+//! - Switch 条件解析
+//! - DictRef 字典引用
+//! - 运行时 length_ref
 
 use serde_json::to_string_pretty;
 use spec_engine::{
-    init_registries, parse_di, parse_field, Context, Encoding, Endian, FieldLength, FieldSpec,
+    Engine, Context, Encoding, Endian, FieldLength, FieldSpec,
     BitSpec, NamedField,
 };
 use std::collections::HashMap;
@@ -13,8 +21,13 @@ const DEFAULT_PROTOCOL: &str = "csg13";
 const DEFAULT_REGION: &str = "南网";
 const DEFAULT_DIR: Option<&str> = None;
 
+fn get_engine() -> Engine {
+    Engine::new_default()
+}
+
 fn show_json_case(label: &str, di: u32, buf: &[u8]) {
-    match parse_di(DEFAULT_PROTOCOL, di, DEFAULT_REGION, DEFAULT_DIR, buf) {
+    let engine = get_engine();
+    match engine.parse_di(DEFAULT_PROTOCOL, di, DEFAULT_REGION, DEFAULT_DIR, buf) {
         Ok((value, consumed)) => {
             println!(
                 "[OK] {label} (DI=0x{di:08X}, consumed={consumed}/{len})",
@@ -31,7 +44,8 @@ fn show_json_case(label: &str, di: u32, buf: &[u8]) {
 }
 
 fn show_json_case_with_protocol(label: &str, protocol: &str, di: u32, region: &str, buf: &[u8]) {
-    match parse_di(protocol, di, region, DEFAULT_DIR, buf) {
+    let engine = get_engine();
+    match engine.parse_di(protocol, di, region, DEFAULT_DIR, buf) {
         Ok((value, consumed)) => {
             println!(
                 "[OK] {label} (protocol={protocol}, DI=0x{di:08X}, consumed={consumed}/{len})",
@@ -48,8 +62,9 @@ fn show_json_case_with_protocol(label: &str, protocol: &str, di: u32, region: &s
 }
 
 fn show_bitmask_case(label: &str, field: &FieldSpec, buf: &[u8]) {
+    let engine = get_engine();
     let mut ctx = Context::new();
-    match parse_field(buf, field, &mut ctx, DEFAULT_PROTOCOL, DEFAULT_REGION, DEFAULT_DIR) {
+    match engine.parse_field(buf, field, &mut ctx, DEFAULT_PROTOCOL, DEFAULT_REGION, DEFAULT_DIR) {
         Ok((value, consumed)) => {
             println!(
                 "[OK] {label} (consumed={consumed}/{len})",
@@ -66,7 +81,6 @@ fn show_bitmask_case(label: &str, field: &FieldSpec, buf: &[u8]) {
 }
 
 fn main() {
-    init_registries();
     println!("=== DI 字典解析 —— JSON 输出示例 ===\n");
 
     show_json_case("月冻结正向有功总电能(bcd,南网)", 0x00010001, &[0x01, 0x00, 0x00, 0x00]);
@@ -199,8 +213,10 @@ fn main() {
     dict_ref_buf.extend_from_slice(&[0x02]);
     dict_ref_buf.extend_from_slice(&[0x00, 0x05, 0x00, 0x00]);
     dict_ref_buf.extend_from_slice(&[0x23, 0x01, 0x00, 0x00]);
+    
+    let engine = get_engine();
     let mut ctx = Context::new();
-    let (dict_ref_value, dict_ref_consumed) = parse_field(
+    let (dict_ref_value, dict_ref_consumed) = engine.parse_field(
         &dict_ref_buf,
         &dict_ref_field,
         &mut ctx,
@@ -299,13 +315,13 @@ fn main() {
     // 用户示例：终端坐标信息 (E0000B12)
     // 结构：longitude(5 bytes: seconds(2 BCD, dec=2) + minutes(1 BCD) + degrees(1 BCD) + dir(1 BCD))
     //         latitude (same)
-    //         altitude (4 bytes BCD, decimal=2, signed)
+    //         altitude (4 bytes BCD, decimals=2, signed)
     let mut coord_buf = Vec::new();
     // longitude: 12.34s, 5', 30°, dir=1
     coord_buf.extend_from_slice(&[0x12, 0x34, 0x05, 0x30, 0x01]);
     // latitude: 56.78s, 6', 20°, dir=2
     coord_buf.extend_from_slice(&[0x56, 0x78, 0x06, 0x20, 0x02]);
-    // altitude: 1.23 km -> bytes: 00 00 01 23 (BCD, decimal=2)
+    // altitude: 1.23 km -> bytes: 00 00 01 23 (BCD, decimals=2)
     coord_buf.extend_from_slice(&[0x00, 0x00, 0x01, 0x23]);
     show_json_case("终端坐标信息示例", 0xE0000B12, &coord_buf);
 
@@ -419,4 +435,6 @@ fn main() {
         name_template: Some("测量点{index}".to_string()),
     };
     show_bitmask_case("bitmask 替代 bitpattern 示例", &bitmask_field, &[0x02]);
+
+    println!("=== demo 运行完成 ===");
 }

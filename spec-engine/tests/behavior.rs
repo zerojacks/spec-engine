@@ -1,16 +1,13 @@
-use spec_engine::{init_registries, parse_di, parse_field, Context, DictError, Encoding, FieldLength, FieldSpec, BitSpec, Value};
+use spec_engine::{Engine, Context, DictError, Encoding, FieldLength, FieldSpec, BitSpec, Value};
 use std::collections::HashMap;
-use std::sync::Once;
 
-static INIT: Once = Once::new();
-
-fn setup() {
-    INIT.call_once(|| init_registries());
+fn get_engine() -> Engine {
+    Engine::new_default()
 }
 
 fn parse_case(di: u32, buf: &[u8]) -> (Value, usize) {
-    setup();
-    parse_di("csg13", di, "南网", None, buf).expect("测试用例解析失败")
+    let engine = get_engine();
+    engine.parse_di("csg13", di, "南网", None, buf).expect("测试用例解析失败")
 }
 
 #[test]
@@ -185,8 +182,9 @@ fn parses_bitmask_with_skip_branch() {
         name_template: Some("测量点{index}".to_string()),
     };
 
+    let engine = get_engine();
     let mut ctx = Context::new();
-    let (value, consumed) = parse_field(&[0x02], &field, &mut ctx, "csg13", "南网", None)
+    let (value, consumed) = engine.parse_field(&[0x02], &field, &mut ctx, "csg13", "南网", None)
         .expect("parse bitmask failed");
     assert_eq!(consumed, 1);
     match value {
@@ -405,20 +403,23 @@ fn parses_switch_cases() {
 
 #[test]
 fn returns_error_for_unknown_di() {
-    let err = parse_di("csg13", 0xFFFF0000, "南网", None, &[]).unwrap_err();
+    let engine = get_engine();
+    let err = engine.parse("csg13", 0xFFFF0000, "南网", None, &[]).unwrap_err();
     assert!(matches!(err, DictError::UnknownDi { .. }));
 }
 
 #[test]
 fn returns_error_when_buffer_is_too_short() {
-    let err = parse_di("csg13", 0x00010001, "南网", None, &[0x01]).unwrap_err();
+    let engine = get_engine();
+    let err = engine.parse("csg13", 0x00010001, "南网", None, &[0x01]).unwrap_err();
     assert!(matches!(err, DictError::UnexpectedEof { .. }));
 }
 
 #[test]
 fn parses_0001ff00_minimal_exists() {
     // minimal check: crate knows about DI 0x0001FF00 and returns UnexpectedEof on too-short buffer
-    let err = parse_di("csg13", 0x0001FF00, "南网", None, &[0x00]).unwrap_err();
+    let engine = get_engine();
+    let err = engine.parse("csg13", 0x0001FF00, "南网", None, &[0x00]).unwrap_err();
     assert!(matches!(err, DictError::UnexpectedEof { .. }));
 }
 
@@ -782,8 +783,9 @@ fn bitmask_can_replace_bitpattern_style_named_bit_list() {
         name_template: Some("测量点{index}".to_string()),
     };
 
+    let engine = get_engine();
     let mut ctx = Context::new();
-    let (value, consumed) = parse_field(&[0x02], &field, &mut ctx, "csg13", "南网", None)
+    let (value, consumed) = engine.parse_field(&[0x02], &field, &mut ctx, "csg13", "南网", None)
         .expect("bitmask bitpattern replacement failed");
 
     assert_eq!(consumed, 1);

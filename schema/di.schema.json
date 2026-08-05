@@ -160,7 +160,7 @@
         "separator": { "type": "string" },
         "pad": { "type": "boolean" },
         "unit": { "type": "string" },
-        "decimal": { "type": "integer", "minimum": 0, "maximum": 255 },
+        "decimals": { "type": "integer", "minimum": 0, "maximum": 255 },
         "enum": {
           "type": "object",
           "description": "键值枚举，key 是原始编码后的字符串（BCD十进制或十六进制，视字段编码而定），value 是含义。",

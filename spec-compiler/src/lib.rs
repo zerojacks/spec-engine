@@ -69,7 +69,7 @@
 //!     region: ["南网"]
 //!     length: 4
 //!     type: bcd
-//!     decimal: 2
+//!     decimals: 2
 //!     unit: "kWh"
 //! ```
 //!
@@ -82,7 +82,7 @@
 //!       - name: "电能值"
 //!         length: 4
 //!         type: bcd
-//!         decimal: 2
+//!         decimals: 2
 //!         unit: "kWh"
 //!
 //! data_items:
@@ -105,7 +105,7 @@
 //!           element:
 //!             length: 4
 //!             type: bcd
-//!             decimal: 2
+//!             decimals: 2
 //! ```
 //!
 //! ## 错误处理

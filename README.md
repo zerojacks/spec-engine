@@ -172,7 +172,7 @@ data_items:
     region: ["南网"]
     length: 4
     type: bcd
-    decimal: 2
+    decimals: 2
     unit: "kWh"
 ```
 
@@ -185,7 +185,7 @@ templates:
       - name: "电能值"
         length: 4
         type: bcd
-        decimal: 2
+        decimals: 2
         unit: "kWh"
 
 data_items:
@@ -208,7 +208,7 @@ data_items:
           element:
             length: 4
             type: bcd
-            decimal: 2
+            decimals: 2
             unit: "kWh"
 ```
 

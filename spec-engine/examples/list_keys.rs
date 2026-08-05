@@ -1,17 +1,25 @@
-use spec_engine::get_spec_catalog;
+//! 列出特定 DI 键的示例
+
+use spec_engine::Engine;
 
 fn main() {
-    let table = get_spec_catalog();
+    let engine = Engine::new_default();
+    
     let wanted: Vec<u32> = vec![
         0x00010001, 0x00010002, 0x00010003, 0x00010004, 0x00020001, 0x00020002, 0x00020003,
-        0x00030000, 0xE0000100, 0x00040000, 0x00050000, 0x00060000, 0x00070000, 0x00080000,
+        0x00020004, 0x00030001, 0x00030002, 0x00030003, 0x00030004,
     ];
-    let mut entries: Vec<_> = table
-        .keys()
-        .filter(|(protocol, di, _, _)| protocol == "csg13" && wanted.contains(di))
-        .collect();
-    entries.sort();
-    for (protocol, di, region, dir) in entries.iter() {
-        println!("{:?} 0x{:08X} {:?} {:?}", protocol, di, region, dir);
+
+    println!("=== 查找指定的 DI 键 ===\n");
+    
+    for di in wanted {
+        match engine.lookup("csg13", di, "南网", None) {
+            Some(field) => {
+                println!("DI {:08X}: {}", di, field.name);
+            }
+            None => {
+                println!("DI {:08X}: (未找到)", di);
+            }
+        }
     }
 }

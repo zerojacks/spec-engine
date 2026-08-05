@@ -5,9 +5,18 @@
 //! `cargo build` 失败，只会在跑到具体 DI/具体省份时才发现查不到或者解析错误，
 //! 光靠 `cargo build` 通过是测不出来的），所以专门写成断言而不是打印。
 
-use spec_engine::parse_di;
+use spec_engine::Engine;
 
 const PROTOCOL: &str = "csg13";
+
+fn get_engine() -> Engine {
+    Engine::new_default()
+}
+
+fn parse_di(protocol: &str, di: u32, region: &str, dir: Option<&str>, buf: &[u8]) -> Result<(spec_engine::Value, usize), spec_engine::DictError> {
+    let engine = get_engine();
+    engine.parse_di(protocol, di, region, dir, buf)
+}
 
 /// bug: `region: ["南网,广东,海南"]` 被误写成逗号拼接的单个字符串，导致这条
 /// DI 在"广东"/"海南"单独查询时查不到（实际注册进去的 key 是那个不存在的

@@ -1,4 +1,8 @@
-use spec_engine::{Context, FieldSpec, FieldLength, Encoding, Endian, NamedField, parse_field, Value};
+use spec_engine::{Engine, Context, FieldSpec, FieldLength, Encoding, Endian, NamedField, Value};
+
+fn get_engine() -> Engine {
+    Engine::new_default()
+}
 
 #[test]
 fn length_ref_remaining_runtime_demo() {
@@ -45,7 +49,8 @@ fn length_ref_remaining_runtime_demo() {
     // bind raw empty, value = Int(remaining_bytes)
     ctx.bind("$remaining", vec![], Value::Int((buf.len() - 2) as i64));
 
-    let (value, consumed) = parse_field(&buf, &spec, &mut ctx, "dlt645-2007", "南网", None)
+    let engine = get_engine();
+    let (value, consumed) = engine.parse_field(&buf, &spec, &mut ctx, "dlt645-2007", "南网", None)
         .expect("parse failed");
 
     assert_eq!(consumed, buf.len());
@@ -126,7 +131,9 @@ fn repeat_count_expr_runtime_demo() {
     let spec = FieldSpec::Container(fields);
     let buf: Vec<u8> = vec![0x01, 0x02, 0x03, 0x04, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88];
     let mut ctx = Context::new();
-    let (value, consumed) = parse_field(&buf, &spec, &mut ctx, "dlt645-2007", "南网", None)
+    
+    let engine = get_engine();
+    let (value, consumed) = engine.parse_field(&buf, &spec, &mut ctx, "dlt645-2007", "南网", None)
         .expect("parse failed");
 
     assert_eq!(consumed, buf.len());

@@ -97,7 +97,7 @@ pub struct RawField {
     #[serde(default)]
     pub unit: Option<String>,
     #[serde(default)]
-    pub decimal: Option<u8>,
+    pub decimals: Option<u8>,
     #[serde(rename = "enum", default)]
     pub enum_map: Option<HashMap<String, String>>,
     #[serde(default)]

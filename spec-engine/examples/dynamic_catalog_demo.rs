@@ -1,231 +1,165 @@
-//! DynamicCatalog 使用示例
+//! Engine 动态加载示例
 //!
 //! 演示如何：
 //! 1. 使用编译时嵌入的基础字典
 //! 2. 运行时从 YAML 文件加载额外的层
 //! 3. 层的优先级和覆盖规则
-//! 4. 层管理（加载、卸载、重载）
-//! 5. Region 特定的定义
+//! 4. 使用 EngineConfig 构建带动态层的 Engine
+//! 5. Engine 的热更新（创建新实例）
 
-use spec_engine::dynamic_loader::DynamicCatalog;
-use spec_engine::get_spec_catalog;
+use spec_engine::{Engine, EngineConfig, Layer, DiTable};
 
 fn main() {
     println!("╔════════════════════════════════════════════════════════╗");
-    println!("║         DynamicCatalog 功能演示                        ║");
+    println!("║         Engine 动态加载功能演示                        ║");
     println!("╚════════════════════════════════════════════════════════╝");
     println!();
 
-    // 1. 创建 DynamicCatalog，使用编译时嵌入的字典作为基础层
-    println!("【步骤 1】创建 DynamicCatalog（基于嵌入字典）");
-    let embedded = get_spec_catalog().clone();
-    println!("  嵌入字典条目数：{}", embedded.len());
-    
-    let mut catalog = DynamicCatalog::new(embedded);
-    println!("  初始动态层数：{}", catalog.layer_count());
+    // 1. 创建只使用静态字典的 Engine
+    println!("【步骤 1】创建基础 Engine（只使用静态字典）");
+    let static_engine = Engine::new_default();
+    println!("  动态层数：{}", static_engine.layer_count());
     println!();
 
-    // 2. 查看嵌入字典中原有的 DI
-    println!("【步骤 2】查看嵌入字典中的原始定义");
+    // 2. 查看静态字典中原有的 DI
+    println!("【步骤 2】查看静态字典中的原始定义");
     
     println!("  ◆ DI 0x00010000 (csg13, 南网):");
-    if let Some(field) = catalog.lookup("csg13", 0x00010000, "南网", None) {
+    if let Some(field) = static_engine.lookup("csg13", 0x00010000, "南网", None) {
         println!("    名称: {}", field.name);
-        println!("    定义: {:?}", field.spec);
-        println!("    来源: 嵌入字典");
-    } else {
-        println!("    未找到");
-    }
-    
-    println!();
-    println!("  ◆ DI 0x00020000 (csg13, 南网):");
-    if let Some(field) = catalog.lookup("csg13", 0x00020000, "南网", None) {
-        println!("    名称: {}", field.name);
-        println!("    定义: {:?}", field.spec);
-        println!("    来源: 嵌入字典");
+        println!("    来源: 静态字典");
     } else {
         println!("    未找到");
     }
     println!();
 
-    // 3. 从 YAML 文件加载动态层
-    println!("【步骤 3】从 YAML 文件加载动态层");
-    let yaml_path = "examples/schema";
+    // 3. 使用 EngineConfig 构建带动态层的 Engine
+    println!("【步骤 3】使用 EngineConfig 加载动态层");
+    let yaml_path = "examples/schema/csg13";
     
-    match catalog.load_yaml_dir("dynamic_layer".to_string(), yaml_path) {
-        Ok(()) => {
-            println!("  ✓ 成功从 {} 加载动态层", yaml_path);
-            println!("  当前层数: {}", catalog.layer_count());
+    let dynamic_engine = match EngineConfig::new()
+        .yaml_dir(yaml_path)
+        .build()
+    {
+        Ok(engine) => {
+            println!("  ✓ 成功加载动态层");
+            println!("  当前层数: {}", engine.layer_count());
+            println!("  层列表: {:?}", engine.layer_names());
+            engine
         }
         Err(e) => {
             eprintln!("  ✗ 加载失败: {}", e);
             eprintln!("  提示: 请确保运行目录在 spec-engine 根目录");
             return;
         }
-    }
+    };
     println!();
 
-    // 4. 测试覆盖：查看被动态层覆盖后的 DI
-    println!("【步骤 4】测试动态覆盖（对比前后变化）");
+    // 4. 对比静态和动态 Engine
+    println!("【步骤 4】对比静态 Engine 和动态 Engine");
     
     println!("  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-    println!("  ◆ DI 0x00010000 - 类型和精度改变");
+    println!("  ◆ DI 0x00010000 对比");
     println!("  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-    if let Some(field) = catalog.lookup("csg13", 0x00010000, "南网", None) {
-        println!("  名称: {}", field.name);
-        println!("  定义: {:?}", field.spec);
-        if field.name.contains("动态覆盖") {
-            println!("  状态: ✓ 已被动态层覆盖");
-            println!("  变化: 4字节/2位小数 → 8字节/4位小数");
-        } else {
-            println!("  状态: ✗ 未被覆盖（使用嵌入字典）");
-        }
+    
+    // 静态 Engine
+    if let Some(field) = static_engine.lookup("csg13", 0x00010000, "南网", None) {
+        println!("  静态 Engine:");
+        println!("    名称: {}", field.name);
     }
     
-    println!();
-    println!("  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-    println!("  ◆ DI 0x00020000 - 简单字段变为容器结构");
-    println!("  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-    if let Some(field) = catalog.lookup("csg13", 0x00020000, "南网", None) {
-        println!("  名称: {}", field.name);
-        match &field.spec {
-            spec_engine::FieldSpec::Fixed { .. } => {
-                println!("  类型: Fixed (简单字段)");
-                println!("  状态: ✗ 未被覆盖（使用嵌入字典）");
-            }
-            spec_engine::FieldSpec::Container(fields) => {
-                println!("  类型: Container (容器结构)");
-                println!("  子字段数: {}", fields.len());
-                println!("  状态: ✓ 已被动态层覆盖");
-                println!("  变化: 简单 BCD 字段 → 包含状态/值/时间戳的复杂结构");
-                for (i, f) in fields.iter().enumerate() {
-                    println!("    [{} {}]", i + 1, f.name);
-                }
-            }
-            _ => {
-                println!("  类型: {:?}", field.spec);
-            }
+    // 动态 Engine
+    if let Some(field) = dynamic_engine.lookup("csg13", 0x00010000, "南网", None) {
+        println!("  动态 Engine:");
+        println!("    名称: {}", field.name);
+        if field.name.contains("动态") {
+            println!("    状态: ✓ 已被动态层覆盖");
         }
     }
     println!();
 
-    // 5. 测试新增的 DI（嵌入字典中不存在）
-    println!("【步骤 5】测试动态新增的 DI");
+    // 5. 测试解析（使用动态 Engine）
+    println!("【步骤 5】测试解析（使用动态 Engine）");
+    let data = vec![0x01, 0x23, 0x45, 0x67];
     
-    // 测试复杂的容器字段
-    if let Some(field) = catalog.lookup("csg13", 0x0000FF00, "南网", None) {
-        println!("  DI 0x0000FF00 (csg13, 南网):");
-        println!("    名称: {}", field.name);
-        println!("    来源: ✓ 动态层（新增）");
-    } else {
-        println!("  DI 0x0000FF00: ✗ 未找到");
-    }
-    
-    // 测试简单字段
-    if let Some(field) = catalog.lookup("csg13", 0x0000FF01, "南网", None) {
-        println!("  DI 0x0000FF01 (csg13, 南网):");
-        println!("    名称: {}", field.name);
-        println!("    来源: ✓ 动态层（新增）");
-    } else {
-        println!("  DI 0x0000FF01: ✗ 未找到");
-    }
-    println!();
-
-    // 6. 测试 Region 特定的定义
-    println!("【步骤 6】测试 Region 特定定义");
-    
-    // 云南特定
-    if let Some(field) = catalog.lookup("csg13", 0x0000FF02, "云南", None) {
-        println!("  DI 0x0000FF02 (csg13, 云南):");
-        println!("    名称: {}", field.name);
-        println!("    来源: ✓ 动态层（云南特定）");
-    } else {
-        println!("  DI 0x0000FF02 (云南): ✗ 未找到");
-    }
-    
-    // 深圳特定
-    if let Some(field) = catalog.lookup("csg13", 0x0000FF03, "深圳", None) {
-        println!("  DI 0x0000FF03 (csg13, 深圳):");
-        println!("    名称: {}", field.name);
-        println!("    来源: ✓ 动态层（深圳特定）");
-    } else {
-        println!("  DI 0x0000FF03 (深圳): ✗ 未找到");
-    }
-    
-    // 测试 Region 回退：在南网查找深圳特定的 DI（应该找不到）
-    if let Some(field) = catalog.lookup("csg13", 0x0000FF03, "南网", None) {
-        println!("  DI 0x0000FF03 (csg13, 南网):");
-        println!("    名称: {}", field.name);
-        println!("    来源: 回退到了深圳定义（不应该发生）");
-    } else {
-        println!("  DI 0x0000FF03 (csg13, 南网): ✓ 未找到（正确，因为这是深圳特定）");
-    }
-    println!();
-
-    // 7. 层管理：重新加载
-    println!("【步骤 7】测试层重新加载");
-    match catalog.reload_yaml_dir("dynamic_layer", yaml_path) {
-        Ok(()) => {
-            println!("  ✓ 成功重新加载 dynamic_layer");
+    match dynamic_engine.parse("csg13", 0x00010000, "南网", None, &data) {
+        Ok((value, consumed)) => {
+            println!("  ✓ 解析成功");
+            println!("    消耗字节数: {}", consumed);
+            println!("    解析结果: {:?}", value);
         }
         Err(e) => {
-            println!("  ✗ 重新加载失败: {}", e);
+            println!("  ✗ 解析失败: {}", e);
         }
     }
     println!();
 
-    // 8. 层管理：卸载
-    println!("【步骤 8】测试层卸载（验证恢复原始定义）");
-    println!("  卸载前层列表: {:?}", catalog.list_layers());
+    // 6. 热更新演示：创建新的 Engine 实例
+    println!("【步骤 6】热更新演示（创建新 Engine 实例）");
     
-    match catalog.unload_layer("dynamic_layer") {
-        Ok(removed) => {
-            println!("  ✓ 已卸载层: {}", removed.name);
-            println!("  卸载后层列表: {:?}", catalog.list_layers());
-            
-            println!();
-            println!("  验证卸载后是否恢复原始定义：");
-            
-            // 验证 DI 0x00010000
-            if let Some(field) = catalog.lookup("csg13", 0x00010000, "南网", None) {
-                println!("    DI 0x00010000:");
-                println!("      名称: {}", field.name);
-                if field.name.contains("动态覆盖") {
-                    println!("      状态: ✗ 仍然是动态层定义（卸载失败）");
-                } else {
-                    println!("      状态: ✓ 恢复为嵌入字典定义");
-                    println!("      验证: 名称不再包含\"动态覆盖\"");
-                }
-            }
-            
-            // 验证 DI 0x00020000
-            if let Some(field) = catalog.lookup("csg13", 0x00020000, "南网", None) {
-                println!("    DI 0x00020000:");
-                match &field.spec {
-                    spec_engine::FieldSpec::Fixed { .. } => {
-                        println!("      状态: ✓ 恢复为简单字段");
-                    }
-                    spec_engine::FieldSpec::Container(_) => {
-                        println!("      状态: ✗ 仍然是容器结构（卸载失败）");
-                    }
-                    _ => {}
-                }
-            }
+    // 模拟热更新：加载不同的配置
+    let _updated_engine = match EngineConfig::new()
+        .yaml_dir(yaml_path)
+        .build()
+    {
+        Ok(engine) => {
+            println!("  ✓ 创建新 Engine 成功");
+            println!("  旧 Engine 仍然可用（不影响现有解析）");
+            println!("  新 Engine 层数: {}", engine.layer_count());
+            engine
         }
         Err(e) => {
-            println!("  ✗ 卸载失败: {}", e);
+            println!("  ✗ 创建失败: {}", e);
+            return;
         }
+    };
+    
+    // 验证旧 Engine 仍然可用
+    println!("  验证旧 Engine 仍然可用:");
+    if dynamic_engine.lookup("csg13", 0x00010000, "南网", None).is_some() {
+        println!("    ✓ 旧 Engine 正常工作");
     }
+    
     println!();
 
-    // 9. 统计信息
-    println!("【步骤 9】完整统计信息");
-    catalog.stats().print();
-
+    // 7. 多层配置演示
+    println!("【步骤 7】多层配置演示");
+    
+    // 创建多层的 Engine  
+    let layer1 = Layer::new("base".to_string(), DiTable::new());
+    let layer2 = Layer::new("custom".to_string(), DiTable::new());
+    
+    let multi_layer_engine = Engine::with_layers(
+        vec![layer1, layer2],
+    );
+    
+    println!("  ✓ 创建多层 Engine");
+    println!("  层列表: {:?}", multi_layer_engine.layer_names());
+    println!("  优先级: {} > {} > 静态字典", 
+        multi_layer_engine.layer_names().get(1).unwrap_or(&"".to_string()),
+        multi_layer_engine.layer_names().get(0).unwrap_or(&"".to_string())
+    );
     println!();
+
+    // 8. Engine Clone 演示
+    println!("【步骤 8】Engine Clone 演示（轻量复制）");
+    let cloned_engine = dynamic_engine.clone();
+    println!("  ✓ Engine 克隆成功");
+    println!("  原 Engine 层数: {}", dynamic_engine.layer_count());
+    println!("  克隆 Engine 层数: {}", cloned_engine.layer_count());
+    println!("  说明: Clone 只是增加 Arc 引用计数，非常轻量");
+    println!();
+
     println!("╔════════════════════════════════════════════════════════╗");
     println!("║                   演示完成                             ║");
     println!("╚════════════════════════════════════════════════════════╝");
+    println!();
+    println!("💡 新架构特点：");
+    println!("   • Engine 是不可变的，配置在创建时确定");
+    println!("   • 热更新通过创建新 Engine 实例实现");
+    println!("   • 旧 Engine 实例仍然有效，可以平滑切换");
+    println!("   • Engine 是轻量 Clone 的（Arc-based）");
+    println!("   • 使用 EngineConfig 构建器创建复杂配置");
     println!();
     println!("💡 提示：");
     println!("   可以修改 examples/schema/csg13/dynamic.yaml 添加更多测试 DI");

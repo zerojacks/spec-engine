@@ -677,7 +677,7 @@ pub fn gen_fixed(rf: &RawField, ty: &str) -> FieldSpec {
             signed,
         },
         "bcd" => {
-            let decimals = rf.decimal.unwrap_or(0);
+            let decimals = rf.decimals.unwrap_or(0);
             let endian = match rf.endian.as_deref() {
                 Some("big") => Some(Endian::Big),
                 Some("little") => Some(Endian::Little),

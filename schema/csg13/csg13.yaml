@@ -23,7 +23,7 @@ data_items:
         length: 4
         type: bcd
         unit: "kWh"
-        decimal: 2
+        decimals: 2
       - candidate_ids: 
           count: 63
           count_ref: rate_count
@@ -33,7 +33,7 @@ data_items:
             length: 4
             type: bcd
             unit: "kWh"
-            decimal: 2
+            decimals: 2
 
   - id: "0001FF00"
     name: "(当前)正向有功电能数据块"
@@ -50,7 +50,7 @@ data_items:
         length: 4
         type: bcd
         unit: "kWh"
-        decimal: 2
+        decimals: 2
 
       - candidate_ids: 
           count: 63
@@ -61,7 +61,7 @@ data_items:
             length: 4
             type: bcd
             unit: "kWh"
-            decimal: 2
+            decimals: 2
             
   - id: "0002FF00"
     name: "(当前)反向有功电能数据块"
@@ -78,7 +78,7 @@ data_items:
         length: 4
         type: bcd
         unit: "kWh"
-        decimal: 2
+        decimals: 2
       - candidate_ids: 
           count: 63
           count_ref: rate_count
@@ -88,7 +88,7 @@ data_items:
             length: 4
             type: bcd
             unit: "kWh"
-            decimal: 2
+            decimals: 2
 
   - id: "0003FF00"
     name: "(当前)组合无功1电能数据块"
@@ -105,7 +105,7 @@ data_items:
         length: 4
         type: bcd
         unit: "kvarh"
-        decimal: 2
+        decimals: 2
       - candidate_ids: 
           count: 63
           count_ref: rate_count
@@ -115,7 +115,7 @@ data_items:
             length: 4
             type: bcd
             unit: "kWh"
-            decimal: 2
+            decimals: 2
 
   - id: "0004FF00"
     name: "(当前)组合无功2电能数据块"
@@ -132,7 +132,7 @@ data_items:
         length: 4
         type: bcd
         unit: "kvarh"
-        decimal: 2
+        decimals: 2
       - candidate_ids: 
           count: 63
           count_ref: rate_count
@@ -142,7 +142,7 @@ data_items:
             length: 4
             type: bcd
             unit: "kvarh"
-            decimal: 2
+            decimals: 2
 
   - id: "0005FF00"
     name: "(当前)第一象限无功电能数据块"
@@ -159,7 +159,7 @@ data_items:
         length: 4
         type: bcd
         unit: "kvarh"
-        decimal: 2
+        decimals: 2
       - candidate_ids: 
           count: 63
           count_ref: rate_count
@@ -169,7 +169,7 @@ data_items:
             length: 4
             type: bcd
             unit: "kvarh"
-            decimal: 2
+            decimals: 2
 
   - id: "0006FF00"
     name: "(当前)第二象限无功电能数据块"
@@ -186,7 +186,7 @@ data_items:
         length: 4
         type: bcd
         unit: "kvarh"
-        decimal: 2
+        decimals: 2
       - candidate_ids: 
           count: 63
           count_ref: rate_count
@@ -196,7 +196,7 @@ data_items:
             length: 4
             type: bcd
             unit: "kvarh"
-            decimal: 2
+            decimals: 2
 
   - id: "0007FF00"
     name: "(当前)第三象限无功电能数据块"
@@ -213,7 +213,7 @@ data_items:
         length: 4
         type: bcd
         unit: "kvarh"
-        decimal: 2
+        decimals: 2
       - candidate_ids: 
           count: 63
           count_ref: rate_count
@@ -223,7 +223,7 @@ data_items:
             length: 4
             type: bcd
             unit: "kvarh"
-            decimal: 2
+            decimals: 2
 
   - id: "0008FF00"
     name: "(当前)第四象限无功电能数据块"
@@ -240,7 +240,7 @@ data_items:
         length: 4
         type: bcd
         unit: "kvarh"
-        decimal: 2
+        decimals: 2
       - candidate_ids: 
           count: 63
           count_ref: rate_count
@@ -250,7 +250,7 @@ data_items:
             length: 4
             type: bcd
             unit: "kvarh"
-            decimal: 2
+            decimals: 2
 
   - id: "0009FF00"
     name: "(当前)正向视在电能数据块"
@@ -267,7 +267,7 @@ data_items:
         length: 4
         type: bcd
         unit: "kVAh"
-        decimal: 2
+        decimals: 2
       - candidate_ids: 
           count: 63
           count_ref: rate_count
@@ -277,7 +277,7 @@ data_items:
             length: 4
             type: bcd
             unit: "kVAh"
-            decimal: 2
+            decimals: 2
 
   - id: "000AFF00"
     name: "(当前)反向视在电能数据块"
@@ -294,7 +294,7 @@ data_items:
         length: 4
         type: bcd
         unit: "kVAh"
-        decimal: 2
+        decimals: 2
       - candidate_ids: 
           count: 63
           count_ref: rate_count
@@ -304,7 +304,7 @@ data_items:
             length: 4
             type: bcd
             unit: "kVAh"
-            decimal: 2
+            decimals: 2
 
   - id: "00800000"
     name: "(当前)关联总电能"
@@ -313,7 +313,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kWh"
-    decimal: 2
+    decimals: 2
   - id: "00810000"
     name: "(当前)正向有功基波总电能"
     protocol: "csg13"
@@ -321,7 +321,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kVAh"
-    decimal: 2
+    decimals: 2
   - id: "00820000"
     name: "(当前)反向有功基波总电能"
     protocol: "csg13"
@@ -329,7 +329,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kVAh"
-    decimal: 2
+    decimals: 2
   - id: "00830000"
     name: "(当前)正向有功谐波总电能"
     protocol: "csg13"
@@ -337,7 +337,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kWh"
-    decimal: 2
+    decimals: 2
   - id: "00840000"
     name: "(当前)反向有功谐波总电能"
     protocol: "csg13"
@@ -345,7 +345,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kWh"
-    decimal: 2
+    decimals: 2
   - id: "00850000"
     name: "(当前)铜损有功总电能补偿量"
     protocol: "csg13"
@@ -353,7 +353,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kWh"
-    decimal: 2
+    decimals: 2
   - id: "00860000"
     name: "(当前)铁损有功总电能补偿量"
     protocol: "csg13"
@@ -361,7 +361,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kWh"
-    decimal: 2
+    decimals: 2
   - id: "00150000"
     name: "(当前)A相正向有功电能"
     protocol: "csg13"
@@ -369,7 +369,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kWh"
-    decimal: 2
+    decimals: 2
   - id: "00160000"
     name: "(当前)A相反向有功电能"
     protocol: "csg13"
@@ -377,7 +377,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kWh"
-    decimal: 2
+    decimals: 2
   - id: "00170000"
     name: "(当前)A相组合无功1电能"
     protocol: "csg13"
@@ -385,7 +385,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kvarh"
-    decimal: 2
+    decimals: 2
   - id: "00180000"
     name: "(当前)A相组合无功2电能"
     protocol: "csg13"
@@ -393,7 +393,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kvarh"
-    decimal: 2
+    decimals: 2
   - id: "00190000"
     name: "(当前)A相第一象限无功电能"
     protocol: "csg13"
@@ -401,7 +401,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kvarh"
-    decimal: 2
+    decimals: 2
   - id: "001A0000"
     name: "(当前)A相第二象限无功电能"
     protocol: "csg13"
@@ -409,7 +409,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kvarh"
-    decimal: 2
+    decimals: 2
   - id: "001B0000"
     name: "(当前)A相第三象限无功电能"
     protocol: "csg13"
@@ -417,7 +417,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kvarh"
-    decimal: 2
+    decimals: 2
   - id: "001C0000"
     name: "(当前)A相第四象限无功电能"
     protocol: "csg13"
@@ -425,7 +425,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kvarh"
-    decimal: 2
+    decimals: 2
   - id: "001D0000"
     name: "(当前)A相正向视在电能"
     protocol: "csg13"
@@ -433,7 +433,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kvarh"
-    decimal: 2
+    decimals: 2
   - id: "001E0000"
     name: "(当前)A相反向视在电能"
     protocol: "csg13"
@@ -441,7 +441,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kvarh"
-    decimal: 2
+    decimals: 2
   - id: "00940000"
     name: "(当前)A相关联电能"
     protocol: "csg13"
@@ -449,7 +449,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kWh"
-    decimal: 2
+    decimals: 2
   - id: "00950000"
     name: "(当前)A相正向有功基波电能"
     protocol: "csg13"
@@ -457,7 +457,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kWh"
-    decimal: 2
+    decimals: 2
   - id: "00960000"
     name: "(当前)A相反向有功基波电能"
     protocol: "csg13"
@@ -465,7 +465,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kWh"
-    decimal: 2
+    decimals: 2
   - id: "00970000"
     name: "(当前)A相正向有功谐波电能"
     protocol: "csg13"
@@ -473,7 +473,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kWh"
-    decimal: 2
+    decimals: 2
   - id: "00980000"
     name: "(当前)A相反向有功谐波电能"
     protocol: "csg13"
@@ -481,7 +481,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kWh"
-    decimal: 2
+    decimals: 2
   - id: "00990000"
     name: "(当前)A相铜损有功电能补偿量"
     protocol: "csg13"
@@ -489,7 +489,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kWh"
-    decimal: 2
+    decimals: 2
   - id: "009A0000"
     name: "(当前)A相铁损有功电能补偿量"
     protocol: "csg13"
@@ -497,7 +497,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kWh"
-    decimal: 2
+    decimals: 2
   - id: "00290000"
     name: "(当前)B相正向有功电能"
     protocol: "csg13"
@@ -505,7 +505,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kWh"
-    decimal: 2
+    decimals: 2
   - id: "002A0000"
     name: "(当前)B相反向有功电能"
     protocol: "csg13"
@@ -513,7 +513,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kWh"
-    decimal: 2
+    decimals: 2
   - id: "002B0000"
     name: "(当前)B相组合无功1电能"
     protocol: "csg13"
@@ -521,7 +521,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kvarh"
-    decimal: 2
+    decimals: 2
   - id: "002C0000"
     name: "(当前)B相组合无功2电能"
     protocol: "csg13"
@@ -529,7 +529,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kvarh"
-    decimal: 2
+    decimals: 2
   - id: "002D0000"
     name: "(当前)B相第一象限无功电能"
     protocol: "csg13"
@@ -537,7 +537,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kvarh"
-    decimal: 2
+    decimals: 2
   - id: "002E0000"
     name: "(当前)B相第二象限无功电能"
     protocol: "csg13"
@@ -545,7 +545,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kvarh"
-    decimal: 2
+    decimals: 2
   - id: "002F0000"
     name: "(当前)B相第三象限无功电能"
     protocol: "csg13"
@@ -553,7 +553,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kvarh"
-    decimal: 2
+    decimals: 2
   - id: "00300000"
     name: "(当前)B相第四象限无功电能"
     protocol: "csg13"
@@ -561,7 +561,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kvarh"
-    decimal: 2
+    decimals: 2
   - id: "00310000"
     name: "(当前)B相正向视在电能"
     protocol: "csg13"
@@ -569,7 +569,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kvarh"
-    decimal: 2
+    decimals: 2
   - id: "00320000"
     name: "(当前)B相反向视在电能"
     protocol: "csg13"
@@ -577,7 +577,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kvarh"
-    decimal: 2
+    decimals: 2
   - id: "00A80000"
     name: "(当前)B相关联电能"
     protocol: "csg13"
@@ -585,7 +585,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kWh"
-    decimal: 2
+    decimals: 2
   - id: "00A90000"
     name: "(当前)B相正向有功基波电能"
     protocol: "csg13"
@@ -593,7 +593,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kWh"
-    decimal: 2
+    decimals: 2
   - id: "00AA0000"
     name: "(当前)B相反向有功基波电能"
     protocol: "csg13"
@@ -601,7 +601,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kWh"
-    decimal: 2
+    decimals: 2
   - id: "00AB0000"
     name: "(当前)B相正向有功谐波电能"
     protocol: "csg13"
@@ -609,7 +609,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kWh"
-    decimal: 2
+    decimals: 2
   - id: "00AC0000"
     name: "(当前)B相反向有功谐波电能"
     protocol: "csg13"
@@ -617,7 +617,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kWh"
-    decimal: 2
+    decimals: 2
   - id: "00AD0000"
     name: "(当前)B相铜损有功电能补偿量"
     protocol: "csg13"
@@ -625,7 +625,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kWh"
-    decimal: 2
+    decimals: 2
   - id: "00AE0000"
     name: "(当前)B相铁损有功电能补偿量"
     protocol: "csg13"
@@ -633,7 +633,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kWh"
-    decimal: 2
+    decimals: 2
   - id: "003D0000"
     name: "(当前)C相正向有功电能"
     protocol: "csg13"
@@ -641,7 +641,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kWh"
-    decimal: 2
+    decimals: 2
   - id: "003E0000"
     name: "(当前)C相反向有功电能"
     protocol: "csg13"
@@ -649,7 +649,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kWh"
-    decimal: 2
+    decimals: 2
   - id: "003F0000"
     name: "(当前)C相组合无功1电能"
     protocol: "csg13"
@@ -657,7 +657,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kvarh"
-    decimal: 2
+    decimals: 2
   - id: "00400000"
     name: "(当前)C相组合无功2电能"
     protocol: "csg13"
@@ -665,7 +665,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kvarh"
-    decimal: 2
+    decimals: 2
   - id: "00410000"
     name: "(当前)C相第一象限无功电能"
     protocol: "csg13"
@@ -673,7 +673,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kvarh"
-    decimal: 2
+    decimals: 2
   - id: "00420000"
     name: "(当前)C相第二象限无功电能"
     protocol: "csg13"
@@ -681,7 +681,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kvarh"
-    decimal: 2
+    decimals: 2
   - id: "00430000"
     name: "(当前)C相第三象限无功电能"
     protocol: "csg13"
@@ -689,7 +689,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kvarh"
-    decimal: 2
+    decimals: 2
   - id: "00440000"
     name: "(当前)C相第四象限无功电能"
     protocol: "csg13"
@@ -697,7 +697,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kvarh"
-    decimal: 2
+    decimals: 2
   - id: "00450000"
     name: "(当前)C相正向视在电能"
     protocol: "csg13"
@@ -705,7 +705,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kvarh"
-    decimal: 2
+    decimals: 2
   - id: "00460000"
     name: "(当前)C相反向视在电能"
     protocol: "csg13"
@@ -713,7 +713,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kvarh"
-    decimal: 2
+    decimals: 2
   - id: "00BC0000"
     name: "(当前)C相关联电能"
     protocol: "csg13"
@@ -721,7 +721,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kWh"
-    decimal: 2
+    decimals: 2
   - id: "00BD0000"
     name: "(当前)C相正向有功基波电能"
     protocol: "csg13"
@@ -729,7 +729,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kWh"
-    decimal: 2
+    decimals: 2
   - id: "00BE0000"
     name: "(当前)C相反向有功基波电能"
     protocol: "csg13"
@@ -737,7 +737,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kWh"
-    decimal: 2
+    decimals: 2
   - id: "00BF0000"
     name: "(当前)C相正向有功谐波电能"
     protocol: "csg13"
@@ -745,7 +745,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kWh"
-    decimal: 2
+    decimals: 2
   - id: "00C00000"
     name: "(当前)C相反向有功谐波电能"
     protocol: "csg13"
@@ -753,7 +753,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kWh"
-    decimal: 2
+    decimals: 2
   - id: "00C10000"
     name: "(当前)C相铜损有功电能补偿量"
     protocol: "csg13"
@@ -761,7 +761,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kWh"
-    decimal: 2
+    decimals: 2
   - id: "00C20000"
     name: "(当前)C相铁损有功电能补偿量"
     protocol: "csg13"
@@ -769,7 +769,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kWh"
-    decimal: 2
+    decimals: 2
 
   - id: "0101FF00"
     name: "(当前)正向有功最大需量及发生时间数据块"
@@ -789,7 +789,7 @@ data_items:
             length: 3
             type: bcd
             unit: "kW"
-            decimal: 4
+            decimals: 4
           - name: "发生时间"
             length: 5
             type:  bcd
@@ -806,7 +806,7 @@ data_items:
                 length: 3
                 type: bcd
                 unit: "kW"
-                decimal: 4
+                decimals: 4
               - name: "发生时间"
                 length: 5
                 type: bcd
@@ -830,7 +830,7 @@ data_items:
             length: 3
             type: bcd
             unit: "kW"
-            decimal: 4
+            decimals: 4
           - name: "发生时间"
             length: 5
             type: bcd
@@ -847,7 +847,7 @@ data_items:
                 length: 3
                 type: bcd
                 unit: "kW"
-                decimal: 4
+                decimals: 4
               - name: "发生时间"
                 length: 5
                 type: bcd
@@ -871,7 +871,7 @@ data_items:
             length: 3
             type: bcd
             unit: "kW"
-            decimal: 4
+            decimals: 4
           - name: "发生时间"
             length: 5
             type: bcd
@@ -888,7 +888,7 @@ data_items:
                 length: 3
                 type: bcd
                 unit: "kW"
-                decimal: 4
+                decimals: 4
               - name: "发生时间"
                 length: 5
                 type: bcd
@@ -912,7 +912,7 @@ data_items:
             length: 3
             type: bcd
             unit: "kW"
-            decimal: 4
+            decimals: 4
           - name: "发生时间"
             length: 5
             type: bcd
@@ -929,7 +929,7 @@ data_items:
                 length: 3
                 type: bcd
                 unit: "kW"
-                decimal: 4
+                decimals: 4
               - name: "发生时间"
                 length: 5
                 type: bcd
@@ -953,7 +953,7 @@ data_items:
             length: 3
             type: bcd
             unit: "kw"
-            decimal: 4
+            decimals: 4
           - name: "发生时间"
             length: 5
             type: bcd
@@ -970,7 +970,7 @@ data_items:
                 length: 3
                 type: bcd
                 unit: "kW"
-                decimal: 4
+                decimals: 4
               - name: "发生时间"
                 length: 5
                 type: bcd
@@ -994,7 +994,7 @@ data_items:
             length: 3
             type: bcd
             unit: "kw"
-            decimal: 4
+            decimals: 4
           - name: "发生时间"
             length: 5
             type: bcd
@@ -1011,7 +1011,7 @@ data_items:
                 length: 3
                 type: bcd
                 unit: "kW"
-                decimal: 4
+                decimals: 4
               - name: "发生时间"
                 length: 5
                 type: bcd
@@ -1035,7 +1035,7 @@ data_items:
             length: 3
             type: bcd
             unit: "kw"
-            decimal: 4
+            decimals: 4
           - name: "发生时间"
             length: 5
             type: bcd
@@ -1052,7 +1052,7 @@ data_items:
                 length: 3
                 type: bcd
                 unit: "kW"
-                decimal: 4
+                decimals: 4
               - name: "发生时间"
                 length: 5
                 type: bcd
@@ -1076,7 +1076,7 @@ data_items:
             length: 3
             type: bcd
             unit: "kw"
-            decimal: 4
+            decimals: 4
           - name: "发生时间"
             length: 5
             type: bcd
@@ -1093,7 +1093,7 @@ data_items:
                 length: 3
                 type: bcd
                 unit: "kW"
-                decimal: 4
+                decimals: 4
               - name: "发生时间"
                 length: 5
                 type: bcd
@@ -1117,7 +1117,7 @@ data_items:
             length: 3
             type: bcd
             unit: "kw"
-            decimal: 4
+            decimals: 4
           - name: "发生时间"
             length: 5
             type: bcd
@@ -1134,7 +1134,7 @@ data_items:
                 length: 3
                 type: bcd
                 unit: "kW"
-                decimal: 4
+                decimals: 4
               - name: "发生时间"
                 length: 5
                 type: bcd
@@ -1158,7 +1158,7 @@ data_items:
             length: 3
             type: bcd
             unit: "kw"
-            decimal: 4
+            decimals: 4
           - name: "发生时间"
             length: 5
             type: bcd
@@ -1175,7 +1175,7 @@ data_items:
                 length: 3
                 type: bcd
                 unit: "kW"
-                decimal: 4
+                decimals: 4
               - name: "发生时间"
                 length: 5
                 type: bcd
@@ -1191,7 +1191,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -1206,7 +1206,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -1221,7 +1221,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
         signed: true
       - name: "发生时间"
         length: 5
@@ -1237,7 +1237,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
         signed: true
       - name: "发生时间"
         length: 5
@@ -1253,7 +1253,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -1268,7 +1268,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -1283,7 +1283,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -1298,7 +1298,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -1313,7 +1313,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -1328,7 +1328,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -1343,7 +1343,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -1358,7 +1358,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -1373,7 +1373,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
         signed: true
       - name: "发生时间"
         length: 5
@@ -1389,7 +1389,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
         signed: true
       - name: "发生时间"
         length: 5
@@ -1405,7 +1405,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -1420,7 +1420,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -1435,7 +1435,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -1450,7 +1450,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -1465,7 +1465,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -1480,7 +1480,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -1495,7 +1495,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -1510,7 +1510,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -1525,7 +1525,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
         signed: true
       - name: "发生时间"
         length: 5
@@ -1541,7 +1541,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
         signed: true
       - name: "发生时间"
         length: 5
@@ -1557,7 +1557,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -1572,7 +1572,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -1587,7 +1587,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -1602,7 +1602,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -1617,7 +1617,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -1632,7 +1632,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -1655,7 +1655,7 @@ data_items:
             length: 3
             type: bcd
             unit: "kw"
-            decimal: 4
+            decimals: 4
           - name: "发生时间"
             length: 5
             type: bcd
@@ -1672,7 +1672,7 @@ data_items:
                 length: 3
                 type: bcd
                 unit: "kW"
-                decimal: 4
+                decimals: 4
               - name: "发生时间"
                 length: 5
                 type: bcd
@@ -1696,7 +1696,7 @@ data_items:
             length: 3
             type: bcd
             unit: "kw"
-            decimal: 4
+            decimals: 4
           - name: "发生时间"
             length: 5
             type: bcd
@@ -1713,7 +1713,7 @@ data_items:
                 length: 3
                 type: bcd
                 unit: "kW"
-                decimal: 4
+                decimals: 4
               - name: "发生时间"
                 length: 5
                 type: bcd
@@ -1737,7 +1737,7 @@ data_items:
             length: 3
             type: bcd
             unit: "kw"
-            decimal: 4
+            decimals: 4
             signed: true
           - name: "发生时间"
             length: 5
@@ -1755,7 +1755,7 @@ data_items:
                 length: 3
                 type: bcd
                 unit: "kW"
-                decimal: 4
+                decimals: 4
               - name: "发生时间"
                 length: 5
                 type: bcd
@@ -1779,7 +1779,7 @@ data_items:
             length: 3
             type: bcd
             unit: "kw"
-            decimal: 4
+            decimals: 4
             signed: true
           - name: "发生时间"
             length: 5
@@ -1797,7 +1797,7 @@ data_items:
                 length: 3
                 type: bcd
                 unit: "kW"
-                decimal: 4
+                decimals: 4
               - name: "发生时间"
                 length: 5
                 type: bcd
@@ -1821,7 +1821,7 @@ data_items:
             length: 3
             type: bcd
             unit: "kw"
-            decimal: 4
+            decimals: 4
           - name: "发生时间"
             length: 5
             type: bcd
@@ -1838,7 +1838,7 @@ data_items:
                 length: 3
                 type: bcd
                 unit: "kW"
-                decimal: 4
+                decimals: 4
               - name: "发生时间"
                 length: 5
                 type: bcd
@@ -1862,7 +1862,7 @@ data_items:
             length: 3
             type: bcd
             unit: "kw"
-            decimal: 4
+            decimals: 4
           - name: "发生时间"
             length: 5
             type: bcd
@@ -1879,7 +1879,7 @@ data_items:
                 length: 3
                 type: bcd
                 unit: "kW"
-                decimal: 4
+                decimals: 4
               - name: "发生时间"
                 length: 5
                 type: bcd
@@ -1903,7 +1903,7 @@ data_items:
             length: 3
             type: bcd
             unit: "kw"
-            decimal: 4
+            decimals: 4
           - name: "发生时间"
             length: 5
             type: bcd
@@ -1920,7 +1920,7 @@ data_items:
                 length: 3
                 type: bcd
                 unit: "kW"
-                decimal: 4
+                decimals: 4
               - name: "发生时间"
                 length: 5
                 type: bcd
@@ -1944,7 +1944,7 @@ data_items:
             length: 3
             type: bcd
             unit: "kw"
-            decimal: 4
+            decimals: 4
           - name: "发生时间"
             length: 5
             type: bcd
@@ -1961,7 +1961,7 @@ data_items:
                 length: 3
                 type: bcd
                 unit: "kW"
-                decimal: 4
+                decimals: 4
               - name: "发生时间"
                 length: 5
                 type: bcd
@@ -1985,7 +1985,7 @@ data_items:
             length: 3
             type: bcd
             unit: "kw"
-            decimal: 4
+            decimals: 4
           - name: "发生时间"
             length: 5
             type: bcd
@@ -2002,7 +2002,7 @@ data_items:
                 length: 3
                 type: bcd
                 unit: "kW"
-                decimal: 4
+                decimals: 4
               - name: "发生时间"
                 length: 5
                 type: bcd
@@ -2026,7 +2026,7 @@ data_items:
             length: 3
             type: bcd
             unit: "kw"
-            decimal: 4
+            decimals: 4
           - name: "发生时间"
             length: 5
             type: bcd
@@ -2043,7 +2043,7 @@ data_items:
                 length: 3
                 type: bcd
                 unit: "kW"
-                decimal: 4
+                decimals: 4
               - name: "发生时间"
                 length: 5
                 type: bcd
@@ -2059,7 +2059,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -2074,7 +2074,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
         signed: true
       - name: "发生时间"
         length: 5
@@ -2090,7 +2090,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -2105,7 +2105,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -2120,7 +2120,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -2135,7 +2135,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -2150,7 +2150,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -2165,7 +2165,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -2180,7 +2180,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -2195,7 +2195,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -2210,7 +2210,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
         signed: true
       - name: "发生时间"
         length: 5
@@ -2226,7 +2226,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
         signed: true
       - name: "发生时间"
         length: 5
@@ -2242,7 +2242,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -2257,7 +2257,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -2272,7 +2272,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -2287,7 +2287,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -2302,7 +2302,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -2317,7 +2317,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -2332,7 +2332,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -2347,7 +2347,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -2362,7 +2362,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
         signed: true
       - name: "发生时间"
         length: 5
@@ -2378,7 +2378,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
         signed: true
       - name: "发生时间"
         length: 5
@@ -2394,7 +2394,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -2409,7 +2409,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -2424,7 +2424,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -2439,7 +2439,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -2454,7 +2454,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -2469,7 +2469,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "发生时间"
         length: 5
         type: bcd
@@ -2485,55 +2485,55 @@ data_items:
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - id: "02010200"
         name: "B相电压"
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - id: "02010300"
         name: "C相电压"
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - id: "02010400"
         name: "AB线电压"
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - id: "02010500"
         name: "BC线电压"
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - id: "02010600"
         name: "CA线电压"
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - id: "02010700"
         name: "A/AB相基波电压"
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - id: "02010800"
         name: "B相基波电压"
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - id: "02010900"
         name: "C/CA相基波电压"
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
   - id: "0202FF00"
     name: "电流数据块"
     protocol: "csg13"
@@ -2545,42 +2545,42 @@ data_items:
         length: 3
         type: bcd
         unit: "A"
-        decimal: 3
+        decimals: 3
         signed: true
       - id: "02020200"
         name: "B相电流"
         length: 3
         type: bcd
         unit: "A"
-        decimal: 3
+        decimals: 3
         signed: true
       - id: "02020300"
         name: "C相电流"
         length: 3
         type: bcd
         unit: "A"
-        decimal: 3
+        decimals: 3
         signed: true
       - id: "02020400"
         name: "A相基波电流"
         length: 3
         type: bcd
         unit: "A"
-        decimal: 3
+        decimals: 3
         signed: true
       - id: "02020500"
         name: "B相基波电流"
         length: 3
         type: bcd
         unit: "A"
-        decimal: 3
+        decimals: 3
         signed: true
       - id: "02020600"
         name: "C相基波电流"
         length: 3
         type: bcd
         unit: "A"
-        decimal: 3
+        decimals: 3
         signed: true
   - id: "0203FF00"
     name: "瞬时有功功率数据块"
@@ -2593,25 +2593,25 @@ data_items:
         length: 3
         type: bcd
         unit: "kW"
-        decimal: 4
+        decimals: 4
       - id: "02030100"
         name: "瞬时A相有功功率"
         length: 3
         type: bcd
         unit: "kW"
-        decimal: 4
+        decimals: 4
       - id: "02030200"
         name: "瞬时B相有功功率"
         length: 3
         type: bcd
         unit: "kW"
-        decimal: 4
+        decimals: 4
       - id: "02030300"
         name: "瞬时C相有功功率"
         length: 3
         type: bcd
         unit: "kW"
-        decimal: 4
+        decimals: 4
   - id: "0204FF00"
     name: "瞬时无功功率数据块"
     protocol: "csg13"
@@ -2623,25 +2623,25 @@ data_items:
         length: 3
         type: bcd
         unit: "kvar"
-        decimal: 4
+        decimals: 4
       - id: "02040100"
         name: "瞬时A相无功功率"
         length: 3
         type: bcd
         unit: "kvar"
-        decimal: 4
+        decimals: 4
       - id: "02040200"
         name: "瞬时B相无功功率"
         length: 3
         type: bcd
         unit: "kvar"
-        decimal: 4
+        decimals: 4
       - id: "02040300"
         name: "瞬时C相无功功率"
         length: 3
         type: bcd
         unit: "kvar"
-        decimal: 4
+        decimals: 4
   - id: "0205FF00"
     name: "瞬时视在功率数据块"
     protocol: "csg13"
@@ -2653,28 +2653,28 @@ data_items:
         length: 3
         type: bcd
         unit: "kVA"
-        decimal: 4
+        decimals: 4
         signed: true
       - id: "02050100"
         name: "瞬时A相视在功率"
         length: 3
         type: bcd
         unit: "kVA"
-        decimal: 4
+        decimals: 4
         signed: true
       - id: "02050200"
         name: "瞬时B相视在功率"
         length: 3
         type: bcd
         unit: "kVA"
-        decimal: 4
+        decimals: 4
         signed: true
       - id: "02050300"
         name: "瞬时C相视在功率"
         length: 3
         type: bcd
         unit: "kVA"
-        decimal: 4
+        decimals: 4
         signed: true
   - id: "0206FF00"
     name: "功率因数数据块"
@@ -2686,25 +2686,25 @@ data_items:
         name: "总功率因数"
         length: 2
         type: bcd
-        decimal: 3
+        decimals: 3
         signed: true
       - id: "02060100"
         name: "A相功率因数"
         length: 2
         type: bcd
-        decimal: 3
+        decimals: 3
         signed: true
       - id: "02060200"
         name: "B相功率因数"
         length: 2
         type: bcd
-        decimal: 3
+        decimals: 3
         signed: true
       - id: "02060300"
         name: "C相功率因数"
         length: 2
         type: bcd
-        decimal: 3
+        decimals: 3
         signed: true
   - id: "0207FF00"
     name: "相角数据块"
@@ -2717,37 +2717,37 @@ data_items:
         length: 2
         type: bcd
         unit: "°"
-        decimal: 1
+        decimals: 1
       - id: "02070200"
         name: "Ub相位角"
         length: 2
         type: bcd
         unit: "°"
-        decimal: 1
+        decimals: 1
       - id: "02070300"
         name: "Uc相位角"
         length: 2
         type: bcd
         unit: "°"
-        decimal: 1
+        decimals: 1
       - id: "02070400"
         name: "Ia相位角"
         length: 2
         type: bcd
         unit: "°"
-        decimal: 1
+        decimals: 1
       - id: "02070500"
         name: "Ib相位角"
         length: 2
         type: bcd
         unit: "°"
-        decimal: 1
+        decimals: 1
       - id: "02070600"
         name: "Ic相位角"
         length: 2
         type: bcd
         unit: "°"
-        decimal: 1
+        decimals: 1
   - id: "0208FF00"
     name: "电压波形失真度数据块"
     protocol: "csg13"
@@ -2759,19 +2759,19 @@ data_items:
         length: 2
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - id: "02080200"
         name: "B相电压波形失真度"
         length: 2
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - id: "02080300"
         name: "C相电压波形失真度"
         length: 2
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
   - id: "0209FF00"
     name: "电流波形失真度数据块"
     protocol: "csg13"
@@ -2783,19 +2783,19 @@ data_items:
         length: 2
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - id: "02090200"
         name: "B相电流波形失真度"
         length: 2
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - id: "02090300"
         name: "C相电流波形失真度"
         length: 2
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
   - id: "020A01FF"
     name: "A相电压谐波含量数据块"
     protocol: "csg13"
@@ -2810,7 +2810,7 @@ data_items:
             length: 2
             type: bcd
             unit: "%"
-            decimal: 2
+            decimals: 2
 
   - id: "020A02FF"
     name: "B相电压谐波含量数据块"
@@ -2826,7 +2826,7 @@ data_items:
             length: 2
             type: bcd
             unit: "%"
-            decimal: 2
+            decimals: 2
 
   - id: "020A03FF"
     name: "C相电压谐波含量数据块"
@@ -2842,7 +2842,7 @@ data_items:
             length: 2
             type: bcd
             unit: "%"
-            decimal: 2
+            decimals: 2
 
   - id: "020B01FF"
     name: "A相电流谐波含量数据块"
@@ -2858,7 +2858,7 @@ data_items:
             length: 2
             type: bcd
             unit: "%"
-            decimal: 2
+            decimals: 2
 
   - id: "020B02FF"
     name: "B相电流谐波含量数据块"
@@ -2874,7 +2874,7 @@ data_items:
             length: 2
             type: bcd
             unit: "%"
-            decimal: 2
+            decimals: 2
 
   - id: "020B03FF"
     name: "C相电流谐波含量数据块"
@@ -2890,7 +2890,7 @@ data_items:
             length: 2
             type: bcd
             unit: "%"
-            decimal: 2
+            decimals: 2
 
   - id: "02800001"
     name: "零线电流"
@@ -2899,7 +2899,7 @@ data_items:
     length: 3
     type: bcd
     unit: "A"
-    decimal: 3
+    decimals: 3
   - id: "02800002"
     name: "电网频率"
     protocol: "csg13"
@@ -2907,7 +2907,7 @@ data_items:
     length: 2
     type: bcd
     unit: "Hz"
-    decimal: 2
+    decimals: 2
   - id: "02800003"
     name: "一分钟有功总平均功率"
     protocol: "csg13"
@@ -2915,7 +2915,7 @@ data_items:
     length: 3
     type: bcd
     unit: "kW"
-    decimal: 4
+    decimals: 4
   - id: "02800004"
     name: "当前有功需量"
     protocol: "csg13"
@@ -2923,7 +2923,7 @@ data_items:
     length: 3
     type: bcd
     unit: "kW"
-    decimal: 4
+    decimals: 4
     signed: true
   - id: "02800005"
     name: "当前无功需量"
@@ -2932,7 +2932,7 @@ data_items:
     length: 3
     type: bcd
     unit: "kvar"
-    decimal: 4
+    decimals: 4
     signed: true
   - id: "02800006"
     name: "当前视在需量"
@@ -2941,7 +2941,7 @@ data_items:
     length: 3
     type: bcd
     unit: "kVA"
-    decimal: 4
+    decimals: 4
     signed: true
   - id: "02800007"
     name: "表内温度"
@@ -2950,7 +2950,7 @@ data_items:
     length: 2
     type: bcd
     unit: "℃"
-    decimal: 1
+    decimals: 1
     signed: true
   - id: "02800008"
     name: "时钟电池电压(内部)"
@@ -2959,7 +2959,7 @@ data_items:
     length: 2
     type: bcd
     unit: "V"
-    decimal: 2
+    decimals: 2
   - id: "02800009"
     name: "停电抄表电池电压(外部)"
     protocol: "csg13"
@@ -2967,7 +2967,7 @@ data_items:
     length: 2
     type: bcd
     unit: "V"
-    decimal: 2
+    decimals: 2
   - id: "0280000A"
     name: "内部电池工作时间"
     protocol: "csg13"
@@ -2975,7 +2975,7 @@ data_items:
     length: 4
     type: bcd
     unit: "分"
-    decimal: 0
+    decimals: 0
   - id: "04000101"
     name: "日期及星期"
     protocol: "csg13"
@@ -3815,7 +3815,7 @@ data_items:
         length: 4
         type: bcd
         unit: "℃"
-        decimal: 2
+        decimals: 2
       - id: "040B0102"
         name: "风机状态"
         length: 1
@@ -3847,13 +3847,13 @@ data_items:
         length: 4
         type: bcd
         unit: "kPa/1000"
-        decimal: 2
+        decimals: 2
       - id: "040B0105"
         name: "油温"
         length: 4
         type: bcd
         unit: "℃/10"
-        decimal: 2
+        decimals: 2
       - id: "040B0106"
         name: "油位"
         length: 1
@@ -3881,7 +3881,7 @@ data_items:
         length: 5
         type: bcd
         unit: "kWh"
-        decimal: 4
+        decimals: 4
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -3891,7 +3891,7 @@ data_items:
             length: 5
             type: bcd
             unit: "kWh"
-            decimal: 4
+            decimals: 4
 
   - id: "0061FF00"
     name: "(当前)反向有功精确电能数据块"
@@ -3908,7 +3908,7 @@ data_items:
         length: 5
         type: bcd
         unit: "kWh"
-        decimal: 4
+        decimals: 4
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -3918,7 +3918,7 @@ data_items:
             length: 5
             type: bcd
             unit: "kWh"
-            decimal: 4
+            decimals: 4
  
   - id: "0062FF00"
     name: "(当前)组合无功1精确电能数据块"
@@ -3935,7 +3935,7 @@ data_items:
         length: 5
         type: bcd
         unit: "kWh"
-        decimal: 4
+        decimals: 4
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -3945,7 +3945,7 @@ data_items:
             length: 5
             type: bcd
             unit: "kWh"
-            decimal: 4
+            decimals: 4
 
   - id: "0063FF00"
     name: "(当前)组合无功2精确电能数据块"
@@ -3962,7 +3962,7 @@ data_items:
         length: 5
         type: bcd
         unit: "kWh"
-        decimal: 4
+        decimals: 4
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -3972,7 +3972,7 @@ data_items:
             length: 5
             type: bcd
             unit: "kWh"
-            decimal: 4
+            decimals: 4
 
   - id: "0064FF00"
     name: "(当前)第一象限无功精确电能数据块"
@@ -3989,7 +3989,7 @@ data_items:
         length: 5
         type: bcd
         unit: "kWh"
-        decimal: 4
+        decimals: 4
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -3999,7 +3999,7 @@ data_items:
             length: 5
             type: bcd
             unit: "kWh"
-            decimal: 4
+            decimals: 4
 
   - id: "0065FF00"
     name: "(当前)第二象限无功精确电能数据块"
@@ -4016,7 +4016,7 @@ data_items:
         length: 5
         type: bcd
         unit: "kWh"
-        decimal: 4
+        decimals: 4
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -4026,7 +4026,7 @@ data_items:
             length: 5
             type: bcd
             unit: "kWh"
-            decimal: 4
+            decimals: 4
 
   - id: "0066FF00"
     name: "(当前)第三象限无功精确电能数据块"
@@ -4043,7 +4043,7 @@ data_items:
         length: 5
         type: bcd
         unit: "kWh"
-        decimal: 4
+        decimals: 4
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -4053,7 +4053,7 @@ data_items:
             length: 5
             type: bcd
             unit: "kWh"
-            decimal: 4
+            decimals: 4
 
   - id: "0067FF00"
     name: "(当前)第四象限无功精确电能数据块"
@@ -4070,7 +4070,7 @@ data_items:
         length: 5
         type: bcd
         unit: "kWh"
-        decimal: 4
+        decimals: 4
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -4080,7 +4080,7 @@ data_items:
             length: 5
             type: bcd
             unit: "kWh"
-            decimal: 4
+            decimals: 4
 
   - id: "0068FF00"
     name: "(当前)组合有功精确电能数据块"
@@ -4097,7 +4097,7 @@ data_items:
         length: 5
         type: bcd
         unit: "kWh"
-        decimal: 4
+        decimals: 4
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -4107,7 +4107,7 @@ data_items:
             length: 5
             type: bcd
             unit: "kWh"
-            decimal: 4
+            decimals: 4
 
   - id: "0060FF01"
     name: "(上1结算日)正向有功精确电能数据块"
@@ -4124,7 +4124,7 @@ data_items:
         length: 5
         type: bcd
         unit: "kWh"
-        decimal: 4
+        decimals: 4
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -4134,7 +4134,7 @@ data_items:
             length: 5
             type: bcd
             unit: "kWh"
-            decimal: 4
+            decimals: 4
 
   - id: "0061FF01"
     name: "(上1结算日)反向有功精确电能数据块"
@@ -4151,7 +4151,7 @@ data_items:
         length: 5
         type: bcd
         unit: "kWh"
-        decimal: 4
+        decimals: 4
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -4161,7 +4161,7 @@ data_items:
             length: 5
             type: bcd
             unit: "kWh"
-            decimal: 4
+            decimals: 4
 
   - id: "0062FF01"
     name: "(上1结算日)组合无功1精确电能数据块"
@@ -4178,7 +4178,7 @@ data_items:
         length: 5
         type: bcd
         unit: "kWh"
-        decimal: 4
+        decimals: 4
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -4188,7 +4188,7 @@ data_items:
             length: 5
             type: bcd
             unit: "kWh"
-            decimal: 4
+            decimals: 4
 
   - id: "0063FF01"
     name: "(上1结算日)组合无功2精确电能数据块"
@@ -4205,7 +4205,7 @@ data_items:
         length: 5
         type: bcd
         unit: "kWh"
-        decimal: 4
+        decimals: 4
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -4215,7 +4215,7 @@ data_items:
             length: 5
             type: bcd
             unit: "kWh"
-            decimal: 4
+            decimals: 4
 
   - id: "0064FF01"
     name: "(上1结算日)第一象限无功精确电能数据块"
@@ -4232,7 +4232,7 @@ data_items:
         length: 5
         type: bcd
         unit: "kWh"
-        decimal: 4
+        decimals: 4
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -4242,7 +4242,7 @@ data_items:
             length: 5
             type: bcd
             unit: "kWh"
-            decimal: 4
+            decimals: 4
 
   - id: "0065FF01"
     name: "(上1结算日)第二象限无功精确电能数据块"
@@ -4259,7 +4259,7 @@ data_items:
         length: 5
         type: bcd
         unit: "kWh"
-        decimal: 4
+        decimals: 4
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -4269,7 +4269,7 @@ data_items:
             length: 5
             type: bcd
             unit: "kWh"
-            decimal: 4
+            decimals: 4
 
   - id: "0066FF01"
     name: "(上1结算日)第三象限无功精确电能数据块"
@@ -4286,7 +4286,7 @@ data_items:
         length: 5
         type: bcd
         unit: "kWh"
-        decimal: 4
+        decimals: 4
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -4296,7 +4296,7 @@ data_items:
             length: 5
             type: bcd
             unit: "kWh"
-            decimal: 4
+            decimals: 4
 
   - id: "0067FF01"
     name: "(上1结算日)第四象限无功精确电能数据块"
@@ -4313,7 +4313,7 @@ data_items:
         length: 5
         type: bcd
         unit: "kWh"
-        decimal: 4
+        decimals: 4
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -4323,7 +4323,7 @@ data_items:
             length: 5
             type: bcd
             unit: "kWh"
-            decimal: 4
+            decimals: 4
 
   - id: "0068FF01"
     name: "(上1结算日)组合有功精确电能数据块"
@@ -4340,7 +4340,7 @@ data_items:
         length: 5
         type: bcd
         unit: "kWh"
-        decimal: 4
+        decimals: 4
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -4350,7 +4350,7 @@ data_items:
             length: 5
             type: bcd
             unit: "kWh"
-            decimal: 4
+            decimals: 4
 
   - id: "08000201"
     name: "空调开关机状态"
@@ -4371,7 +4371,7 @@ data_items:
     length: 2
     type: bcd
     unit: "℃"
-    decimal: 1
+    decimals: 1
     signed: true
   - id: "08000402"
     name: "空调制热设置温度"
@@ -4380,7 +4380,7 @@ data_items:
     length: 2
     type: bcd
     unit: "℃"
-    decimal: 1
+    decimals: 1
     signed: true
   - id: "08000403"
     name: "蒸发器进水温度点(制冷)"
@@ -4389,7 +4389,7 @@ data_items:
     length: 2
     type: bcd
     unit: "℃"
-    decimal: 1
+    decimals: 1
     signed: true
   - id: "08000404"
     name: "蒸发器出水温度点(制冷)"
@@ -4398,7 +4398,7 @@ data_items:
     length: 2
     type: bcd
     unit: "℃"
-    decimal: 1
+    decimals: 1
     signed: true
   - id: "08000405"
     name: "冷凝器进水温度点(制热)"
@@ -4407,7 +4407,7 @@ data_items:
     length: 2
     type: bcd
     unit: "℃"
-    decimal: 1
+    decimals: 1
     signed: true
   - id: "08000406"
     name: "冷凝器出水温度点(制热)"
@@ -4416,7 +4416,7 @@ data_items:
     length: 2
     type: bcd
     unit: "℃"
-    decimal: 1
+    decimals: 1
     signed: true
   - id: "08000407"
     name: "冷冻水供水温度"
@@ -4425,7 +4425,7 @@ data_items:
     length: 2
     type: bcd
     unit: "℃"
-    decimal: 1
+    decimals: 1
     signed: true
   - id: "E0000000"
     name: "全部进行确定/否定"
@@ -4680,7 +4680,7 @@ data_items:
     length: 3
     type: bcd
     unit: "%"
-    decimal: 2
+    decimals: 2
   - id: "E1800011"
     name: "(当前)日通信流量"
     protocol: "csg13"
@@ -4889,7 +4889,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kWh"
-    decimal: 2
+    decimals: 2
   - id: "00900101"
     name: "（当前）透支电量"
     protocol: "csg13"
@@ -4897,7 +4897,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kWh"
-    decimal: 2
+    decimals: 2
   - id: "00900200"
     name: "（当前）剩余金额"
     protocol: "csg13"
@@ -4905,7 +4905,7 @@ data_items:
     length: 4
     type: bcd
     unit: "元"
-    decimal: 2
+    decimals: 2
   - id: "00900201"
     name: "（当前）透支金额"
     protocol: "csg13"
@@ -4913,7 +4913,7 @@ data_items:
     length: 4
     type: bcd
     unit: "元"
-    decimal: 2
+    decimals: 2
   - id: "0220000D"
     name: "零序电流"
     protocol: "csg13"
@@ -4921,7 +4921,7 @@ data_items:
     length: 3
     type: bcd
     unit: "A"
-    decimal: 3
+    decimals: 3
   - id: "056102FF"
     name: "日冻结反向有功精确电能数据块"
     protocol: "csg13"
@@ -4937,7 +4937,7 @@ data_items:
         length: 5
         type: bcd
         unit: "kWh"
-        decimal: 4
+        decimals: 4
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -4947,7 +4947,7 @@ data_items:
             length: 5
             type: bcd
             unit: "kWh"
-            decimal: 4
+            decimals: 4
 
   - id: "056100FF"
     name: "日冻结组合有功精确电能数据块"
@@ -4964,7 +4964,7 @@ data_items:
         length: 5
         type: bcd
         unit: "kWh"
-        decimal: 4
+        decimals: 4
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -4974,7 +4974,7 @@ data_items:
             length: 5
             type: bcd
             unit: "kWh"
-            decimal: 4
+            decimals: 4
 
   - id: "056101FF"
     name: "日冻结正向有功精确电能数据块"
@@ -4991,7 +4991,7 @@ data_items:
         length: 5
         type: bcd
         unit: "kWh"
-        decimal: 4
+        decimals: 4
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -5001,7 +5001,7 @@ data_items:
             length: 5
             type: bcd
             unit: "kWh"
-            decimal: 4
+            decimals: 4
 
   - id: "056103FF"
     name: "日冻结组合无功1精确电能数据块"
@@ -5018,7 +5018,7 @@ data_items:
         length: 5
         type: bcd
         unit: "kvarh"
-        decimal: 4
+        decimals: 4
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -5028,7 +5028,7 @@ data_items:
             length: 5
             type: bcd
             unit: "kvarh"
-            decimal: 4
+            decimals: 4
 
   - id: "056104FF"
     name: "日冻结组合无功2精确电能数据块"
@@ -5045,7 +5045,7 @@ data_items:
         length: 5
         type: bcd
         unit: "kvarh"
-        decimal: 4
+        decimals: 4
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -5055,7 +5055,7 @@ data_items:
             length: 5
             type: bcd
             unit: "kvarh"
-            decimal: 4
+            decimals: 4
 
   - id: "056105FF"
     name: "日冻结第一象限无功精确电能数据块"
@@ -5072,7 +5072,7 @@ data_items:
         length: 5
         type: bcd
         unit: "kvarh"
-        decimal: 4
+        decimals: 4
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -5082,7 +5082,7 @@ data_items:
             length: 5
             type: bcd
             unit: "kvarh"
-            decimal: 4
+            decimals: 4
 
   - id: "056106FF"
     name: "日冻结第二象限无功精确电能数据块"
@@ -5099,7 +5099,7 @@ data_items:
         length: 5
         type: bcd
         unit: "kvarh"
-        decimal: 4
+        decimals: 4
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -5109,7 +5109,7 @@ data_items:
             length: 5
             type: bcd
             unit: "kvarh"
-            decimal: 4
+            decimals: 4
 
   - id: "056107FF"
     name: "日冻结第三象限无功精确电能数据块"
@@ -5126,7 +5126,7 @@ data_items:
         length: 5
         type: bcd
         unit: "kvarh"
-        decimal: 4
+        decimals: 4
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -5136,7 +5136,7 @@ data_items:
             length: 5
             type: bcd
             unit: "kvarh"
-            decimal: 4
+            decimals: 4
 
   - id: "056108FF"
     name: "日冻结第四象限无功精确电能数据块"
@@ -5153,7 +5153,7 @@ data_items:
         length: 5
         type: bcd
         unit: "kvarh"
-        decimal: 4
+        decimals: 4
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -5163,7 +5163,7 @@ data_items:
             length: 5
             type: bcd
             unit: "kvarh"
-            decimal: 4
+            decimals: 4
 
   - id: "0000FF01"
     name: "月冻结组合有功电能数据块"
@@ -5180,7 +5180,7 @@ data_items:
         length: 4
         type: bcd
         unit: "kWh"
-        decimal: 2
+        decimals: 2
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -5190,7 +5190,7 @@ data_items:
             length: 4
             type: bcd
             unit: "kWh"
-            decimal: 2
+            decimals: 2
 
   - id: "0001FF01"
     name: "月冻结正向有功电能数据块"
@@ -5207,7 +5207,7 @@ data_items:
         length: 4
         type: bcd
         unit: "kWh"
-        decimal: 2
+        decimals: 2
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -5217,7 +5217,7 @@ data_items:
             length: 4
             type: bcd
             unit: "kWh"
-            decimal: 2
+            decimals: 2
 
   - id: "0002FF01"
     name: "月冻结反向有功电能数据块"
@@ -5234,7 +5234,7 @@ data_items:
         length: 4
         type: bcd
         unit: "kWh"
-        decimal: 2
+        decimals: 2
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -5244,7 +5244,7 @@ data_items:
             length: 4
             type: bcd
             unit: "kWh"
-            decimal: 2
+            decimals: 2
 
   - id: "0003FF01"
     name: "月冻结组合无功1电能数据块"
@@ -5261,7 +5261,7 @@ data_items:
         length: 4
         type: bcd
         unit: "kvarh"
-        decimal: 2
+        decimals: 2
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -5271,7 +5271,7 @@ data_items:
             length: 4
             type: bcd
             unit: "kvarh"
-            decimal: 2
+            decimals: 2
 
   - id: "0004FF01"
     name: "月冻结组合无功2电能数据块"
@@ -5288,7 +5288,7 @@ data_items:
         length: 4
         type: bcd
         unit: "kvarh"
-        decimal: 2
+        decimals: 2
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -5298,7 +5298,7 @@ data_items:
             length: 4
             type: bcd
             unit: "kvarh"
-            decimal: 2
+            decimals: 2
 
   - id: "0005FF01"
     name: "月冻结第一象限无功电能数据块"
@@ -5315,7 +5315,7 @@ data_items:
         length: 4
         type: bcd
         unit: "kvarh"
-        decimal: 2
+        decimals: 2
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -5325,7 +5325,7 @@ data_items:
             length: 4
             type: bcd
             unit: "kvarh"
-            decimal: 2
+            decimals: 2
 
   - id: "0006FF01"
     name: "月冻结第二象限无功电能数据块"
@@ -5342,7 +5342,7 @@ data_items:
         length: 4
         type: bcd
         unit: "kvarh"
-        decimal: 2
+        decimals: 2
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -5352,7 +5352,7 @@ data_items:
             length: 4
             type: bcd
             unit: "kvarh"
-            decimal: 2
+            decimals: 2
 
   - id: "0007FF01"
     name: "月冻结第三象限无功电能数据块"
@@ -5369,7 +5369,7 @@ data_items:
         length: 4
         type: bcd
         unit: "kvarh"
-        decimal: 2
+        decimals: 2
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -5379,7 +5379,7 @@ data_items:
             length: 4
             type: bcd
             unit: "kvarh"
-            decimal: 2
+            decimals: 2
 
   - id: "0008FF01"
     name: "月冻结第四象限无功电能数据块"
@@ -5396,7 +5396,7 @@ data_items:
         length: 4
         type: bcd
         unit: "kvarh"
-        decimal: 2
+        decimals: 2
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -5406,7 +5406,7 @@ data_items:
             length: 4
             type: bcd
             unit: "kvarh"
-            decimal: 2
+            decimals: 2
 
   - id: "0009FF01"
     name: "月冻结正向视在电能数据块"
@@ -5423,7 +5423,7 @@ data_items:
         length: 4
         type: bcd
         unit: "kVAh"
-        decimal: 2
+        decimals: 2
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -5433,7 +5433,7 @@ data_items:
             length: 4
             type: bcd
             unit: "kVAh"
-            decimal: 2
+            decimals: 2
 
   - id: "050600FF"
     name: "日冻结组合有功电能数据块"
@@ -5450,7 +5450,7 @@ data_items:
         length: 4
         type: bcd
         unit: "kWh"
-        decimal: 2
+        decimals: 2
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -5460,7 +5460,7 @@ data_items:
             length: 4
             type: bcd
             unit: "kWh"
-            decimal: 2
+            decimals: 2
 
   - id: "050601FF"
     name: "日冻结正向有功电能数据块"
@@ -5477,7 +5477,7 @@ data_items:
         length: 4
         type: bcd
         unit: "kWh"
-        decimal: 2
+        decimals: 2
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -5487,7 +5487,7 @@ data_items:
             length: 4
             type: bcd
             unit: "kWh"
-            decimal: 2
+            decimals: 2
 
   - id: "050602FF"
     name: "日冻结反向有功电能数据块"
@@ -5504,7 +5504,7 @@ data_items:
         length: 4
         type: bcd
         unit: "kWh"
-        decimal: 2
+        decimals: 2
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -5514,7 +5514,7 @@ data_items:
             length: 4
             type: bcd
             unit: "kWh"
-            decimal: 2
+            decimals: 2
 
   - id: "050603FF"
     name: "日冻结组合无功1电能数据块"
@@ -5531,7 +5531,7 @@ data_items:
         length: 4
         type: bcd
         unit: "kvarh"
-        decimal: 2
+        decimals: 2
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -5541,7 +5541,7 @@ data_items:
             length: 4
             type: bcd
             unit: "kvarh"
-            decimal: 2
+            decimals: 2
 
   - id: "050604FF"
     name: "日冻结组合无功2电能数据块"
@@ -5558,7 +5558,7 @@ data_items:
         length: 4
         type: bcd
         unit: "kvarh"
-        decimal: 2
+        decimals: 2
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -5568,7 +5568,7 @@ data_items:
             length: 4
             type: bcd
             unit: "kvarh"
-            decimal: 2
+            decimals: 2
 
   - id: "050605FF"
     name: "日冻结第一象限无功电能数据块"
@@ -5585,7 +5585,7 @@ data_items:
         length: 4
         type: bcd
         unit: "kvarh"
-        decimal: 2
+        decimals: 2
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -5595,7 +5595,7 @@ data_items:
             length: 4
             type: bcd
             unit: "kvarh"
-            decimal: 2
+            decimals: 2
 
   - id: "050606FF"
     name: "日冻结第二象限无功电能数据块"
@@ -5612,7 +5612,7 @@ data_items:
         length: 4
         type: bcd
         unit: "kvarh"
-        decimal: 2
+        decimals: 2
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -5622,7 +5622,7 @@ data_items:
             length: 4
             type: bcd
             unit: "kvarh"
-            decimal: 2
+            decimals: 2
  
   - id: "050607FF"
     name: "日冻结第三象限无功电能数据块"
@@ -5639,7 +5639,7 @@ data_items:
         length: 4
         type: bcd
         unit: "kvarh"
-        decimal: 2
+        decimals: 2
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -5649,7 +5649,7 @@ data_items:
             length: 4
             type: bcd
             unit: "kvarh"
-            decimal: 2
+            decimals: 2
 
   - id: "050608FF"
     name: "日冻结第四象限无功电能数据块"
@@ -5666,7 +5666,7 @@ data_items:
         length: 4
         type: bcd
         unit: "kvarh"
-        decimal: 2
+        decimals: 2
       - candidate_ids: 
           count: 63
           count_ref:  "rate_count"
@@ -5676,7 +5676,7 @@ data_items:
             length: 4
             type: bcd
             unit: "kvarh"
-            decimal: 2
+            decimals: 2
 
   - id: "050609FF"
     name: "日冻结正向有功最大需量及发生时间数据块"
@@ -5696,7 +5696,7 @@ data_items:
             length: 3
             type: bcd
             unit: "kW"
-            decimal: 4
+            decimals: 4
           - name: "发生时间"
             length: 5
             type: bcd
@@ -5713,7 +5713,7 @@ data_items:
                 length: 3
                 type: bcd
                 unit: "kW"
-                decimal: 4
+                decimals: 4
               - name: "发生时间"
                 length: 5
                 type: bcd
@@ -5738,7 +5738,7 @@ data_items:
             length: 3
             type: bcd
             unit: "kW"
-            decimal: 4
+            decimals: 4
           - name: "发生时间"
             length: 5
             type: bcd
@@ -5755,7 +5755,7 @@ data_items:
                 length: 3
                 type: bcd
                 unit: "kW"
-                decimal: 4
+                decimals: 4
               - name: "发生时间"
                 length: 5
                 type: bcd
@@ -5779,7 +5779,7 @@ data_items:
             length: 3
             type: bcd
             unit: "kW"
-            decimal: 4
+            decimals: 4
           - name: "发生时间"
             length: 5
             type: bcd
@@ -5796,7 +5796,7 @@ data_items:
                 length: 3
                 type: bcd
                 unit: "kW"
-                decimal: 4
+                decimals: 4
               - name: "发生时间"
                 length: 5
                 type: bcd
@@ -5820,7 +5820,7 @@ data_items:
             length: 3
             type: bcd
             unit: "kW"
-            decimal: 4
+            decimals: 4
           - name: "发生时间"
             length: 5
             type: bcd
@@ -5837,7 +5837,7 @@ data_items:
                 length: 3
                 type: bcd
                 unit: "kW"
-                decimal: 4
+                decimals: 4
               - name: "发生时间"
                 length: 5
                 type: bcd
@@ -5854,19 +5854,19 @@ data_items:
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - id: "06120102"
         name: "（模块负荷记录）B相电压"
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - id: "06120103"
         name: "（模块负荷记录）C相电压"
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
   - id: "061202FF"
     name: "（模块负荷记录）电流数据块"
     protocol: "csg13"
@@ -5878,21 +5878,21 @@ data_items:
         length: 3
         type: bcd
         unit: "A"
-        decimal: 3
+        decimals: 3
         signed: true
       - id: "06120202"
         name: "（模块负荷记录）B相电流"
         length: 3
         type: bcd
         unit: "A"
-        decimal: 3
+        decimals: 3
         signed: true
       - id: "06120203"
         name: "（模块负荷记录）C相电流"
         length: 3
         type: bcd
         unit: "A"
-        decimal: 3
+        decimals: 3
         signed: true
   - id: "061203FF"
     name: "（模块负荷记录）有功功率数据块"
@@ -5905,28 +5905,28 @@ data_items:
         length: 3
         type: bcd
         unit: "kW"
-        decimal: 4
+        decimals: 4
         signed: true
       - id: "06120301"
         name: "（模块负荷记录）A相有功功率"
         length: 3
         type: bcd
         unit: "kW"
-        decimal: 4
+        decimals: 4
         signed: true
       - id: "06120302"
         name: "（模块负荷记录）B相有功功率"
         length: 3
         type: bcd
         unit: "kW"
-        decimal: 4
+        decimals: 4
         signed: true
       - id: "06120303"
         name: "（模块负荷记录）C相有功功率"
         length: 3
         type: bcd
         unit: "kW"
-        decimal: 4
+        decimals: 4
         signed: true
   - id: "061204FF"
     name: "（模块负荷记录）无功功率数据块"
@@ -5939,28 +5939,28 @@ data_items:
         length: 3
         type: bcd
         unit: "kvar"
-        decimal: 4
+        decimals: 4
         signed: true
       - id: "06120401"
         name: "（模块负荷记录）A相无功功率"
         length: 3
         type: bcd
         unit: "kvar"
-        decimal: 4
+        decimals: 4
         signed: true
       - id: "06120402"
         name: "（模块负荷记录）B相无功功率"
         length: 3
         type: bcd
         unit: "kvar"
-        decimal: 4
+        decimals: 4
         signed: true
       - id: "06120403"
         name: "（模块负荷记录）C相无功功率"
         length: 3
         type: bcd
         unit: "kvar"
-        decimal: 4
+        decimals: 4
         signed: true
   - id: "061205FF"
     name: "（模块负荷记录）功率因数数据块"
@@ -5972,25 +5972,25 @@ data_items:
         name: "（模块负荷记录）总功率因数"
         length: 2
         type: bcd
-        decimal: 3
+        decimals: 3
         signed: true
       - id: "06120501"
         name: "（模块负荷记录）A相功率因数"
         length: 2
         type: bcd
-        decimal: 3
+        decimals: 3
         signed: true
       - id: "06120502"
         name: "（模块负荷记录）B相功率因数"
         length: 2
         type: bcd
-        decimal: 3
+        decimals: 3
         signed: true
       - id: "06120503"
         name: "（模块负荷记录）C相功率因数"
         length: 2
         type: bcd
-        decimal: 3
+        decimals: 3
         signed: true
   - id: "061206FF"
     name: "（模块负荷记录）有功，无功总电能数据块"
@@ -6003,25 +6003,25 @@ data_items:
         length: 4
         type: bcd
         unit: "kWh"
-        decimal: 2
+        decimals: 2
       - id: "06120602"
         name: "（模块负荷记录）反向有功总电能"
         length: 4
         type: bcd
         unit: "kWh"
-        decimal: 2
+        decimals: 2
       - id: "06120603"
         name: "（模块负荷记录）组合无功1总电能"
         length: 4
         type: bcd
         unit: "kvarh"
-        decimal: 2
+        decimals: 2
       - id: "06120604"
         name: "（模块负荷记录）组合无功2总电能"
         length: 4
         type: bcd
         unit: "kvarh"
-        decimal: 2
+        decimals: 2
   - id: "061207FF"
     name: "（模块负荷记录）四象限无功总电能数据块"
     protocol: "csg13"
@@ -6033,25 +6033,25 @@ data_items:
         length: 4
         type: bcd
         unit: "kvarh"
-        decimal: 2
+        decimals: 2
       - id: "06120702"
         name: "（模块负荷记录）第二象限无功总电能"
         length: 4
         type: bcd
         unit: "kvarh"
-        decimal: 2
+        decimals: 2
       - id: "06120703"
         name: "（模块负荷记录）第三象限无功总电能"
         length: 4
         type: bcd
         unit: "kvarh"
-        decimal: 2
+        decimals: 2
       - id: "06120704"
         name: "（模块负荷记录）第四象限无功总电能"
         length: 4
         type: bcd
         unit: "kvarh"
-        decimal: 2
+        decimals: 2
   - id: "061208FF"
     name: "（模块负荷记录）当前需量数据块"
     protocol: "csg13"
@@ -6063,14 +6063,14 @@ data_items:
         length: 3
         type: bcd
         unit: "kW"
-        decimal: 4
+        decimals: 4
         signed: true
       - id: "06120802"
         name: "（模块负荷记录）当前无功需量"
         length: 3
         type: bcd
         unit: "kvarh"
-        decimal: 4
+        decimals: 4
         signed: true
   - id: "06120900"
     name: "（模块负荷记录）零线电流"
@@ -6079,7 +6079,7 @@ data_items:
     length: 3
     type: bcd
     unit: "A"
-    decimal: 3
+    decimals: 3
   - id: "061001FF"
     name: "电压数据块"
     protocol: "csg13"
@@ -6091,19 +6091,19 @@ data_items:
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - id: "06100102"
         name: "B相电压"
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - id: "06100103"
         name: "C相电压"
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
   - id: "061002FF"
     name: "电流数据块"
     protocol: "csg13"
@@ -6115,21 +6115,21 @@ data_items:
         length: 3
         type: bcd
         unit: "A"
-        decimal: 3
+        decimals: 3
         signed: true
       - id: "06100202"
         name: "B相电流"
         length: 3
         type: bcd
         unit: "A"
-        decimal: 3
+        decimals: 3
         signed: true
       - id: "06100203"
         name: "C相电流"
         length: 3
         type: bcd
         unit: "A"
-        decimal: 3
+        decimals: 3
         signed: true
   - id: "061003FF"
     name: "有功功率数据块"
@@ -6142,28 +6142,28 @@ data_items:
         length: 3
         type: bcd
         unit: "kW"
-        decimal: 4
+        decimals: 4
         signed: true
       - id: "06100301"
         name: "A相有功功率"
         length: 3
         type: bcd
         unit: "kW"
-        decimal: 4
+        decimals: 4
         signed: true
       - id: "06100302"
         name: "B相有功功率"
         length: 3
         type: bcd
         unit: "kW"
-        decimal: 4
+        decimals: 4
         signed: true
       - id: "06100303"
         name: "C相有功功率"
         length: 3
         type: bcd
         unit: "kW"
-        decimal: 4
+        decimals: 4
         signed: true
   - id: "061004FF"
     name: "无功功率数据块"
@@ -6176,28 +6176,28 @@ data_items:
         length: 3
         type: bcd
         unit: "kvar"
-        decimal: 4
+        decimals: 4
         signed: true
       - id: "06100401"
         name: "A相无功功率"
         length: 3
         type: bcd
         unit: "kvar"
-        decimal: 4
+        decimals: 4
         signed: true
       - id: "06100402"
         name: "B相无功功率"
         length: 3
         type: bcd
         unit: "kvar"
-        decimal: 4
+        decimals: 4
         signed: true
       - id: "06100403"
         name: "C相无功功率"
         length: 3
         type: bcd
         unit: "kvar"
-        decimal: 4
+        decimals: 4
         signed: true
   - id: "061005FF"
     name: "功率因数数据块"
@@ -6209,25 +6209,25 @@ data_items:
         name: "总功率因数"
         length: 2
         type: bcd
-        decimal: 3
+        decimals: 3
         signed: true
       - id: "06100501"
         name: "A相功率因数"
         length: 2
         type: bcd
-        decimal: 3
+        decimals: 3
         signed: true
       - id: "06100502"
         name: "B相功率因数"
         length: 2
         type: bcd
-        decimal: 3
+        decimals: 3
         signed: true
       - id: "06100503"
         name: "C相功率因数"
         length: 2
         type: bcd
-        decimal: 3
+        decimals: 3
         signed: true
   - id: "061006FF"
     name: "有功，无功总电能数据块"
@@ -6240,25 +6240,25 @@ data_items:
         length: 4
         type: bcd
         unit: "kWh"
-        decimal: 2
+        decimals: 2
       - id: "06100602"
         name: "反向有功总电能"
         length: 4
         type: bcd
         unit: "kWh"
-        decimal: 2
+        decimals: 2
       - id: "06100603"
         name: "组合无功1总电能"
         length: 4
         type: bcd
         unit: "kvarh"
-        decimal: 2
+        decimals: 2
       - id: "06100604"
         name: "组合无功2总电能"
         length: 4
         type: bcd
         unit: "kvarh"
-        decimal: 2
+        decimals: 2
   - id: "061007FF"
     name: "四象限无功总电能数据块"
     protocol: "csg13"
@@ -6270,25 +6270,25 @@ data_items:
         length: 4
         type: bcd
         unit: "kvarh"
-        decimal: 2
+        decimals: 2
       - id: "06100702"
         name: "第二象限无功总电能"
         length: 4
         type: bcd
         unit: "kvarh"
-        decimal: 2
+        decimals: 2
       - id: "06100703"
         name: "第三象限无功总电能"
         length: 4
         type: bcd
         unit: "kvarh"
-        decimal: 2
+        decimals: 2
       - id: "06100704"
         name: "第四象限无功总电能"
         length: 4
         type: bcd
         unit: "kvarh"
-        decimal: 2
+        decimals: 2
   - id: "061008FF"
     name: "当前需量数据块"
     protocol: "csg13"
@@ -6300,14 +6300,14 @@ data_items:
         length: 3
         type: bcd
         unit: "kvarh"
-        decimal: 4
+        decimals: 4
         signed: true
       - id: "06100802"
         name: "当前无功需量"
         length: 3
         type: bcd
         unit: "kvarh"
-        decimal: 4
+        decimals: 4
         signed: true
   - id: "061030FF"
     name: "组合无功总电能数据块"
@@ -6320,13 +6320,13 @@ data_items:
         length: 5
         type: bcd
         unit: "kvarh"
-        decimal: 4
+        decimals: 4
       - id: "06103002"
         name: "组合无功2总电能"
         length: 5
         type: bcd
         unit: "kvarh"
-        decimal: 4
+        decimals: 4
   - id: "061101FF"
     name: "电压数据块"
     protocol: "csg13"
@@ -6338,19 +6338,19 @@ data_items:
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - id: "06110102"
         name: "B相电压"
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - id: "06110103"
         name: "C相电压"
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
   - id: "061102FF"
     name: "电流数据块"
     protocol: "csg13"
@@ -6362,21 +6362,21 @@ data_items:
         length: 3
         type: bcd
         unit: "A"
-        decimal: 3
+        decimals: 3
         signed: true
       - id: "06110202"
         name: "B相电流"
         length: 3
         type: bcd
         unit: "A"
-        decimal: 3
+        decimals: 3
         signed: true
       - id: "06110203"
         name: "C相电流"
         length: 3
         type: bcd
         unit: "A"
-        decimal: 3
+        decimals: 3
         signed: true
   - id: "061103FF"
     name: "有功功率数据块"
@@ -6389,28 +6389,28 @@ data_items:
         length: 3
         type: bcd
         unit: "kW"
-        decimal: 4
+        decimals: 4
         signed: true
       - id: "06110301"
         name: "A相有功功率"
         length: 3
         type: bcd
         unit: "kW"
-        decimal: 4
+        decimals: 4
         signed: true
       - id: "06110302"
         name: "B相有功功率"
         length: 3
         type: bcd
         unit: "kW"
-        decimal: 4
+        decimals: 4
         signed: true
       - id: "06110303"
         name: "C相有功功率"
         length: 3
         type: bcd
         unit: "kW"
-        decimal: 4
+        decimals: 4
         signed: true
   - id: "061104FF"
     name: "无功功率数据块"
@@ -6423,28 +6423,28 @@ data_items:
         length: 3
         type: bcd
         unit: "kvar"
-        decimal: 4
+        decimals: 4
         signed: true
       - id: "06110401"
         name: "A相无功功率"
         length: 3
         type: bcd
         unit: "kvar"
-        decimal: 4
+        decimals: 4
         signed: true
       - id: "06110402"
         name: "B相无功功率"
         length: 3
         type: bcd
         unit: "kvar"
-        decimal: 4
+        decimals: 4
         signed: true
       - id: "06110403"
         name: "C相无功功率"
         length: 3
         type: bcd
         unit: "kvar"
-        decimal: 4
+        decimals: 4
         signed: true
   - id: "061105FF"
     name: "功率因数数据块"
@@ -6456,25 +6456,25 @@ data_items:
         name: "总功率因数"
         length: 2
         type: bcd
-        decimal: 3
+        decimals: 3
         signed: true
       - id: "06110501"
         name: "A相功率因数"
         length: 2
         type: bcd
-        decimal: 3
+        decimals: 3
         signed: true
       - id: "06110502"
         name: "B相功率因数"
         length: 2
         type: bcd
-        decimal: 3
+        decimals: 3
         signed: true
       - id: "06110503"
         name: "C相功率因数"
         length: 2
         type: bcd
-        decimal: 3
+        decimals: 3
         signed: true
   - id: "061106FF"
     name: "有功，无功总电能数据块"
@@ -6487,13 +6487,13 @@ data_items:
         length: 5
         type: bcd
         unit: "kWh"
-        decimal: 4
+        decimals: 4
       - id: "06110602"
         name: "反向有功总电能"
         length: 5
         type: bcd
         unit: "kWh"
-        decimal: 4
+        decimals: 4
   - id: "061107FF"
     name: "四象限无功总电能数据块"
     protocol: "csg13"
@@ -6505,25 +6505,25 @@ data_items:
         length: 5
         type: bcd
         unit: "kvarh"
-        decimal: 4
+        decimals: 4
       - id: "06110702"
         name: "第二象限无功总电能"
         length: 5
         type: bcd
         unit: "kvarh"
-        decimal: 4
+        decimals: 4
       - id: "06110703"
         name: "第三象限无功总电能"
         length: 5
         type: bcd
         unit: "kvarh"
-        decimal: 4
+        decimals: 4
       - id: "06110704"
         name: "第四象限无功总电能"
         length: 5
         type: bcd
         unit: "kvarh"
-        decimal: 4
+        decimals: 4
   - id: "061109FF"
     name: "谐波总电能曲线数据块"
     protocol: "csg13"
@@ -6535,13 +6535,13 @@ data_items:
         length: 5
         type: bcd
         unit: "kWh"
-        decimal: 4
+        decimals: 4
       - id: "06110902"
         name: "反向有功谐波总电能"
         length: 5
         type: bcd
         unit: "kWh"
-        decimal: 4
+        decimals: 4
   - id: "06110AFF"
     name: "基波总电能曲线数据块"
     protocol: "csg13"
@@ -6553,13 +6553,13 @@ data_items:
         length: 5
         type: bcd
         unit: "kWh"
-        decimal: 4
+        decimals: 4
       - id: "06110A02"
         name: "反向有功基波总电能"
         length: 5
         type: bcd
         unit: "kWh"
-        decimal: 4
+        decimals: 4
   - id: "06100CFF"
     name: "组合有功费率1-4电能曲线数据块"
     protocol: "csg13"
@@ -6571,25 +6571,25 @@ data_items:
         length: 5
         type: bcd
         unit: "kWh"
-        decimal: 4
+        decimals: 4
       - id: "06100C02"
         name: "组合有功费率2总电能"
         length: 5
         type: bcd
         unit: "kWh"
-        decimal: 4
+        decimals: 4
       - id: "06100C03"
         name: "组合有功费率3总电能"
         length: 5
         type: bcd
         unit: "kWh"
-        decimal: 4
+        decimals: 4
       - id: "06100C04"
         name: "组合有功费率4总电能"
         length: 5
         type: bcd
         unit: "kWh"
-        decimal: 4
+        decimals: 4
   - id: "06100DFF"
     name: "组合有功费率5-8电能曲线数据块"
     protocol: "csg13"
@@ -6601,25 +6601,25 @@ data_items:
         length: 5
         type: bcd
         unit: "kWh"
-        decimal: 4
+        decimals: 4
       - id: "06100D02"
         name: "组合有功费率6总电能"
         length: 5
         type: bcd
         unit: "kWh"
-        decimal: 4
+        decimals: 4
       - id: "06100D03"
         name: "组合有功费率7总电能"
         length: 5
         type: bcd
         unit: "kWh"
-        decimal: 4
+        decimals: 4
       - id: "06100D04"
         name: "组合有功费率8总电能"
         length: 5
         type: bcd
         unit: "kWh"
-        decimal: 4
+        decimals: 4
   - id: "E0001211"
     name: "对空调遥控设置制冷温值"
     protocol: "csg13"
@@ -6642,7 +6642,7 @@ data_items:
         length: 2
         type: bcd
         unit: "℃"
-        decimal: 1
+        decimals: 1
         signed: true
   - id: "E0001212"
     name: "对空调遥控设置制热温值"
@@ -6666,7 +6666,7 @@ data_items:
         length: 2
         type: bcd
         unit: "℃"
-        decimal: 1
+        decimals: 1
         signed: true
   - id: "E0001213"
     name: "对蓄电池电压设置下限阈值"
@@ -6690,7 +6690,7 @@ data_items:
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
         signed: true
   - id: "E0001214"
     name: "对充电桩设置限制功率值"
@@ -6714,7 +6714,7 @@ data_items:
         length: 4
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
       - name: "充电枪号"
         length: 1
         type: bcd
@@ -6740,7 +6740,7 @@ data_items:
         length: 4
         type: bcd
         unit: "kw"
-        decimal: 4
+        decimals: 4
   - id: "E0001216"
     name: "对空调设置开关机状态"
     protocol: "csg13"
@@ -13578,7 +13578,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kWh"
-    decimal: 2
+    decimals: 2
   - id: "E1000002"
     name: "无功电能表起始读数"
     protocol: "csg13"
@@ -13586,7 +13586,7 @@ data_items:
     length: 4
     type: bcd
     unit: "kWh"
-    decimal: 2
+    decimals: 2
   - id: "E1000003"
     name: "电表常数(有功)"
     protocol: "csg13"
@@ -13608,7 +13608,7 @@ data_items:
     length: 4
     type: bcd
     unit: "元"
-    decimal: 2
+    decimals: 2
   - id: "E1000010"
     name: "(当前)本日电压合格率统计数据"
     protocol: "csg13"
@@ -13619,32 +13619,32 @@ data_items:
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "电压合格率"
         length: 3
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - name: "电压超限率"
         length: 3
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - name: "电压超上限时间"
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "电压超下限时间"
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "最高电压"
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - name: "最高电压出现时间"
         length: 4
         type: bcd
@@ -13653,7 +13653,7 @@ data_items:
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - name: "最低电压出现时间"
         length: 4
         type: bcd
@@ -13668,32 +13668,32 @@ data_items:
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "电压合格率"
         length: 3
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - name: "电压超限率"
         length: 3
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - name: "电压超上限时间"
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "电压超下限时间"
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "最高电压"
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - name: "最高电压出现时间"
         length: 4
         type: bcd
@@ -13702,7 +13702,7 @@ data_items:
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - name: "最低电压出现时间"
         length: 4
         type: bcd
@@ -13717,32 +13717,32 @@ data_items:
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "电压合格率"
         length: 3
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - name: "电压超限率"
         length: 3
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - name: "电压超上限时间"
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "电压超下限时间"
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "最高电压"
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - name: "最高电压出现时间"
         length: 4
         type: bcd
@@ -13751,7 +13751,7 @@ data_items:
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - name: "最低电压出现时间"
         length: 4
         type: bcd
@@ -13766,32 +13766,32 @@ data_items:
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "电压合格率"
         length: 3
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - name: "电压超限率"
         length: 3
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - name: "电压超上限时间"
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "电压超下限时间"
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "最高电压"
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - name: "最高电压出现时间"
         length: 4
         type: bcd
@@ -13800,7 +13800,7 @@ data_items:
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - name: "最低电压出现时间"
         length: 4
         type: bcd
@@ -13814,7 +13814,7 @@ data_items:
       - name: "最高电流"
         length: 3
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "最高电流出现时间"
         length: 4
         type: bcd
@@ -13822,7 +13822,7 @@ data_items:
       - name: "最低电流"
         length: 3
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "最低电流出现时间"
         length: 4
         type: bcd
@@ -13836,7 +13836,7 @@ data_items:
       - name: "最高电流"
         length: 3
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "最高电流出现时间"
         length: 4
         type: bcd
@@ -13844,7 +13844,7 @@ data_items:
       - name: "最低电流"
         length: 3
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "最低电流出现时间"
         length: 4
         type: bcd
@@ -13858,7 +13858,7 @@ data_items:
       - name: "最高电流"
         length: 3
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "最高电流出现时间"
         length: 4
         type: bcd
@@ -13866,7 +13866,7 @@ data_items:
       - name: "最低电流"
         length: 3
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "最低电流出现时间"
         length: 4
         type: bcd
@@ -13880,7 +13880,7 @@ data_items:
       - name: "最高电流"
         length: 3
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "最高电流出现时间"
         length: 4
         type: bcd
@@ -13888,7 +13888,7 @@ data_items:
       - name: "最低电流"
         length: 3
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "最低电流出现时间"
         length: 4
         type: bcd
@@ -13903,32 +13903,32 @@ data_items:
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "电压合格率"
         length: 3
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - name: "电压超限率"
         length: 3
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - name: "电压超上限时间"
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "电压超下限时间"
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "最高电压"
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - name: "最高电压出现时间"
         length: 4
         type: bcd
@@ -13937,7 +13937,7 @@ data_items:
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - name: "最低电压出现时间"
         length: 4
         type: bcd
@@ -13952,32 +13952,32 @@ data_items:
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "电压合格率"
         length: 3
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - name: "电压超限率"
         length: 3
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - name: "电压超上限时间"
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "电压超下限时间"
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "最高电压"
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - name: "最高电压出现时间"
         length: 4
         type: bcd
@@ -13986,7 +13986,7 @@ data_items:
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - name: "最低电压出现时间"
         length: 4
         type: bcd
@@ -14001,32 +14001,32 @@ data_items:
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "电压合格率"
         length: 3
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - name: "电压超限率"
         length: 3
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - name: "电压超上限时间"
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "电压超下限时间"
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "最高电压"
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - name: "最高电压出现时间"
         length: 4
         type: bcd
@@ -14035,7 +14035,7 @@ data_items:
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - name: "最低电压出现时间"
         length: 4
         type: bcd
@@ -14050,32 +14050,32 @@ data_items:
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "电压合格率"
         length: 3
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - name: "电压超限率"
         length: 3
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - name: "电压超上限时间"
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "电压超下限时间"
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "最高电压"
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - name: "最高电压出现时间"
         length: 4
         type: bcd
@@ -14084,7 +14084,7 @@ data_items:
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - name: "最低电压出现时间"
         length: 4
         type: bcd
@@ -14098,7 +14098,7 @@ data_items:
       - name: "最高电流"
         length: 3
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "最高电流出现时间"
         length: 4
         type: bcd
@@ -14106,7 +14106,7 @@ data_items:
       - name: "最低电流"
         length: 3
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "最低电流出现时间"
         length: 4
         type: bcd
@@ -14120,7 +14120,7 @@ data_items:
       - name: "最高电流"
         length: 3
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "最高电流出现时间"
         length: 4
         type: bcd
@@ -14128,7 +14128,7 @@ data_items:
       - name: "最低电流"
         length: 3
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "最低电流出现时间"
         length: 4
         type: bcd
@@ -14142,7 +14142,7 @@ data_items:
       - name: "最高电流"
         length: 3
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "最高电流出现时间"
         length: 4
         type: bcd
@@ -14150,7 +14150,7 @@ data_items:
       - name: "最低电流"
         length: 3
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "最低电流出现时间"
         length: 4
         type: bcd
@@ -14164,7 +14164,7 @@ data_items:
       - name: "最高电流"
         length: 3
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "最高电流出现时间"
         length: 4
         type: bcd
@@ -14172,7 +14172,7 @@ data_items:
       - name: "最低电流"
         length: 3
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "最低电流出现时间"
         length: 4
         type: bcd
@@ -14186,7 +14186,7 @@ data_items:
       - name: "最高功率因数"
         length: 2
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "最高功率因数出现时间"
         length: 4
         type: bcd
@@ -14194,7 +14194,7 @@ data_items:
       - name: "最低功率因数"
         length: 2
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "最低功率因数出现时间"
         length: 4
         type: bcd
@@ -14208,7 +14208,7 @@ data_items:
       - name: "最高功率因数"
         length: 2
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "最高功率因数出现时间"
         length: 4
         type: bcd
@@ -14216,7 +14216,7 @@ data_items:
       - name: "最低功率因数"
         length: 2
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "最低功率因数出现时间"
         length: 4
         type: bcd
@@ -14361,22 +14361,22 @@ data_items:
         length: 4
         type: bcd
         unit: "kWh"
-        decimal: 2
+        decimals: 2
       - name: "失压反向有功总电能增量"
         length: 4
         type: bcd
         unit: "kWh"
-        decimal: 2
+        decimals: 2
       - name: "失压组合无功1总电能增量"
         length: 4
         type: bcd
         unit: "kVarh"
-        decimal: 2
+        decimals: 2
       - name: "失压组合无功2总电能增量"
         length: 4
         type: bcd
         unit: "kVarh"
-        decimal: 2
+        decimals: 2
   - id: "E1000032"
     name: "(当前) 日失流数据"
     protocol: "csg13"
@@ -14419,22 +14419,22 @@ data_items:
         length: 4
         type: bcd
         unit: "kWh"
-        decimal: 2
+        decimals: 2
       - name: "失流反向有功总电能增量"
         length: 4
         type: bcd
         unit: "kWh"
-        decimal: 2
+        decimals: 2
       - name: "失流组合无功1总电能增量"
         length: 4
         type: bcd
         unit: "kVarh"
-        decimal: 2
+        decimals: 2
       - name: "失流组合无功2总电能增量"
         length: 4
         type: bcd
         unit: "kVarh"
-        decimal: 2
+        decimals: 2
   - id: "E1000033"
     name: "(当前) 日总功率因数区段统计数据"
     protocol: "csg13"
@@ -14747,22 +14747,22 @@ data_items:
         length: 4
         type: bcd
         unit: "kWh"
-        decimal: 2
+        decimals: 2
       - name: "失压反向有功总电能增量"
         length: 4
         type: bcd
         unit: "kWh"
-        decimal: 2
+        decimals: 2
       - name: "失压组合无功1总电能增量"
         length: 4
         type: bcd
         unit: "kVarh"
-        decimal: 2
+        decimals: 2
       - name: "失压组合无功2总电能增量"
         length: 4
         type: bcd
         unit: "kVarh"
-        decimal: 2
+        decimals: 2
   - id: "E1004032"
     name: "(当前) 月失流数据"
     protocol: "csg13"
@@ -14805,22 +14805,22 @@ data_items:
         length: 4
         type: bcd
         unit: "kWh"
-        decimal: 2
+        decimals: 2
       - name: "失流反向有功总电能增量"
         length: 4
         type: bcd
         unit: "kWh"
-        decimal: 2
+        decimals: 2
       - name: "失流组合无功1总电能增量"
         length: 4
         type: bcd
         unit: "kVarh"
-        decimal: 2
+        decimals: 2
       - name: "失流组合无功2总电能增量"
         length: 4
         type: bcd
         unit: "kVarh"
-        decimal: 2
+        decimals: 2
   - id: "E1004033"
     name: "(当前) 月总功率因数区段统计数据"
     protocol: "csg13"
@@ -19771,7 +19771,7 @@ data_items:
             length: 2
             type: bcd
             unit: "\""
-            decimal: 2
+            decimals: 2
           - name: "分"
             length: 1
             type: bcd
@@ -19790,7 +19790,7 @@ data_items:
             length: 2
             type: bcd
             unit: "\""
-            decimal: 2
+            decimals: 2
           - name: "分"
             length: 1
             type: bcd
@@ -19806,7 +19806,7 @@ data_items:
         length: 4
         type: bcd
         unit: "千米"
-        decimal: 2
+        decimals: 2
         signed: true
   - id: "E0000B13"
     name: "终端型号"
@@ -21719,32 +21719,32 @@ data_items:
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "电压合格率"
         length: 3
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - name: "电压超限率"
         length: 3
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - name: "电压超上限时间"
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "电压超下限时间"
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "最高电压"
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - name: "最高电压出现时间"
         length: 4
         type: bcd
@@ -21753,7 +21753,7 @@ data_items:
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - name: "最低电压出现时间"
         length: 4
         type: bcd
@@ -21768,32 +21768,32 @@ data_items:
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "电压合格率"
         length: 3
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - name: "电压超限率"
         length: 3
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - name: "电压超上限时间"
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "电压超下限时间"
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "最高电压"
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - name: "最高电压出现时间"
         length: 4
         type: bcd
@@ -21802,7 +21802,7 @@ data_items:
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - name: "最低电压出现时间"
         length: 4
         type: bcd
@@ -21817,32 +21817,32 @@ data_items:
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "电压合格率"
         length: 3
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - name: "电压超限率"
         length: 3
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - name: "电压超上限时间"
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "电压超下限时间"
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "最高电压"
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - name: "最高电压出现时间"
         length: 4
         type: bcd
@@ -21851,7 +21851,7 @@ data_items:
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - name: "最低电压出现时间"
         length: 4
         type: bcd
@@ -21866,32 +21866,32 @@ data_items:
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "电压合格率"
         length: 3
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - name: "电压超限率"
         length: 3
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - name: "电压超上限时间"
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "电压超下限时间"
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "最高电压"
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - name: "最高电压出现时间"
         length: 4
         type: bcd
@@ -21900,7 +21900,7 @@ data_items:
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - name: "最低电压出现时间"
         length: 4
         type: bcd
@@ -21919,12 +21919,12 @@ data_items:
         length: 3
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - name: "频率超限率"
         length: 3
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - name: "频率超上限时间"
         length: 2
         type: bcd
@@ -21937,7 +21937,7 @@ data_items:
         length: 2
         type: bcd
         unit: "Hz"
-        decimal: 2
+        decimals: 2
       - name: "最高频率出现时间"
         length: 4
         type: bcd
@@ -21946,7 +21946,7 @@ data_items:
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - name: "最低频率出现时间"
         length: 4
         type: bcd
@@ -21960,7 +21960,7 @@ data_items:
       - name: "最高电流"
         length: 3
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "最高电流出现时间"
         length: 4
         type: bcd
@@ -21968,7 +21968,7 @@ data_items:
       - name: "最低电流"
         length: 3
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "最低电流出现时间"
         length: 4
         type: bcd
@@ -21982,7 +21982,7 @@ data_items:
       - name: "最高电流"
         length: 3
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "最高电流出现时间"
         length: 4
         type: bcd
@@ -21990,7 +21990,7 @@ data_items:
       - name: "最低电流"
         length: 3
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "最低电流出现时间"
         length: 4
         type: bcd
@@ -22004,7 +22004,7 @@ data_items:
       - name: "最高电流"
         length: 3
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "最高电流出现时间"
         length: 4
         type: bcd
@@ -22012,7 +22012,7 @@ data_items:
       - name: "最低电流"
         length: 3
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "最低电流出现时间"
         length: 4
         type: bcd
@@ -22026,7 +22026,7 @@ data_items:
       - name: "最高功率因数"
         length: 2
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "最高功率因数出现时间"
         length: 4
         type: bcd
@@ -22034,7 +22034,7 @@ data_items:
       - name: "最低功率因数"
         length: 2
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "最低功率因数出现时间"
         length: 4
         type: bcd
@@ -22048,7 +22048,7 @@ data_items:
       - name: "最高电流"
         length: 3
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "最高电流出现时间"
         length: 4
         type: bcd
@@ -22056,7 +22056,7 @@ data_items:
       - name: "最低电流"
         length: 3
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "最低电流出现时间"
         length: 4
         type: bcd
@@ -22355,7 +22355,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kW"
-        decimal: 4
+        decimals: 4
       - name: "正向有功总最大功率出现时间"
         length: 5
         type: bcd
@@ -22364,7 +22364,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kW"
-        decimal: 4
+        decimals: 4
       - name: "正向有功总最低功率出现时间"
         length: 5
         type: bcd
@@ -22373,12 +22373,12 @@ data_items:
         length: 3
         type: bcd
         unit: "kW"
-        decimal: 4
+        decimals: 4
       - name: "反向有功总最大功率"
         length: 3
         type: bcd
         unit: "kW"
-        decimal: 4
+        decimals: 4
       - name: "反向有功总最大功率出现时间"
         length: 5
         type: bcd
@@ -22387,7 +22387,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kW"
-        decimal: 4
+        decimals: 4
       - name: "反向有功总最低功率出现时间"
         length: 5
         type: bcd
@@ -22396,7 +22396,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kW"
-        decimal: 4
+        decimals: 4
   - id: "E1008056"
     name: "(冻结)总日电流统计"
     protocol: "csg13"
@@ -22407,7 +22407,7 @@ data_items:
         length: 3
         type: bcd
         unit: "A"
-        decimal: 3
+        decimals: 3
       - name: "最高电流出现时间"
         length: 5
         type: bcd
@@ -22416,7 +22416,7 @@ data_items:
         length: 3
         type: bcd
         unit: "A"
-        decimal: 3
+        decimals: 3
       - name: "最低电流出现时间"
         length: 5
         type: bcd
@@ -22425,7 +22425,7 @@ data_items:
         length: 3
         type: bcd
         unit: "A"
-        decimal: 3
+        decimals: 3
   - id: "E1008057"
     name: "(冻结)A相日电流统计"
     protocol: "csg13"
@@ -22436,7 +22436,7 @@ data_items:
         length: 3
         type: bcd
         unit: "A"
-        decimal: 3
+        decimals: 3
       - name: "最高电流出现时间"
         length: 5
         type: bcd
@@ -22445,7 +22445,7 @@ data_items:
         length: 3
         type: bcd
         unit: "A"
-        decimal: 3
+        decimals: 3
       - name: "最低电流出现时间"
         length: 5
         type: bcd
@@ -22454,7 +22454,7 @@ data_items:
         length: 3
         type: bcd
         unit: "A"
-        decimal: 3
+        decimals: 3
   - id: "E1008058"
     name: "(冻结)B相日电流统计"
     protocol: "csg13"
@@ -22465,7 +22465,7 @@ data_items:
         length: 3
         type: bcd
         unit: "A"
-        decimal: 3
+        decimals: 3
       - name: "最高电流出现时间"
         length: 5
         type: bcd
@@ -22474,7 +22474,7 @@ data_items:
         length: 3
         type: bcd
         unit: "A"
-        decimal: 3
+        decimals: 3
       - name: "最低电流出现时间"
         length: 5
         type: bcd
@@ -22483,7 +22483,7 @@ data_items:
         length: 3
         type: bcd
         unit: "A"
-        decimal: 3
+        decimals: 3
   - id: "E1008059"
     name: "(冻结)C相日电流统计"
     protocol: "csg13"
@@ -22494,7 +22494,7 @@ data_items:
         length: 3
         type: bcd
         unit: "A"
-        decimal: 3
+        decimals: 3
       - name: "最高电流出现时间"
         length: 5
         type: bcd
@@ -22503,7 +22503,7 @@ data_items:
         length: 3
         type: bcd
         unit: "A"
-        decimal: 3
+        decimals: 3
       - name: "最低电流出现时间"
         length: 5
         type: bcd
@@ -22512,7 +22512,7 @@ data_items:
         length: 3
         type: bcd
         unit: "A"
-        decimal: 3
+        decimals: 3
   - id: "E1008060"
     name: "(本日)电压合格率统计数据"
     protocol: "csg13"
@@ -22523,32 +22523,32 @@ data_items:
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "电压合格率"
         length: 3
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - name: "电压超限率"
         length: 3
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - name: "电压超上限时间"
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "电压超下限时间"
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "最高电压"
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - name: "最高电压出现时间"
         length: 4
         type: bcd
@@ -22557,7 +22557,7 @@ data_items:
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - name: "最低电压出现时间"
         length: 4
         type: bcd
@@ -22566,7 +22566,7 @@ data_items:
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
   - id: "E1008064"
     name: "日电压总谐波群（2-41次）畸变率统计"
     protocol: "csg13"
@@ -22577,12 +22577,12 @@ data_items:
         length: 2
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - name: "电压总谐波群畸变率越限率"
         length: 2
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
   - id: "E1008068"
     name: "日功率误差统计数据"
     protocol: "csg13"
@@ -22669,7 +22669,7 @@ data_items:
         length: 4
         type: bcd
         unit: "kW"
-        decimal: 4
+        decimals: 4
       - name: "发生告警类型"
         length: 1
         type: bcd
@@ -22680,7 +22680,7 @@ data_items:
         length: 4
         type: bcd
         unit: "A"
-        decimal: 3
+        decimals: 3
       - name: "发生告警类型"
         length: 1
         type: bcd
@@ -22691,7 +22691,7 @@ data_items:
         length: 4
         type: bcd
         unit: "℃"
-        decimal: 1
+        decimals: 1
       - name: "发生告警类型"
         length: 1
         type: bcd
@@ -22702,7 +22702,7 @@ data_items:
         length: 4
         type: bcd
         unit: "A"
-        decimal: 3
+        decimals: 3
       - name: "发生告警类型"
         length: 1
         type: bcd
@@ -22713,7 +22713,7 @@ data_items:
         length: 4
         type: bcd
         unit: "kW"
-        decimal: 4
+        decimals: 4
   - id: "E1008080"
     name: "上1日电碳计量统计数据"
     protocol: "csg13"
@@ -22728,16 +22728,16 @@ data_items:
         length: 5
         type: bcd
         unit: "Kg/CO2-eq"
-        decimal: 4
+        decimals: 4
       - name: "日冻结电碳因子"
         length: 3
         type: bcd
-        decimal: 4
+        decimals: 4
       - name: "日冻结正向有功电能"
         length: 5
         type: bcd
         unit: "kwh"
-        decimal: 4
+        decimals: 4
   - id: "E1008081"
     name: "电表日用电安全数据"
     protocol: "csg13"
@@ -22758,7 +22758,7 @@ data_items:
         length: 4
         type: bcd
         unit: "kW"
-        decimal: 4
+        decimals: 4
       - name: "发生告警类型"
         length: 1
         type: bcd
@@ -22769,7 +22769,7 @@ data_items:
         length: 4
         type: bcd
         unit: "A"
-        decimal: 3
+        decimals: 3
       - name: "发生告警类型"
         length: 1
         type: bcd
@@ -22780,7 +22780,7 @@ data_items:
         length: 4
         type: bcd
         unit: "℃"
-        decimal: 1
+        decimals: 1
       - name: "发生告警类型"
         length: 1
         type: bcd
@@ -22791,7 +22791,7 @@ data_items:
         length: 4
         type: bcd
         unit: "A"
-        decimal: 3
+        decimals: 3
       - name: "发生告警类型"
         length: 1
         type: bcd
@@ -22802,7 +22802,7 @@ data_items:
         length: 4
         type: bcd
         unit: "kW"
-        decimal: 4
+        decimals: 4
   - id: "E100C010"
     name: "(冻结)月电压合格率统计数据"
     protocol: "csg13"
@@ -22813,32 +22813,32 @@ data_items:
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "电压合格率"
         length: 3
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - name: "电压超限率"
         length: 3
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - name: "电压超上限时间"
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "电压超下限时间"
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "最高电压"
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - name: "最高电压出现时间"
         length: 4
         type: bcd
@@ -22847,7 +22847,7 @@ data_items:
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - name: "最低电压出现时间"
         length: 4
         type: bcd
@@ -22862,32 +22862,32 @@ data_items:
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "电压合格率"
         length: 3
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - name: "电压超限率"
         length: 3
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - name: "电压超上限时间"
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "电压超下限时间"
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "最高电压"
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - name: "最高电压出现时间"
         length: 4
         type: bcd
@@ -22896,7 +22896,7 @@ data_items:
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - name: "最低电压出现时间"
         length: 4
         type: bcd
@@ -22911,32 +22911,32 @@ data_items:
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "电压合格率"
         length: 3
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - name: "电压超限率"
         length: 3
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - name: "电压超上限时间"
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "电压超下限时间"
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "最高电压"
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - name: "最高电压出现时间"
         length: 4
         type: bcd
@@ -22945,7 +22945,7 @@ data_items:
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - name: "最低电压出现时间"
         length: 4
         type: bcd
@@ -22960,32 +22960,32 @@ data_items:
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "电压合格率"
         length: 3
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - name: "电压超限率"
         length: 3
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - name: "电压超上限时间"
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "电压超下限时间"
         length: 3
         type: bcd
         unit: "分"
-        decimal: 0
+        decimals: 0
       - name: "最高电压"
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - name: "最高电压出现时间"
         length: 4
         type: bcd
@@ -22994,7 +22994,7 @@ data_items:
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - name: "最低电压出现时间"
         length: 4
         type: bcd
@@ -23013,12 +23013,12 @@ data_items:
         length: 3
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - name: "频率超限率"
         length: 3
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - name: "频率超上限时间"
         length: 3
         type: bcd
@@ -23031,7 +23031,7 @@ data_items:
         length: 2
         type: bcd
         unit: "Hz"
-        decimal: 2
+        decimals: 2
       - name: "最高频率出现时间"
         length: 4
         type: bcd
@@ -23040,7 +23040,7 @@ data_items:
         length: 2
         type: bcd
         unit: "Hz"
-        decimal: 2
+        decimals: 2
       - name: "最低频率出现时间"
         length: 4
         type: bcd
@@ -23054,7 +23054,7 @@ data_items:
       - name: "最高电流"
         length: 3
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "最高电流出现时间"
         length: 4
         type: bcd
@@ -23062,7 +23062,7 @@ data_items:
       - name: "最低电流"
         length: 3
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "最低电流出现时间"
         length: 4
         type: bcd
@@ -23076,7 +23076,7 @@ data_items:
       - name: "最高电流"
         length: 3
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "最高电流出现时间"
         length: 4
         type: bcd
@@ -23084,7 +23084,7 @@ data_items:
       - name: "最低电流"
         length: 3
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "最低电流出现时间"
         length: 4
         type: bcd
@@ -23098,7 +23098,7 @@ data_items:
       - name: "最高电流"
         length: 3
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "最高电流出现时间"
         length: 4
         type: bcd
@@ -23106,7 +23106,7 @@ data_items:
       - name: "最低电流"
         length: 3
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "最低电流出现时间"
         length: 4
         type: bcd
@@ -23120,7 +23120,7 @@ data_items:
       - name: "最高功率因数"
         length: 2
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "最高功率因数出现时间"
         length: 4
         type: bcd
@@ -23128,7 +23128,7 @@ data_items:
       - name: "最低功率因数"
         length: 2
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "最低功率因数出现时间"
         length: 4
         type: bcd
@@ -23142,7 +23142,7 @@ data_items:
       - name: "最高电流"
         length: 3
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "最高电流出现时间"
         length: 4
         type: bcd
@@ -23150,7 +23150,7 @@ data_items:
       - name: "最低电流"
         length: 3
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "最低电流出现时间"
         length: 4
         type: bcd
@@ -24125,7 +24125,7 @@ data_items:
     length: 2
     type: bcd
     unit: "%"
-    decimal: 2
+    decimals: 2
   - id: "E0000191"
     name: "内存占用率阈值"
     protocol: "csg13"
@@ -24133,7 +24133,7 @@ data_items:
     length: 2
     type: bcd
     unit: "%"
-    decimal: 2
+    decimals: 2
   - id: "E0000192"
     name: "存储资源占用率阈值"
     protocol: "csg13"
@@ -24141,7 +24141,7 @@ data_items:
     length: 2
     type: bcd
     unit: "%"
-    decimal: 2
+    decimals: 2
   - id: "E0000193"
     name: "CPU 温度阈值"
     protocol: "csg13"
@@ -24149,7 +24149,7 @@ data_items:
     length: 3
     type: bcd
     unit: "℃"
-    decimal: 2
+    decimals: 2
   - id: "E0000194"
     name: "应用CPU 占用率阈值"
     protocol: "csg13"
@@ -24157,7 +24157,7 @@ data_items:
     length: 2
     type: bcd
     unit: "%"
-    decimal: 2
+    decimals: 2
   - id: "E0000195"
     name: "应用内存占用率阈值"
     protocol: "csg13"
@@ -24165,7 +24165,7 @@ data_items:
     length: 2
     type: bcd
     unit: "%"
-    decimal: 2
+    decimals: 2
   - id: "E0000196"
     name: "应用储存资源占用阈值"
     protocol: "csg13"
@@ -25531,13 +25531,13 @@ data_items:
         length: 2
         type: bcd
         unit: "kWh"
-        decimal: 2
+        decimals: 2
       - id: "E000018B"
         name: "剩余金额不足阈值"
         length: 3
         type: bcd
         unit: "元"
-        decimal: 2
+        decimals: 2
       - id: "E000018C"
         name: "月通信流量越限值"
         length: 3
@@ -25554,70 +25554,70 @@ data_items:
         length: 2
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - id: "E0800101"
         name: "电流不平衡度恢复阈值"
         length: 2
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - id: "E0800102"
         name: "合格电压上限"
         length: 2
         type: bcd
         unit: "倍"
-        decimal: 2
+        decimals: 2
       - id: "E0800103"
         name: "合格电压下限"
         length: 2
         type: bcd
         unit: "倍"
-        decimal: 2
+        decimals: 2
       - id: "E0800104"
         name: "判断电流过流的相对额定值的比例"
         length: 2
         type: bcd
-        decimal: 2
+        decimals: 2
       - id: "E0800105"
         name: "判断负荷过载相对额定值的比例"
         length: 2
         type: bcd
-        decimal: 2
+        decimals: 2
       - id: "E0800106"
         name: "判断负荷过载恢复的相对额定值的比例"
         length: 2
         type: bcd
-        decimal: 2
+        decimals: 2
       - id: "E0800107"
         name: "零相电流报警阈值"
         length: 2
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - id: "E0800108"
         name: "零相电流报警恢复阈值"
         length: 2
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - id: "E0800109"
         name: "判断电流过负荷恢复的相对额定值"
         length: 2
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - id: "E080010A"
         name: "电压不平衡度阈值"
         length: 2
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - id: "E080010B"
         name: "电压不平衡度恢复阈值"
         length: 2
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - id: "E080010C"
         name: "失压、失流、断相的判断阈值"
         length: 8
@@ -25626,22 +25626,22 @@ data_items:
             length: 2
             type: bcd
             unit: "%"
-            decimal: 2
+            decimals: 2
           - name: "返回电压"
             length: 2
             type: bcd
             unit: "%"
-            decimal: 2
+            decimals: 2
           - name: "启动电流"
             length: 2
             type: bcd
             unit: "%"
-            decimal: 2
+            decimals: 2
           - name: "返回电流"
             length: 2
             type: bcd
             unit: "%"
-            decimal: 2
+            decimals: 2
   - id: "E0800200"
     name: "电压畸变率阈值"
     protocol: "csg13"
@@ -25649,7 +25649,7 @@ data_items:
     length: 2
     type: bcd
     unit: "%"
-    decimal: 2
+    decimals: 2
   - id: "E0800201"
     name: "电流畸变率阈值"
     protocol: "csg13"
@@ -25657,7 +25657,7 @@ data_items:
     length: 2
     type: bcd
     unit: "%"
-    decimal: 2
+    decimals: 2
   - id: "E0800202"
     name: "电压畸变率报警恢复阈值"
     protocol: "csg13"
@@ -25665,7 +25665,7 @@ data_items:
     length: 2
     type: bcd
     unit: "%"
-    decimal: 2
+    decimals: 2
   - id: "E0800203"
     name: "电流畸变率报警恢复阈值"
     protocol: "csg13"
@@ -25673,7 +25673,7 @@ data_items:
     length: 2
     type: bcd
     unit: "%"
-    decimal: 2
+    decimals: 2
   - id: "E0800204"
     name: "功率因数区段数"
     protocol: "csg13"
@@ -25689,39 +25689,39 @@ data_items:
       - name: "定值1"
         length: 2
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "定值2"
         length: 2
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "定值3"
         length: 2
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "定值4"
         length: 2
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "定值5"
         length: 2
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "定值6"
         length: 2
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "定值7"
         length: 2
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "定值8"
         length: 2
         type: bcd
-        decimal: 3
+        decimals: 3
       - name: "定值9"
         length: 2
         type: bcd
-        decimal: 3
+        decimals: 3
   - id: "E0800206"
     name: "监测谐波次数"
     protocol: "csg13"
@@ -25735,7 +25735,7 @@ data_items:
     length: 2
     type: bcd
     unit: "%"
-    decimal: 2
+    decimals: 2
   - id: "E0800208"
     name: "电压偏差下限"
     protocol: "csg13"
@@ -25743,7 +25743,7 @@ data_items:
     length: 2
     type: bcd
     unit: "%"
-    decimal: 2
+    decimals: 2
   - id: "E0800209"
     name: "频率偏差上限"
     protocol: "csg13"
@@ -25751,7 +25751,7 @@ data_items:
     length: 2
     type: bcd
     unit: "%"
-    decimal: 2
+    decimals: 2
   - id: "E080020A"
     name: "频率偏差下限"
     protocol: "csg13"
@@ -25759,35 +25759,35 @@ data_items:
     length: 2
     type: bcd
     unit: "%"
-    decimal: 2
+    decimals: 2
   - id: "E080020B"
     name: "电压长闪限值"
     protocol: "csg13"
     region: ["南网"]
     length: 2
     type: bcd
-    decimal: 2
+    decimals: 2
   - id: "E080020C"
     name: "电压长闪限值"
     protocol: "csg13"
     region: ["南网"]
     length: 2
     type: bcd
-    decimal: 2
+    decimals: 2
   - id: "E080020D"
     name: "无功过补偿、无功欠补偿告警发生阈值"
     protocol: "csg13"
     region: ["南网"]
     length: 2
     type: bcd
-    decimal: 3
+    decimals: 3
   - id: "E080020E"
     name: "无功过补偿、无功欠补偿告警恢复阈值"
     protocol: "csg13"
     region: ["南网"]
     length: 2
     type: bcd
-    decimal: 3
+    decimals: 3
   - id: "E080020F"
     name: "通道通信时间超时阈值"
     protocol: "csg13"
@@ -25795,7 +25795,7 @@ data_items:
     length: 4
     type: bcd
     unit: "秒"
-    decimal: 0
+    decimals: 0
   - id: "E0000133"
     name: "精准校时"
     protocol: "csg13"
@@ -26024,22 +26024,22 @@ data_items:
         length: 2
         type: bcd
         unit: "℃"
-        decimal: 1
+        decimals: 1
       - name: "CPU 使用率"
         length: 3
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - name: "内存占用率"
         length: 2
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - name: "磁盘使用率"
         length: 3
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
   - id: "E1800031"
     name: "系统使用信息"
     protocol: "csg13"
@@ -26249,25 +26249,25 @@ data_items:
         length: 2
         type: bcd
         unit: "V"
-        decimal: 1
+        decimals: 1
       - id: "E0800012"
         name: "额定电流(二次侧)"
         length: 3
         type: bcd
         unit: "A"
-        decimal: 3
+        decimals: 3
       - id: "E0800013"
         name: "用户申报容量(二次侧)"
         length: 2
         type: bcd
         unit: "kVA"
-        decimal: 2
+        decimals: 2
       - id: "E0800014"
         name: "变压器容量(二次侧)"
         length: 2
         type: bcd
         unit: "kVA"
-        decimal: 2
+        decimals: 2
   - id: "E080002F"
     name: "测量点用户数据块"
     protocol: "csg13"
@@ -26305,7 +26305,7 @@ data_items:
         length: 2
         type: bcd
         unit: "%"
-        decimal: 1
+        decimals: 1
       - name: "最高电流不平衡度出现时间"
         length: 4
         type: bcd
@@ -26314,7 +26314,7 @@ data_items:
         length: 2
         type: bcd
         unit: "%"
-        decimal: 1
+        decimals: 1
       - name: "最低电流不平衡度出现时间"
         length: 4
         type: bcd
@@ -26323,12 +26323,12 @@ data_items:
         length: 2
         type: bcd
         unit: "%"
-        decimal: 1
+        decimals: 1
       - name: "电流不平衡度95%值"
         length: 2
         type: bcd
         unit: "%"
-        decimal: 1
+        decimals: 1
   - id: "E1008021"
     name: "日 电压不平衡度合格率统计数据"
     protocol: "csg13"
@@ -26343,12 +26343,12 @@ data_items:
         length: 3
         type: bcd
         unit: "%"
-        decimal: 1
+        decimals: 1
       - name: "电压不平衡度超限率"
         length: 3
         type: bcd
         unit: "%"
-        decimal: 1
+        decimals: 1
       - name: "电压不平衡度超上限时间"
         length: 2
         type: bcd
@@ -26357,7 +26357,7 @@ data_items:
         length: 2
         type: bcd
         unit: "%"
-        decimal: 1
+        decimals: 1
       - name: "最高电压不平衡度出现时间"
         length: 4
         type: bcd
@@ -26366,7 +26366,7 @@ data_items:
         length: 2
         type: bcd
         unit: "%"
-        decimal: 1
+        decimals: 1
       - name: "最低电压不平衡度出现时间"
         length: 4
         type: bcd
@@ -26375,12 +26375,12 @@ data_items:
         length: 2
         type: bcd
         unit: "%"
-        decimal: 1
+        decimals: 1
       - name: "电压不平衡度95%值"
         length: 2
         type: bcd
         unit: "%"
-        decimal: 1
+        decimals: 1
   - id: "E100C020"
     name: "月 电流不平衡度合格率统计数据"
     protocol: "csg13"
@@ -26391,7 +26391,7 @@ data_items:
         length: 2
         type: bcd
         unit: "%"
-        decimal: 2
+        decimals: 2
       - name: "最高电流不平衡度出现时间"
         length: 4
         type: bcd
@@ -26400,7 +26400,7 @@ data_items:
         length: 2
         type: bcd
         unit: "%"
-        decimal: 1
+        decimals: 1
       - name: "最低电流不平衡度出现时间"
         length: 4
         type: bcd
@@ -26409,12 +26409,12 @@ data_items:
         length: 2
         type: bcd
         unit: "%"
-        decimal: 1
+        decimals: 1
       - name: "电流不平衡度95%值"
         length: 2
         type: bcd
         unit: "%"
-        decimal: 1
+        decimals: 1
   - id: "E1008041"
     name: "(冻结) 日失压数据"
     protocol: "csg13"
@@ -26457,22 +26457,22 @@ data_items:
         length: 4
         type: bcd
         unit: "kWh"
-        decimal: 2
+        decimals: 2
       - name: "失压反向有功总电能增量"
         length: 4
         type: bcd
         unit: "kWh"
-        decimal: 2
+        decimals: 2
       - name: "失压组合无功1总电能增量"
         length: 4
         type: bcd
         unit: "kVarh"
-        decimal: 2
+        decimals: 2
       - name: "失压组合无功2总电能增量"
         length: 4
         type: bcd
         unit: "kVarh"
-        decimal: 2
+        decimals: 2
   - id: "E1008042"
     name: "(冻结) 日失流数据"
     protocol: "csg13"
@@ -26515,22 +26515,22 @@ data_items:
         length: 4
         type: bcd
         unit: "kWh"
-        decimal: 2
+        decimals: 2
       - name: "失流反向有功总电能增量"
         length: 4
         type: bcd
         unit: "kWh"
-        decimal: 2
+        decimals: 2
       - name: "失流组合无功1总电能增量"
         length: 4
         type: bcd
         unit: "kVarh"
-        decimal: 2
+        decimals: 2
       - name: "失流组合无功2总电能增量"
         length: 4
         type: bcd
         unit: "kVarh"
-        decimal: 2
+        decimals: 2
   - id: "E100C041"
     name: "(冻结) 月失压数据"
     protocol: "csg13"
@@ -26573,22 +26573,22 @@ data_items:
         length: 4
         type: bcd
         unit: "kWh"
-        decimal: 2
+        decimals: 2
       - name: "失压反向有功总电能增量"
         length: 4
         type: bcd
         unit: "kWh"
-        decimal: 2
+        decimals: 2
       - name: "失压组合无功1总电能增量"
         length: 4
         type: bcd
         unit: "kVarh"
-        decimal: 2
+        decimals: 2
       - name: "失压组合无功2总电能增量"
         length: 4
         type: bcd
         unit: "kVarh"
-        decimal: 2
+        decimals: 2
   - id: "E100C042"
     name: "(冻结) 月失流数据"
     protocol: "csg13"
@@ -26631,22 +26631,22 @@ data_items:
         length: 4
         type: bcd
         unit: "kWh"
-        decimal: 2
+        decimals: 2
       - name: "失流反向有功总电能增量"
         length: 4
         type: bcd
         unit: "kWh"
-        decimal: 2
+        decimals: 2
       - name: "失流组合无功1总电能增量"
         length: 4
         type: bcd
         unit: "kVarh"
-        decimal: 2
+        decimals: 2
       - name: "失流组合无功2总电能增量"
         length: 4
         type: bcd
         unit: "kVarh"
-        decimal: 2
+        decimals: 2
   - id: "E100C021"
     name: "月 电压不平衡度合格率统计数据"
     protocol: "csg13"
@@ -26661,12 +26661,12 @@ data_items:
         length: 3
         type: bcd
         unit: "%"
-        decimal: 1
+        decimals: 1
       - name: "电压不平衡度超限率"
         length: 3
         type: bcd
         unit: "%"
-        decimal: 1
+        decimals: 1
       - name: "电压不平衡度超上限时间"
         length: 3
         type: bcd
@@ -26675,7 +26675,7 @@ data_items:
         length: 2
         type: bcd
         unit: "%"
-        decimal: 1
+        decimals: 1
       - name: "最高电压不平衡度出现时间"
         length: 4
         type: bcd
@@ -26684,7 +26684,7 @@ data_items:
         length: 2
         type: bcd
         unit: "%"
-        decimal: 1
+        decimals: 1
       - name: "最低电压不平衡度出现时间"
         length: 4
         type: bcd
@@ -26693,12 +26693,12 @@ data_items:
         length: 2
         type: bcd
         unit: "%"
-        decimal: 1
+        decimals: 1
       - name: "电压不平衡度95%值"
         length: 2
         type: bcd
         unit: "%"
-        decimal: 1
+        decimals: 1
   - id: "0221FF00"
     name: "(当前)基站直流侧电压数据块"
     protocol: "csg13"
@@ -26718,7 +26718,7 @@ data_items:
             length: 2
             type: bcd
             unit: "V"
-            decimal: 1
+            decimals: 1
 
   - id: "0222FF00"
     name: "(当前)基站直流侧电流数据块"
@@ -26739,7 +26739,7 @@ data_items:
             length: 3
             type: bcd
             unit: "A"
-            decimal: 3
+            decimals: 3
 
   - id: "0223FF00"
     name: "(当前)基站直流侧功率数据块"
@@ -26756,7 +26756,7 @@ data_items:
         length: 3
         type: bcd
         unit: "kW"
-        decimal: 4
+        decimals: 4
       - candidate_ids: 
           count: 63
           count_ref: rate_count
@@ -26766,7 +26766,7 @@ data_items:
             length: 3
             type: bcd
             unit: "kW"
-            decimal: 4
+            decimals: 4
 
   - id: "0801FF00"
     name: "(当前)充电桩直流侧电压数据块"
@@ -26787,7 +26787,7 @@ data_items:
             length: 2
             type: bcd
             unit: "V"
-            decimal: 1
+            decimals: 1
  
   - id: "0802FF00"
     name: "(当前)充电桩直流侧电流数据块"
@@ -26808,7 +26808,7 @@ data_items:
             length: 3
             type: bcd
             unit: "A"
-            decimal: 3
+            decimals: 3
 
   - id: "0803FF00"
     name: "(当前)充电桩直流侧功率数据块"
@@ -26825,7 +26825,7 @@ data_items:
         length: 4
         type: bcd
         unit: "kW"
-        decimal: 4
+        decimals: 4
       - candidate_ids: 
           count: 63
           count_ref: rate_count
@@ -26835,7 +26835,7 @@ data_items:
             length: 4
             type: bcd
             unit: "kW"
-            decimal: 4
+            decimals: 4
 
   - id: "0804FF00"
     name: "(当前)基站直流侧电量数据块"
@@ -26852,7 +26852,7 @@ data_items:
         length: 5
         type: bcd
         unit: "kW"
-        decimal: 1
+        decimals: 1
       - candidate_ids: 
           count: 63
           count_ref: rate_count
@@ -26862,7 +26862,7 @@ data_items:
             length: 5
             type: bcd
             unit: "kW"
-            decimal: 1
+            decimals: 1
 
   - id: "080006FF"
     name: "充电桩所有枪充电状态"
@@ -26937,7 +26937,7 @@ data_items:
               length: 4
               type: bcd
               unit: kw
-              decimal: 4
+              decimals: 4
 
   - id: "08060000"
     name: "充电枪额定功率值"
@@ -26960,7 +26960,7 @@ data_items:
               length: 4
               type: bcd
               unit: kw
-              decimal: 4
+              decimals: 4
 
   - id: "08000515"
     name: "当前空调调控状态"
@@ -27278,7 +27278,7 @@ data_items:
       - name: "周期内总电量"
         length: 4
         unit: "kWh"
-        decimal: 4
+        decimals: 4
         type: bcd
       
       - name: "电器设备数量"
@@ -27335,7 +27335,7 @@ data_items:
             - name: "电器类型{index}用电量"
               length: 4
               unit: "kWh"
-              decimal: 4
+              decimals: 4
               type: bcd
               endian: little
             
@@ -27373,7 +27373,7 @@ data_items:
             - name: "电器类型{index}用电量"
               length: 4
               unit: "kWh"
-              decimal: 4
+              decimals: 4
               type: bcd
               endian: little
             
@@ -27418,7 +27418,7 @@ templates:
       - name: APP CPU占用率
         length: 3
         type: bcd
-        decimal: 2
+        decimals: 2
         unit: "%"
       - name: APP CPU运行状态
         length: 1
@@ -27948,7 +27948,7 @@ templates:
       - name: APP CPU占用率
         length: 3
         type: bin
-        decimal: 2
+        decimals: 2
         unit: "%"
       - name: APP运行状态
         length: 1
@@ -28090,22 +28090,22 @@ templates:
         length: 4
         type: bcd
         unit: kWh
-        decimal: 2
+        decimals: 2
       - name: 反向有功总电能量(DI3DI2DI1DI0=00020000)增量
         length: 4
         type: bcd
         unit: kWh
-        decimal: 2
+        decimals: 2
       - name: 组合无功1总电能量(DI3DI2DI1DI0=00030000)增量
         length: 4
         type: bcd
         unit: kVarh
-        decimal: 2
+        decimals: 2
       - name: 组合无功2总电能量(DI3DI2DI1DI0=00040000)增量
         length: 4
         type: bcd
         unit: kVarh
-        decimal: 2
+        decimals: 2
 
   - id: ERD4
     protocol: csg13
@@ -28175,12 +28175,12 @@ templates:
         length: 4
         type: bcd
         unit: kWh
-        decimal: 2
+        decimals: 2
       - name: 反向有功总电能
         length: 4
         type: bcd
         unit: kWh
-        decimal: 2
+        decimals: 2
 
   - id: GPRSPARAM
     protocol: csg13
@@ -28303,12 +28303,12 @@ templates:
         type: bcd
         length: 3
         unit: A
-        decimal: 3
+        decimals: 3
       - name: 发生时刻剩余电流
         type: bcd
         length: 3
         unit: A
-        decimal: 3
+        decimals: 3
 
   - id: ARD86
     protocol: csg13
@@ -28329,12 +28329,12 @@ templates:
         type: bcd
         length: 3
         unit: kw
-        decimal: 4
+        decimals: 4
       - name: 发生时刻总无功功率
         type: bcd
         length: 3
         unit: kw
-        decimal: 4
+        decimals: 4
 
   - id: IDENTIFICATION_RESULTS
     protocol: csg13

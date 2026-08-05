@@ -65,7 +65,7 @@ data_items:      # 真正的 DI 字典条目
   length: 1
   type: bcd          # bcd | bin | ascii | hex
   unit: 分            # 可选
-  decimal: 0          # 可选，BCD小数位数，如 NNNNNN.NN → decimal: 2
+  decimals: 0          # 可选，BCD小数位数，如 NNNNNN.NN → decimals: 2
   enum:               # 可选，键值枚举
     "00": TCP
     "01": UDP
@@ -180,7 +180,7 @@ data_items:      # 真正的 DI 字典条目
 - name: 本日线损率
   length: 3
   type: bcd
-  decimal: 2
+  decimals: 2
   signed: true          # 对应原文"0SNN.NN"，S固定在首字节高位，无需额外配置
 
 - name: 校时误差TTTT
@@ -368,7 +368,7 @@ data_items:      # 真正的 DI 字典条目
       length: 4
       type: bcd
       unit: "kWh"
-      decimal: 2
+      decimals: 2
     - repeat:
         count_ref: rate_count
         name_template: "(当前)正向有功费率{index}电能"
@@ -376,7 +376,7 @@ data_items:      # 真正的 DI 字典条目
           length: 4
           type: bcd
           unit: "kWh"
-          decimal: 2
+          decimals: 2
     - candidate_ids:
         count: 63
         count_ref: rate_count
@@ -386,7 +386,7 @@ data_items:      # 真正的 DI 字典条目
           length: 4
           type: bcd
           unit: "kWh"
-          decimal: 2
+          decimals: 2
 ```
 
 - 这种写法用于在编译期注册一组候选 DI 号，同时运行时仍按 `repeat` + `count_ref` 解析实际数量。
@@ -410,7 +410,7 @@ templates:
         type: ascii
       - name: APP CPU占用率
         length: 3
-        decimal: 2
+        decimals: 2
         type: bcd
         unit: "%"
       - name: APP CPU运行状态

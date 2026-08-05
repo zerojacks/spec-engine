@@ -1,0 +1,117 @@
+data_items:
+  # 覆盖测试 1：完全改变字段类型和长度
+  - id: "00010000"
+    name: "(当前)正向有功总电能【动态覆盖-改为8字节双倍精度】"
+    length: 8
+    type: bcd
+    unit: "kWh"
+    decimals: 4  # 原来是 decimals: 2，现在是 4 位小数
+
+  # 覆盖测试 2：改变相同 ID 的字段结构（从简单字段变为复杂容器）
+  - id: "00020000"
+    name: "(当前)反向有功总电能【动态覆盖-改为容器结构】"
+    fields:
+      - name: "数据状态"
+        length: 1
+        type: bin
+        enum:
+          "0": "正常"
+          "1": "异常"
+      - name: "电能值"
+        length: 4
+        type: bcd
+        decimals: 2
+        unit: "kWh"
+      - name: "时间戳"
+        length: 6
+        type: bcd
+        time: "YYMMDDhhmmss"
+
+  # 新增一个嵌入字典中不存在的 DI
+  - id: "0000FF00"
+    name: "(当前)组合有功电能数据块"
+    length: 257
+    fields:
+      - name: "费率数"
+        ref_id: rate_count
+        length: 1
+        type: bcd
+      - id: "00000000"
+        name: "(当前)组合有功总电能"
+        length: 4
+        type: bcd
+        unit: "kWh"
+        decimals: 2
+      - candidate_ids: 
+          count: 63
+          count_ref: rate_count
+          id_expr: "0x00000100 + index0*0x0100"
+          name_template: "(当前)组合有功费率{index}电能"
+          element: 
+            length: 4
+            type: bcd
+            unit: "kWh"
+            decimals: 2
+
+  # 新增另一个测试 DI：简单的单字段
+  - id: "0000FF01"
+    name: "动态加载测试字段1"
+    length: 2
+    type: bin
+    endian: little
+    unit: "V"
+
+  # 新增区域特定的 DI
+  - id: "0000FF02"
+    name: "云南省特定电压"
+    region: ["云南"]
+    length: 2
+    type: bin
+    endian: big
+    unit: "V"
+
+  # 新增深圳特定的 DI
+  - id: "0000FF03"
+    name: "深圳市特定频率"
+    region: ["深圳"]
+    length: 2
+    type: bcd
+    decimals: 2
+    unit: "Hz"
+
+  # 新增更多测试 DI：演示各种字段类型
+  - id: "0000FF04"
+    name: "ASCII 字符串测试"
+    length: 16
+    type: ascii
+
+  - id: "0000FF05"
+    name: "开关量测试"
+    length: 1
+    type: bitfield
+    bits:
+      - range: [0, 0]
+        name: "开关1"
+        enum:
+          "0": "关"
+          "1": "开"
+      - range: [1, 1]
+        name: "开关2"
+        enum:
+          "0": "关"
+          "1": "开"
+
+  - id: "0000FF06"
+    name: "repeat 重复字段测试"
+    fields:
+      - name: "重复次数"
+        ref_id: repeat_count
+        length: 1
+        type: bin
+      - name: "重复数据"
+        type: repeat
+        count_ref: repeat_count
+        element:
+          name: "数据项"
+          length: 2
+          type: bin
