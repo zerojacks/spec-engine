@@ -9199,7 +9199,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01010100 + index0*0x100"
           name_template: "(当前)正向有功费率{index}最大需量及发生时间"
           element:
@@ -9237,7 +9237,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01020100 + index0*0x100"
           name_template: "(当前)反向有功费率{index}最大需量及发生时间"
           element:
@@ -9276,7 +9276,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01030100 + index0*0x100"
           name_template: "(当前)组合无功1费率{index}最大需量及发生时间"
           element:
@@ -9316,7 +9316,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01040100 + index0*0x100"
           name_template: "(当前)组合无功2费率{index}最大需量及发生时间"
           element:
@@ -9355,7 +9355,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01050100 + index0*0x100"
           name_template: "(当前)第一象限无功费率{index}最大需量及发生时间"
           element:
@@ -9393,7 +9393,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01060100 + index0*0x100"
           name_template: "(当前)第二象限无功费率{index}最大需量及发生时间"
           element:
@@ -9431,7 +9431,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01070100 + index0*0x100"
           name_template: "(当前)第三象限无功费率{index}最大需量及发生时间"
           element:
@@ -9469,7 +9469,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01080100 + index0*0x100"
           name_template: "(当前)第四象限无功费率{index}最大需量及发生时间"
           element:
@@ -9507,7 +9507,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01090100 + index0*0x100"
           name_template: "(当前)正向视在无功费率{index}最大需量及发生时间"
           element:
@@ -9545,7 +9545,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x010A0100 + index0*0x100"
           name_template: "(当前)反向视在无功费率{index}最大需量及发生时间"
           element:
@@ -10069,7 +10069,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01010101 + index0*0x100"
           name_template: "(上1结算日)正向有功费率{index}最大需量及发生时间"
           element:
@@ -10107,7 +10107,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01020101 + index0*0x100"
           name_template: "(上1结算日)反向有功费率{index}最大需量及发生时间"
           element:
@@ -10146,7 +10146,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01030101 + index0*0x100"
           name_template: "(上1结算日)组合无功1费率{index}最大需量及发生时间"
           element:
@@ -10186,7 +10186,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01040101 + index0*0x100"
           name_template: "(上1结算日)组合无功2费率{index}最大需量及发生时间"
           element:
@@ -10225,7 +10225,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01050101 + index0*0x100"
           name_template: "(上1结算日)第一象限无功费率{index}最大需量及发生时间"
           element:
@@ -10263,7 +10263,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01060101 + index0*0x100"
           name_template: "(上1结算日)第二象限无功费率{index}最大需量及发生时间"
           element:
@@ -10301,7 +10301,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01070101 + index0*0x100"
           name_template: "(上1结算日)第三象限无功费率{index}最大需量及发生时间"
           element:
@@ -10339,7 +10339,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01080101 + index0*0x100"
           name_template: "(上1结算日)第四象限无功费率{index}最大需量及发生时间"
           element:
@@ -10377,7 +10377,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01090101 + index0*0x100"
           name_template: "(上1结算日)正向视在无功费率{index}最大需量及发生时间"
           element:
@@ -10415,7 +10415,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x010A0101 + index0*0x100"
           name_template: "(上1结算日)反向视在无功费率{index}最大需量及发生时间"
           element:
@@ -10939,7 +10939,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01010102 + index0*0x100"
           name_template: "(上2结算日)正向有功费率{index}最大需量及发生时间"
           element:
@@ -10977,7 +10977,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01020102 + index0*0x100"
           name_template: "(上2结算日)反向有功费率{index}最大需量及发生时间"
           element:
@@ -11016,7 +11016,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01030102 + index0*0x100"
           name_template: "(上2结算日)组合无功1费率{index}最大需量及发生时间"
           element:
@@ -11056,7 +11056,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01040102 + index0*0x100"
           name_template: "(上2结算日)组合无功2费率{index}最大需量及发生时间"
           element:
@@ -11095,7 +11095,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01050102 + index0*0x100"
           name_template: "(上2结算日)第一象限无功费率{index}最大需量及发生时间"
           element:
@@ -11133,7 +11133,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01060102 + index0*0x100"
           name_template: "(上2结算日)第二象限无功费率{index}最大需量及发生时间"
           element:
@@ -11171,7 +11171,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01070102 + index0*0x100"
           name_template: "(上2结算日)第三象限无功费率{index}最大需量及发生时间"
           element:
@@ -11209,7 +11209,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01080102 + index0*0x100"
           name_template: "(上2结算日)第四象限无功费率{index}最大需量及发生时间"
           element:
@@ -11247,7 +11247,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01090102 + index0*0x100"
           name_template: "(上2结算日)正向视在无功费率{index}最大需量及发生时间"
           element:
@@ -11285,7 +11285,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x010A0102 + index0*0x100"
           name_template: "(上2结算日)反向视在无功费率{index}最大需量及发生时间"
           element:
@@ -11809,7 +11809,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01010103 + index0*0x100"
           name_template: "(上3结算日)正向有功费率{index}最大需量及发生时间"
           element:
@@ -11847,7 +11847,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01020103 + index0*0x100"
           name_template: "(上3结算日)反向有功费率{index}最大需量及发生时间"
           element:
@@ -11886,7 +11886,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01030103 + index0*0x100"
           name_template: "(上3结算日)组合无功1费率{index}最大需量及发生时间"
           element:
@@ -11926,7 +11926,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01040103 + index0*0x100"
           name_template: "(上3结算日)组合无功2费率{index}最大需量及发生时间"
           element:
@@ -11965,7 +11965,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01050103 + index0*0x100"
           name_template: "(上3结算日)第一象限无功费率{index}最大需量及发生时间"
           element:
@@ -12003,7 +12003,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01060103 + index0*0x100"
           name_template: "(上3结算日)第二象限无功费率{index}最大需量及发生时间"
           element:
@@ -12041,7 +12041,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01070103 + index0*0x100"
           name_template: "(上3结算日)第三象限无功费率{index}最大需量及发生时间"
           element:
@@ -12079,7 +12079,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01080103 + index0*0x100"
           name_template: "(上3结算日)第四象限无功费率{index}最大需量及发生时间"
           element:
@@ -12117,7 +12117,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01090103 + index0*0x100"
           name_template: "(上3结算日)正向视在无功费率{index}最大需量及发生时间"
           element:
@@ -12155,7 +12155,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x010A0103 + index0*0x100"
           name_template: "(上3结算日)反向视在无功费率{index}最大需量及发生时间"
           element:
@@ -12678,7 +12678,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01010104 + index0*0x100"
           name_template: "(上4结算日)正向有功费率{index}最大需量及发生时间"
           element:
@@ -12716,7 +12716,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01020104 + index0*0x100"
           name_template: "(上4结算日)反向有功费率{index}最大需量及发生时间"
           element:
@@ -12755,7 +12755,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01030104 + index0*0x100"
           name_template: "(上4结算日)组合无功1费率{index}最大需量及发生时间"
           element:
@@ -12795,7 +12795,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01040104 + index0*0x100"
           name_template: "(上4结算日)组合无功2费率{index}最大需量及发生时间"
           element:
@@ -12834,7 +12834,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01050104 + index0*0x100"
           name_template: "(上4结算日)第一象限无功费率{index}最大需量及发生时间"
           element:
@@ -12872,7 +12872,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01060104 + index0*0x100"
           name_template: "(上4结算日)第二象限无功费率{index}最大需量及发生时间"
           element:
@@ -12910,7 +12910,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01070104 + index0*0x100"
           name_template: "(上4结算日)第三象限无功费率{index}最大需量及发生时间"
           element:
@@ -12948,7 +12948,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01080104 + index0*0x100"
           name_template: "(上4结算日)第四象限无功费率{index}最大需量及发生时间"
           element:
@@ -12986,7 +12986,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01090104 + index0*0x100"
           name_template: "(上4结算日)正向视在无功费率{index}最大需量及发生时间"
           element:
@@ -13024,7 +13024,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x010A0104 + index0*0x100"
           name_template: "(上4结算日)反向视在无功费率{index}最大需量及发生时间"
           element:
@@ -13548,7 +13548,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01010105 + index0*0x100"
           name_template: "(上5结算日)正向有功费率{index}最大需量及发生时间"
           element:
@@ -13586,7 +13586,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01020105 + index0*0x100"
           name_template: "(上5结算日)反向有功费率{index}最大需量及发生时间"
           element:
@@ -13625,7 +13625,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01030105 + index0*0x100"
           name_template: "(上5结算日)组合无功1费率{index}最大需量及发生时间"
           element:
@@ -13665,7 +13665,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01040105 + index0*0x100"
           name_template: "(上5结算日)组合无功2费率{index}最大需量及发生时间"
           element:
@@ -13704,7 +13704,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01050105 + index0*0x100"
           name_template: "(上5结算日)第一象限无功费率{index}最大需量及发生时间"
           element:
@@ -13742,7 +13742,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01060105 + index0*0x100"
           name_template: "(上5结算日)第二象限无功费率{index}最大需量及发生时间"
           element:
@@ -13780,7 +13780,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01070105 + index0*0x100"
           name_template: "(上5结算日)第三象限无功费率{index}最大需量及发生时间"
           element:
@@ -13818,7 +13818,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01080105 + index0*0x100"
           name_template: "(上5结算日)第四象限无功费率{index}最大需量及发生时间"
           element:
@@ -13856,7 +13856,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01090105 + index0*0x100"
           name_template: "(上5结算日)正向视在无功费率{index}最大需量及发生时间"
           element:
@@ -13894,7 +13894,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x010A0105 + index0*0x100"
           name_template: "(上5结算日)反向视在无功费率{index}最大需量及发生时间"
           element:
@@ -14418,7 +14418,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01010106 + index0*0x100"
           name_template: "(上6结算日)正向有功费率{index}最大需量及发生时间"
           element:
@@ -14456,7 +14456,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01020106 + index0*0x100"
           name_template: "(上6结算日)反向有功费率{index}最大需量及发生时间"
           element:
@@ -14495,7 +14495,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01030106 + index0*0x100"
           name_template: "(上6结算日)组合无功1费率{index}最大需量及发生时间"
           element:
@@ -14535,7 +14535,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01040106 + index0*0x100"
           name_template: "(上6结算日)组合无功2费率{index}最大需量及发生时间"
           element:
@@ -14574,7 +14574,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01050106 + index0*0x100"
           name_template: "(上6结算日)第一象限无功费率{index}最大需量及发生时间"
           element:
@@ -14612,7 +14612,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01060106 + index0*0x100"
           name_template: "(上6结算日)第二象限无功费率{index}最大需量及发生时间"
           element:
@@ -14650,7 +14650,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01070106 + index0*0x100"
           name_template: "(上6结算日)第三象限无功费率{index}最大需量及发生时间"
           element:
@@ -14688,7 +14688,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01080106 + index0*0x100"
           name_template: "(上6结算日)第四象限无功费率{index}最大需量及发生时间"
           element:
@@ -14726,7 +14726,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01090106 + index0*0x100"
           name_template: "(上6结算日)正向视在无功费率{index}最大需量及发生时间"
           element:
@@ -14764,7 +14764,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x010A0106 + index0*0x100"
           name_template: "(上6结算日)反向视在无功费率{index}最大需量及发生时间"
           element:
@@ -15288,7 +15288,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01010107 + index0*0x100"
           name_template: "(上7结算日)正向有功费率{index}最大需量及发生时间"
           element:
@@ -15326,7 +15326,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01020107 + index0*0x100"
           name_template: "(上7结算日)反向有功费率{index}最大需量及发生时间"
           element:
@@ -15365,7 +15365,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01030107 + index0*0x100"
           name_template: "(上7结算日)组合无功1费率{index}最大需量及发生时间"
           element:
@@ -15405,7 +15405,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01040107 + index0*0x100"
           name_template: "(上7结算日)组合无功2费率{index}最大需量及发生时间"
           element:
@@ -15444,7 +15444,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01050107 + index0*0x100"
           name_template: "(上7结算日)第一象限无功费率{index}最大需量及发生时间"
           element:
@@ -15482,7 +15482,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01060107 + index0*0x100"
           name_template: "(上7结算日)第二象限无功费率{index}最大需量及发生时间"
           element:
@@ -15520,7 +15520,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01070107 + index0*0x100"
           name_template: "(上7结算日)第三象限无功费率{index}最大需量及发生时间"
           element:
@@ -15558,7 +15558,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01080107 + index0*0x100"
           name_template: "(上7结算日)第四象限无功费率{index}最大需量及发生时间"
           element:
@@ -15596,7 +15596,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01090107 + index0*0x100"
           name_template: "(上7结算日)正向视在无功费率{index}最大需量及发生时间"
           element:
@@ -15634,7 +15634,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x010A0107 + index0*0x100"
           name_template: "(上7结算日)反向视在无功费率{index}最大需量及发生时间"
           element:
@@ -16158,7 +16158,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01010108 + index0*0x100"
           name_template: "(上8结算日)正向有功费率{index}最大需量及发生时间"
           element:
@@ -16196,7 +16196,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01020108 + index0*0x100"
           name_template: "(上8结算日)反向有功费率{index}最大需量及发生时间"
           element:
@@ -16235,7 +16235,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01030108 + index0*0x100"
           name_template: "(上8结算日)组合无功1费率{index}最大需量及发生时间"
           element:
@@ -16275,7 +16275,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01040108 + index0*0x100"
           name_template: "(上8结算日)组合无功2费率{index}最大需量及发生时间"
           element:
@@ -16314,7 +16314,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01050108 + index0*0x100"
           name_template: "(上8结算日)第一象限无功费率{index}最大需量及发生时间"
           element:
@@ -16352,7 +16352,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01060108 + index0*0x100"
           name_template: "(上8结算日)第二象限无功费率{index}最大需量及发生时间"
           element:
@@ -16390,7 +16390,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01070108 + index0*0x100"
           name_template: "(上8结算日)第三象限无功费率{index}最大需量及发生时间"
           element:
@@ -16428,7 +16428,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01080108 + index0*0x100"
           name_template: "(上8结算日)第四象限无功费率{index}最大需量及发生时间"
           element:
@@ -16466,7 +16466,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01090108 + index0*0x100"
           name_template: "(上8结算日)正向视在无功费率{index}最大需量及发生时间"
           element:
@@ -16504,7 +16504,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x010A0108 + index0*0x100"
           name_template: "(上8结算日)反向视在无功费率{index}最大需量及发生时间"
           element:
@@ -17028,7 +17028,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01010109 + index0*0x100"
           name_template: "(上9结算日)正向有功费率{index}最大需量及发生时间"
           element:
@@ -17066,7 +17066,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01020109 + index0*0x100"
           name_template: "(上9结算日)反向有功费率{index}最大需量及发生时间"
           element:
@@ -17105,7 +17105,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01030109 + index0*0x100"
           name_template: "(上9结算日)组合无功1费率{index}最大需量及发生时间"
           element:
@@ -17145,7 +17145,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01040109 + index0*0x100"
           name_template: "(上9结算日)组合无功2费率{index}最大需量及发生时间"
           element:
@@ -17184,7 +17184,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01050109 + index0*0x100"
           name_template: "(上9结算日)第一象限无功费率{index}最大需量及发生时间"
           element:
@@ -17222,7 +17222,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01060109 + index0*0x100"
           name_template: "(上9结算日)第二象限无功费率{index}最大需量及发生时间"
           element:
@@ -17260,7 +17260,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01070109 + index0*0x100"
           name_template: "(上9结算日)第三象限无功费率{index}最大需量及发生时间"
           element:
@@ -17298,7 +17298,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01080109 + index0*0x100"
           name_template: "(上9结算日)第四象限无功费率{index}最大需量及发生时间"
           element:
@@ -17336,7 +17336,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x01090109 + index0*0x100"
           name_template: "(上9结算日)正向视在无功费率{index}最大需量及发生时间"
           element:
@@ -17374,7 +17374,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x010A0109 + index0*0x100"
           name_template: "(上9结算日)反向视在无功费率{index}最大需量及发生时间"
           element:
@@ -17898,7 +17898,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x0101010A + index0*0x100"
           name_template: "(上10结算日)正向有功费率{index}最大需量及发生时间"
           element:
@@ -17936,7 +17936,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x0102010A + index0*0x100"
           name_template: "(上10结算日)反向有功费率{index}最大需量及发生时间"
           element:
@@ -17975,7 +17975,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x0103010A + index0*0x100"
           name_template: "(上10结算日)组合无功1费率{index}最大需量及发生时间"
           element:
@@ -18015,7 +18015,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x0104010A + index0*0x100"
           name_template: "(上10结算日)组合无功2费率{index}最大需量及发生时间"
           element:
@@ -18054,7 +18054,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x0105010A + index0*0x100"
           name_template: "(上10结算日)第一象限无功费率{index}最大需量及发生时间"
           element:
@@ -18092,7 +18092,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x0106010A + index0*0x100"
           name_template: "(上10结算日)第二象限无功费率{index}最大需量及发生时间"
           element:
@@ -18130,7 +18130,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x0107010A + index0*0x100"
           name_template: "(上10结算日)第三象限无功费率{index}最大需量及发生时间"
           element:
@@ -18168,7 +18168,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x0108010A + index0*0x100"
           name_template: "(上10结算日)第四象限无功费率{index}最大需量及发生时间"
           element:
@@ -18206,7 +18206,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x0109010A + index0*0x100"
           name_template: "(上10结算日)正向视在无功费率{index}最大需量及发生时间"
           element:
@@ -18244,7 +18244,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x010A010A + index0*0x100"
           name_template: "(上10结算日)反向视在无功费率{index}最大需量及发生时间"
           element:
@@ -18768,7 +18768,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x0101010B + index0*0x100"
           name_template: "(上11结算日)正向有功费率{index}最大需量及发生时间"
           element:
@@ -18806,7 +18806,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x0102010B + index0*0x100"
           name_template: "(上11结算日)反向有功费率{index}最大需量及发生时间"
           element:
@@ -18845,7 +18845,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x0103010B + index0*0x100"
           name_template: "(上11结算日)组合无功1费率{index}最大需量及发生时间"
           element:
@@ -18885,7 +18885,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x0104010B + index0*0x100"
           name_template: "(上11结算日)组合无功2费率{index}最大需量及发生时间"
           element:
@@ -18924,7 +18924,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x0105010B + index0*0x100"
           name_template: "(上11结算日)第一象限无功费率{index}最大需量及发生时间"
           element:
@@ -18962,7 +18962,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x0106010B + index0*0x100"
           name_template: "(上11结算日)第二象限无功费率{index}最大需量及发生时间"
           element:
@@ -19000,7 +19000,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x0107010B + index0*0x100"
           name_template: "(上11结算日)第三象限无功费率{index}最大需量及发生时间"
           element:
@@ -19038,7 +19038,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x0108010B + index0*0x100"
           name_template: "(上11结算日)第四象限无功费率{index}最大需量及发生时间"
           element:
@@ -19076,7 +19076,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x0109010B + index0*0x100"
           name_template: "(上11结算日)正向视在无功费率{index}最大需量及发生时间"
           element:
@@ -19114,7 +19114,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x010A010B + index0*0x100"
           name_template: "(上11结算日)反向视在无功费率{index}最大需量及发生时间"
           element:
@@ -19638,7 +19638,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x0101010C + index0*0x100"
           name_template: "(上12结算日)正向有功费率{index}最大需量及发生时间"
           element:
@@ -19676,7 +19676,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x0102010C + index0*0x100"
           name_template: "(上12结算日)反向有功费率{index}最大需量及发生时间"
           element:
@@ -19715,7 +19715,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x0103010C + index0*0x100"
           name_template: "(上12结算日)组合无功1费率{index}最大需量及发生时间"
           element:
@@ -19755,7 +19755,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x0104010C + index0*0x100"
           name_template: "(上12结算日)组合无功2费率{index}最大需量及发生时间"
           element:
@@ -19794,7 +19794,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x0105010C + index0*0x100"
           name_template: "(上12结算日)第一象限无功费率{index}最大需量及发生时间"
           element:
@@ -19832,7 +19832,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x0106010C + index0*0x100"
           name_template: "(上12结算日)第二象限无功费率{index}最大需量及发生时间"
           element:
@@ -19870,7 +19870,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x0107010C + index0*0x100"
           name_template: "(上12结算日)第三象限无功费率{index}最大需量及发生时间"
           element:
@@ -19908,7 +19908,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x0108010C + index0*0x100"
           name_template: "(上12结算日)第四象限无功费率{index}最大需量及发生时间"
           element:
@@ -19946,7 +19946,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x0109010C + index0*0x100"
           name_template: "(上12结算日)正向视在无功费率{index}最大需量及发生时间"
           element:
@@ -19984,7 +19984,7 @@ data_items:
         
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 8"
           id_expr: "0x010A010C + index0*0x100"
           name_template: "(上12结算日)反向视在无功费率{index}最大需量及发生时间"
           element:
@@ -20737,11 +20737,9 @@ data_items:
     name: "A相电压谐波含量数据块"
     protocol: "dlt645-2007"
     region: ["南网"]
-    length_ref: "$remaining"
     fields:
       - candidate_ids:
-          count: 19
-          count_expr: "$remaining / 4"
+          count: 21
           id_expr: "0x020A0101 + index0*0x1"
           name_template: "A相电压{index}次谐波含量"
           element:
@@ -20749,27 +20747,13 @@ data_items:
             unit: "%"
             decimals: 2
             type: bcd
-      - id: "020A01014"
-        name: "A相电压20次谐波含量"
-        length: 2
-        unit: "%"
-        decimals: 2
-        type: bcd
-      - id: "020A0115"
-        name: "A相电压21次谐波含量"
-        length: 2
-        unit: "%"
-        decimals: 2
-        type: bcd
   - id: "020A02FF"
     name: "B相电压谐波含量数据块"
     protocol: "dlt645-2007"
     region: ["南网"]
-    length_ref: "$remaining"
     fields:
       - candidate_ids:
-          count: 19
-          count_expr: "$remaining / 4"
+          count: 21
           id_expr: "0x020A0201 + index0*0x1"
           name_template: "B相电压{index}次谐波含量"
           element:
@@ -20777,27 +20761,13 @@ data_items:
             unit: "%"
             decimals: 2
             type: bcd
-      - id: "020A02014"
-        name: "B相电压20次谐波含量"
-        length: 2
-        unit: "%"
-        decimals: 2
-        type: bcd
-      - id: "020A0215"
-        name: "B相电压21次谐波含量"
-        length: 2
-        unit: "%"
-        decimals: 2
-        type: bcd
   - id: "020A03FF"
     name: "C相电压谐波含量数据块"
     protocol: "dlt645-2007"
     region: ["南网"]
-    length_ref: "$remaining"
     fields:
       - candidate_ids:
-          count: 19
-          count_expr: "$remaining / 4"
+          count: 21
           id_expr: "0x020A0301 + index0*0x1"
           name_template: "C相电压{index}次谐波含量"
           element:
@@ -20805,27 +20775,13 @@ data_items:
             unit: "%"
             decimals: 2
             type: bcd
-      - id: "020A03014"
-        name: "C相电压20次谐波含量"
-        length: 2
-        unit: "%"
-        decimals: 2
-        type: bcd
-      - id: "020A0315"
-        name: "C相电压21次谐波含量"
-        length: 2
-        unit: "%"
-        decimals: 2
-        type: bcd
   - id: "020B01FF"
     name: "A相电流谐波含量数据块"
     protocol: "dlt645-2007"
     region: ["南网"]
-    length_ref: "$remaining"
     fields:
       - candidate_ids:
-          count: 19
-          count_expr: "$remaining / 4"
+          count: 21
           id_expr: "0x020B0101 + index0*0x1"
           name_template: "A相电流{index}次谐波含量"
           element:
@@ -20833,27 +20789,13 @@ data_items:
             unit: "%"
             decimals: 2
             type: bcd
-      - id: "020B01014"
-        name: "A相电流20次谐波含量"
-        length: 2
-        unit: "%"
-        decimals: 2
-        type: bcd
-      - id: "020B0115"
-        name: "A相电流21次谐波含量"
-        length: 2
-        unit: "%"
-        decimals: 2
-        type: bcd
   - id: "020B02FF"
     name: "B相电流谐波含量数据块"
     protocol: "dlt645-2007"
     region: ["南网"]
-    length_ref: "$remaining"
     fields:
       - candidate_ids:
-          count: 19
-          count_expr: "$remaining / 4"
+          count: 21
           id_expr: "0x020B0201 + index0*0x1"
           name_template: "B相电流{index}次谐波含量"
           element:
@@ -20861,27 +20803,13 @@ data_items:
             unit: "%"
             decimals: 2
             type: bcd
-      - id: "020B02014"
-        name: "B相电流20次谐波含量"
-        length: 2
-        unit: "%"
-        decimals: 2
-        type: bcd
-      - id: "020B0215"
-        name: "B相电流21次谐波含量"
-        length: 2
-        unit: "%"
-        decimals: 2
-        type: bcd
   - id: "020B03FF"
     name: "C相电流谐波含量数据块"
     protocol: "dlt645-2007"
     region: ["南网"]
-    length_ref: "$remaining"
     fields:
       - candidate_ids:
-          count: 19
-          count_expr: "$remaining / 4"
+          count: 21
           id_expr: "0x020B0301 + index0*0x1"
           name_template: "C相电流{index}次谐波含量"
           element:
@@ -20889,18 +20817,6 @@ data_items:
             unit: "%"
             decimals: 2
             type: bcd
-      - id: "020B03014"
-        name: "C相电流20次谐波含量"
-        length: 2
-        unit: "%"
-        decimals: 2
-        type: bcd
-      - id: "020B0315"
-        name: "C相电流21次谐波含量"
-        length: 2
-        unit: "%"
-        decimals: 2
-        type: bcd
   - id: "02800001"
     name: "零线电流"
     protocol: "dlt645-2007"
@@ -50365,7 +50281,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00600100 + index0*0x100"
           name_template: "(当前)正向有功费率{index}精确电能"
           element:
@@ -50387,7 +50303,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00610100 + index0*0x100"
           name_template: "(当前)反向有功费率{index}精确电能"
           element:
@@ -50409,7 +50325,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00620100 + index0*0x100"
           name_template: "(当前)组合无功1费率{index}精确电能"
           element:
@@ -50431,7 +50347,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00630100 + index0*0x100"
           name_template: "(当前)组合无功2费率{index}精确电能"
           element:
@@ -50453,7 +50369,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00640100 + index0*0x100"
           name_template: "(当前)第一象限无功费率{index}精确电能"
           element:
@@ -50475,7 +50391,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00650100 + index0*0x100"
           name_template: "(当前)第二象限无功费率{index}精确电能"
           element:
@@ -50497,7 +50413,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00660100 + index0*0x100"
           name_template: "(当前)第三象限无功费率{index}精确电能"
           element:
@@ -50519,7 +50435,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00670100 + index0*0x100"
           name_template: "(当前)第四象限无功费率{index}精确电能"
           element:
@@ -50541,7 +50457,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00680100 + index0*0x100"
           name_template: "(当前)组合有功费率{index}精确电能"
           element:
@@ -50563,7 +50479,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00600101 + index0*0x100"
           name_template: "(上1结算日)正向有功费率{index}精确电能"
           element:
@@ -50585,7 +50501,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00600102 + index0*0x100"
           name_template: "(上2结算日)正向有功费率{index}精确电能"
           element:
@@ -50607,7 +50523,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00600103 + index0*0x100"
           name_template: "(上3结算日)正向有功费率{index}精确电能"
           element:
@@ -50629,7 +50545,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00600104 + index0*0x100"
           name_template: "(上4结算日)正向有功费率{index}精确电能"
           element:
@@ -50651,7 +50567,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00600105 + index0*0x100"
           name_template: "(上5结算日)正向有功费率{index}精确电能"
           element:
@@ -50673,7 +50589,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00600106 + index0*0x100"
           name_template: "(上6结算日)正向有功费率{index}精确电能"
           element:
@@ -50695,7 +50611,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00600107 + index0*0x100"
           name_template: "(上7结算日)正向有功费率{index}精确电能"
           element:
@@ -50717,7 +50633,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00600108 + index0*0x100"
           name_template: "(上8结算日)正向有功费率{index}精确电能"
           element:
@@ -50739,7 +50655,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00600109 + index0*0x100"
           name_template: "(上9结算日)正向有功费率{index}精确电能"
           element:
@@ -50761,7 +50677,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x0060010A + index0*0x100"
           name_template: "(上10结算日)正向有功费率{index}精确电能"
           element:
@@ -50783,7 +50699,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x0060010B + index0*0x100"
           name_template: "(上11结算日)正向有功费率{index}精确电能"
           element:
@@ -50805,7 +50721,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x0060010C + index0*0x100"
           name_template: "(上12结算日)正向有功费率{index}精确电能"
           element:
@@ -50827,7 +50743,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00610101 + index0*0x100"
           name_template: "(上1结算日)反向有功费率{index}精确电能"
           element:
@@ -50849,7 +50765,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00610102 + index0*0x100"
           name_template: "(上2结算日)反向有功费率{index}精确电能"
           element:
@@ -50871,7 +50787,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00610103 + index0*0x100"
           name_template: "(上3结算日)反向有功费率{index}精确电能"
           element:
@@ -50893,7 +50809,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00610104 + index0*0x100"
           name_template: "(上4结算日)反向有功费率{index}精确电能"
           element:
@@ -50915,7 +50831,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00610105 + index0*0x100"
           name_template: "(上5结算日)反向有功费率{index}精确电能"
           element:
@@ -50937,7 +50853,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00610106 + index0*0x100"
           name_template: "(上6结算日)反向有功费率{index}精确电能"
           element:
@@ -50959,7 +50875,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00610107 + index0*0x100"
           name_template: "(上7结算日)反向有功费率{index}精确电能"
           element:
@@ -50981,7 +50897,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00610108 + index0*0x100"
           name_template: "(上8结算日)反向有功费率{index}精确电能"
           element:
@@ -51003,7 +50919,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00610109 + index0*0x100"
           name_template: "(上9结算日)反向有功费率{index}精确电能"
           element:
@@ -51025,7 +50941,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x0061010A + index0*0x100"
           name_template: "(上10结算日)反向有功费率{index}精确电能"
           element:
@@ -51047,7 +50963,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x0061010B + index0*0x100"
           name_template: "(上11结算日)反向有功费率{index}精确电能"
           element:
@@ -51069,7 +50985,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x0061010C + index0*0x100"
           name_template: "(上12结算日)反向有功费率{index}精确电能"
           element:
@@ -51091,7 +51007,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00620101 + index0*0x100"
           name_template: "(上1结算日)组合无功1费率{index}精确电能"
           element:
@@ -51113,7 +51029,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00620102 + index0*0x100"
           name_template: "(上2结算日)组合无功1费率{index}精确电能"
           element:
@@ -51135,7 +51051,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00620103 + index0*0x100"
           name_template: "(上3结算日)组合无功1费率{index}精确电能"
           element:
@@ -51157,7 +51073,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00620104 + index0*0x100"
           name_template: "(上4结算日)组合无功1费率{index}精确电能"
           element:
@@ -51179,7 +51095,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00620105 + index0*0x100"
           name_template: "(上5结算日)组合无功1费率{index}精确电能"
           element:
@@ -51201,7 +51117,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00620106 + index0*0x100"
           name_template: "(上6结算日)组合无功1费率{index}精确电能"
           element:
@@ -51223,7 +51139,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00620107 + index0*0x100"
           name_template: "(上7结算日)组合无功1费率{index}精确电能"
           element:
@@ -51245,7 +51161,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00620108 + index0*0x100"
           name_template: "(上8结算日)组合无功1费率{index}精确电能"
           element:
@@ -51267,7 +51183,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00620109 + index0*0x100"
           name_template: "(上9结算日)组合无功1费率{index}精确电能"
           element:
@@ -51289,7 +51205,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x0062010A + index0*0x100"
           name_template: "(上10结算日)组合无功1费率{index}精确电能"
           element:
@@ -51311,7 +51227,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x0062010B + index0*0x100"
           name_template: "(上11结算日)组合无功1费率{index}精确电能"
           element:
@@ -51333,7 +51249,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x0062010C + index0*0x100"
           name_template: "(上12结算日)组合无功1费率{index}精确电能"
           element:
@@ -51355,7 +51271,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00630101 + index0*0x100"
           name_template: "(上1结算日)组合无功2费率{index}精确电能"
           element:
@@ -51377,7 +51293,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00630102 + index0*0x100"
           name_template: "(上2结算日)组合无功2费率{index}精确电能"
           element:
@@ -51399,7 +51315,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00630103 + index0*0x100"
           name_template: "(上3结算日)组合无功2费率{index}精确电能"
           element:
@@ -51421,7 +51337,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00630104 + index0*0x100"
           name_template: "(上4结算日)组合无功2费率{index}精确电能"
           element:
@@ -51443,7 +51359,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00630105 + index0*0x100"
           name_template: "(上5结算日)组合无功2费率{index}精确电能"
           element:
@@ -51465,7 +51381,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00630106 + index0*0x100"
           name_template: "(上6结算日)组合无功2费率{index}精确电能"
           element:
@@ -51487,7 +51403,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00630107 + index0*0x100"
           name_template: "(上7结算日)组合无功2费率{index}精确电能"
           element:
@@ -51509,7 +51425,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00630108 + index0*0x100"
           name_template: "(上8结算日)组合无功2费率{index}精确电能"
           element:
@@ -51531,7 +51447,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00630109 + index0*0x100"
           name_template: "(上9结算日)组合无功2费率{index}精确电能"
           element:
@@ -51553,7 +51469,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x0063010A + index0*0x100"
           name_template: "(上10结算日)组合无功2费率{index}精确电能"
           element:
@@ -51575,7 +51491,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x0063010B + index0*0x100"
           name_template: "(上11结算日)组合无功2费率{index}精确电能"
           element:
@@ -51597,7 +51513,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x0063010C + index0*0x100"
           name_template: "(上12结算日)组合无功2费率{index}精确电能"
           element:
@@ -51619,7 +51535,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00640101 + index0*0x100"
           name_template: "(上1结算日)第一象限无功费率{index}精确电能"
           element:
@@ -51641,7 +51557,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00640102 + index0*0x100"
           name_template: "(上2结算日)第一象限无功费率{index}精确电能"
           element:
@@ -51663,7 +51579,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00640103 + index0*0x100"
           name_template: "(上3结算日)第一象限无功费率{index}精确电能"
           element:
@@ -51685,7 +51601,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00640104 + index0*0x100"
           name_template: "(上4结算日)第一象限无功费率{index}精确电能"
           element:
@@ -51707,7 +51623,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00640105 + index0*0x100"
           name_template: "(上5结算日)第一象限无功费率{index}精确电能"
           element:
@@ -51729,7 +51645,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00640106 + index0*0x100"
           name_template: "(上6结算日)第一象限无功费率{index}精确电能"
           element:
@@ -51751,7 +51667,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00640107 + index0*0x100"
           name_template: "(上7结算日)第一象限无功费率{index}精确电能"
           element:
@@ -51773,7 +51689,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00640108 + index0*0x100"
           name_template: "(上8结算日)第一象限无功费率{index}精确电能"
           element:
@@ -51795,7 +51711,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00640109 + index0*0x100"
           name_template: "(上9结算日)第一象限无功费率{index}精确电能"
           element:
@@ -51817,7 +51733,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x0064010A + index0*0x100"
           name_template: "(上10结算日)第一象限无功费率{index}精确电能"
           element:
@@ -51839,7 +51755,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x0064010B + index0*0x100"
           name_template: "(上11结算日)第一象限无功费率{index}精确电能"
           element:
@@ -51861,7 +51777,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x0064010C + index0*0x100"
           name_template: "(上12结算日)第一象限无功费率{index}精确电能"
           element:
@@ -51883,7 +51799,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00650101 + index0*0x100"
           name_template: "(上1结算日)第二象限无功费率{index}精确电能"
           element:
@@ -51905,7 +51821,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00650102 + index0*0x100"
           name_template: "(上2结算日)第二象限无功费率{index}精确电能"
           element:
@@ -51927,7 +51843,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00650103 + index0*0x100"
           name_template: "(上3结算日)第二象限无功费率{index}精确电能"
           element:
@@ -51949,7 +51865,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00650104 + index0*0x100"
           name_template: "(上4结算日)第二象限无功费率{index}精确电能"
           element:
@@ -51971,7 +51887,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00650105 + index0*0x100"
           name_template: "(上5结算日)第二象限无功费率{index}精确电能"
           element:
@@ -51993,7 +51909,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00650106 + index0*0x100"
           name_template: "(上6结算日)第二象限无功费率{index}精确电能"
           element:
@@ -52015,7 +51931,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00650107 + index0*0x100"
           name_template: "(上7结算日)第二象限无功费率{index}精确电能"
           element:
@@ -52037,7 +51953,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00650108 + index0*0x100"
           name_template: "(上8结算日)第二象限无功费率{index}精确电能"
           element:
@@ -52059,7 +51975,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00650109 + index0*0x100"
           name_template: "(上9结算日)第二象限无功费率{index}精确电能"
           element:
@@ -52081,7 +51997,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x0065010A + index0*0x100"
           name_template: "(上10结算日)第二象限无功费率{index}精确电能"
           element:
@@ -52103,7 +52019,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x0065010B + index0*0x100"
           name_template: "(上11结算日)第二象限无功费率{index}精确电能"
           element:
@@ -52125,7 +52041,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x0065010C + index0*0x100"
           name_template: "(上12结算日)第二象限无功费率{index}精确电能"
           element:
@@ -52147,7 +52063,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00660101 + index0*0x100"
           name_template: "(上1结算日)第三象限无功费率{index}精确电能"
           element:
@@ -52169,7 +52085,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00660102 + index0*0x100"
           name_template: "(上2结算日)第三象限无功费率{index}精确电能"
           element:
@@ -52191,7 +52107,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00660103 + index0*0x100"
           name_template: "(上3结算日)第三象限无功费率{index}精确电能"
           element:
@@ -52213,7 +52129,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00660104 + index0*0x100"
           name_template: "(上4结算日)第三象限无功费率{index}精确电能"
           element:
@@ -52235,7 +52151,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00660105 + index0*0x100"
           name_template: "(上5结算日)第三象限无功费率{index}精确电能"
           element:
@@ -52257,7 +52173,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00660106 + index0*0x100"
           name_template: "(上6结算日)第三象限无功费率{index}精确电能"
           element:
@@ -52279,7 +52195,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00660107 + index0*0x100"
           name_template: "(上7结算日)第三象限无功费率{index}精确电能"
           element:
@@ -52301,7 +52217,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00660108 + index0*0x100"
           name_template: "(上8结算日)第三象限无功费率{index}精确电能"
           element:
@@ -52323,7 +52239,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00660109 + index0*0x100"
           name_template: "(上9结算日)第三象限无功费率{index}精确电能"
           element:
@@ -52345,7 +52261,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x0066010A + index0*0x100"
           name_template: "(上10结算日)第三象限无功费率{index}精确电能"
           element:
@@ -52367,7 +52283,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x0066010B + index0*0x100"
           name_template: "(上11结算日)第三象限无功费率{index}精确电能"
           element:
@@ -52389,7 +52305,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x0066010C + index0*0x100"
           name_template: "(上12结算日)第三象限无功费率{index}精确电能"
           element:
@@ -52411,7 +52327,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00670101 + index0*0x100"
           name_template: "(上1结算日)第四象限无功费率{index}精确电能"
           element:
@@ -52433,7 +52349,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00670102 + index0*0x100"
           name_template: "(上2结算日)第四象限无功费率{index}精确电能"
           element:
@@ -52455,7 +52371,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00670103 + index0*0x100"
           name_template: "(上3结算日)第四象限无功费率{index}精确电能"
           element:
@@ -52477,7 +52393,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00670104 + index0*0x100"
           name_template: "(上4结算日)第四象限无功费率{index}精确电能"
           element:
@@ -52499,7 +52415,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00670105 + index0*0x100"
           name_template: "(上5结算日)第四象限无功费率{index}精确电能"
           element:
@@ -52521,7 +52437,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00670106 + index0*0x100"
           name_template: "(上6结算日)第四象限无功费率{index}精确电能"
           element:
@@ -52543,7 +52459,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00670107 + index0*0x100"
           name_template: "(上7结算日)第四象限无功费率{index}精确电能"
           element:
@@ -52565,7 +52481,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00670108 + index0*0x100"
           name_template: "(上8结算日)第四象限无功费率{index}精确电能"
           element:
@@ -52587,7 +52503,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00670109 + index0*0x100"
           name_template: "(上9结算日)第四象限无功费率{index}精确电能"
           element:
@@ -52609,7 +52525,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x0067010A + index0*0x100"
           name_template: "(上10结算日)第四象限无功费率{index}精确电能"
           element:
@@ -52631,7 +52547,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x0067010B + index0*0x100"
           name_template: "(上11结算日)第四象限无功费率{index}精确电能"
           element:
@@ -52653,7 +52569,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x0067010C + index0*0x100"
           name_template: "(上12结算日)第四象限无功费率{index}精确电能"
           element:
@@ -52675,7 +52591,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00680101 + index0*0x100"
           name_template: "(上1结算日)组合有功费率{index}精确电能"
           element:
@@ -52697,7 +52613,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00680102 + index0*0x100"
           name_template: "(上2结算日)组合有功费率{index}精确电能"
           element:
@@ -52719,7 +52635,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00680103 + index0*0x100"
           name_template: "(上3结算日)组合有功费率{index}精确电能"
           element:
@@ -52741,7 +52657,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00680104 + index0*0x100"
           name_template: "(上4结算日)组合有功费率{index}精确电能"
           element:
@@ -52763,7 +52679,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00680105 + index0*0x100"
           name_template: "(上5结算日)组合有功费率{index}精确电能"
           element:
@@ -52785,7 +52701,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00680106 + index0*0x100"
           name_template: "(上6结算日)组合有功费率{index}精确电能"
           element:
@@ -52807,7 +52723,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00680107 + index0*0x100"
           name_template: "(上7结算日)组合有功费率{index}精确电能"
           element:
@@ -52829,7 +52745,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00680108 + index0*0x100"
           name_template: "(上8结算日)组合有功费率{index}精确电能"
           element:
@@ -52851,7 +52767,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x00680109 + index0*0x100"
           name_template: "(上9结算日)组合有功费率{index}精确电能"
           element:
@@ -52873,7 +52789,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x0068010A + index0*0x100"
           name_template: "(上10结算日)组合有功费率{index}精确电能"
           element:
@@ -52895,7 +52811,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x0068010B + index0*0x100"
           name_template: "(上11结算日)组合有功费率{index}精确电能"
           element:
@@ -52917,7 +52833,7 @@ data_items:
         type: bcd
       - candidate_ids:
           count: 63
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x0068010C + index0*0x100"
           name_template: "(上12结算日)组合有功费率{index}精确电能"
           element:
@@ -55166,7 +55082,7 @@ data_items:
     fields:
       - candidate_ids:
           count: 1
-          count_expr: "$remaining / 4"
+          count_expr: "$remaining / 5"
           id_expr: "0x06103002 + index0*0x100"
           name_template: "组合无功{index}总电能"
           element:
