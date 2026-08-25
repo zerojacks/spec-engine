@@ -277,11 +277,7 @@ pub fn gen_named_field(
         ctx.di_raw_map.entry(raw_key).or_insert_with(|| rf.clone());
 
         if let Ok(id_num) = u32::from_str_radix(id_str, 16) {
-            if let Some((_, _, _, _, existing)) =
-                ctx.registrations.iter().find(|(id, p, r, d, _)| {
-                    *id == id_num && p == &protocol && r == &region && d == &dir
-                })
-            {
+            if let Some(existing) = ctx.get_registered(id_num, &protocol, &region, &dir) {
                 // 直接比较结构化的 FieldSpec 值（PartialEq 是派生的，递归
                 // 结构相等），而不是像旧方案那样比较生成的源码文本——旧方案
                 // 里 enum_map 这类 HashMap 字段生成代码时迭代顺序不固定，
@@ -297,7 +293,7 @@ pub fn gen_named_field(
                     );
                 }
             } else {
-                ctx.registrations.push((
+                ctx.register(
                     id_num,
                     protocol.clone(),
                     region.clone(),
@@ -309,7 +305,7 @@ pub fn gen_named_field(
                         spec: spec.clone(),
                         format: format_spec.clone(),
                     },
-                ));
+                );
             }
         }
     }

@@ -63,13 +63,6 @@ impl BuildCtx {
         self.registrations.push((id, protocol, region, dir, named_field));
     }
 
-    /// 检查某个 DI 是否已注册
-    pub fn is_registered(&self, id: u32, protocol: &str, region: &str, dir: &Option<String>) -> bool {
-        self.registrations.iter().any(|(reg_id, reg_protocol, reg_region, reg_dir, _)| {
-            *reg_id == id && reg_protocol == protocol && reg_region == region && reg_dir == dir
-        })
-    }
-
     /// 获取已注册的 DI（如果存在）
     pub fn get_registered(
         &self,
@@ -169,6 +162,8 @@ impl BuildScope {
     }
 
     /// 检查某个 id 是否在当前可见的作用域中
+    /// （当前仅被本模块单元测试使用，只在测试构建中编译）
+    #[cfg(test)]
     pub fn contains(&self, id: &str) -> bool {
         self.scopes.iter().rev().any(|scope| scope.contains(id))
     }

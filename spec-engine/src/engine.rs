@@ -1948,7 +1948,6 @@ mod info_point_tests {
 
     fn get_engine() -> Engine {
         use std::sync::OnceLock;
-        use crate::get_spec_catalog;
         static TEST_DICT: OnceLock<HashMap<DiKey, NamedField>> = OnceLock::new();
         let dict = TEST_DICT.get_or_init(|| HashMap::new());
         Engine::new(dict)

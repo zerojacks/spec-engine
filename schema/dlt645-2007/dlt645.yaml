@@ -46907,6 +46907,11 @@ data_items:
           - range: [9, 15]
             name: "保留"
 
+      - id: "04000508"
+        name: 密钥状态字
+        length: 4
+        type: hex
+
   - id: "04001501"
     name: "主动上报状态字"
     protocol: "dlt645-2007"
