@@ -708,7 +708,7 @@ impl Engine {
         let mut result = 0u64;
         for bit_index in start..=end {
             let byte_index = bit_index / 8;
-            let bit_in_byte = 7 - (bit_index % 8);
+            let bit_in_byte = bit_index % 8;
             if raw[byte_index] & (1 << bit_in_byte) != 0 {
                 result |= 1 << (bit_index - start);
             }
@@ -725,10 +725,10 @@ impl Engine {
         for bit_index in start..=end {
             let byte_index = bit_index / 8;
             let bit_in_byte = bit_index % 8;
-            let bit_position = if bit_direction == Some("lsb") {
-                bit_in_byte
-            } else {
+            let bit_position = if bit_direction == Some("msb") {
                 7 - bit_in_byte
+            } else {
+                bit_in_byte
             };
             if raw[byte_index] & (1 << bit_position) != 0 {
                 result |= 1 << (bit_index - start);

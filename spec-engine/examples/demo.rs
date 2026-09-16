@@ -90,9 +90,7 @@ fn main() {
 
     // Examples for 主动上报状态字 (04001501) driven by bits_ref
     // single bit set (first bit) -> one element follows
-    let mut single = vec![0x01u8];
-    single.extend_from_slice(&[0u8; 11]);
-    single.push(0x03);
+    let single = vec![0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01];
     show_json_case("主动上报状态字_single_bit", 0x04001501, &single);
 
     // multiple bits set (first two bits) -> two elements follow
