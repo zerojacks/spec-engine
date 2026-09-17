@@ -27311,7 +27311,80 @@ data_items:
       - name: "负荷记录结束码"
         length: 1
         type: bin
-
+  - id: "06E80100"
+    name: "最早一个负荷辨识数据记录块"
+    protocol: "csg13"
+    region: ["南网"]
+    fields:
+      - name: "长度"
+        length: 1
+        type: bin
+        ref_id: "data_length"
+      
+      - name: "存储时间"
+        length: 5
+        type: bcd
+        time: mmhhDDMMYY
+      
+      - type: repeat
+        count: 6
+        name_template: "电器类型{index}"
+        element:
+          length: 7
+          fields:
+            - name: "电器类型{index}编号"
+              length: 1
+              type: bin
+            
+            - name: "电器类型{index}用电量"
+              length: 4
+              unit: "kWh"
+              decimals: 4
+              type: bcd
+              endian: little
+            
+            - name: "电器类型{index}用电时间"
+              length: 2
+              unit: "分钟"
+              type: bin
+              endian: little
+  - id: "06E80101"
+    name: "给定时间负荷辨识数据记录块"
+    protocol: "csg13"
+    region: ["南网"]
+    fields:
+      - name: "长度"
+        length: 1
+        type: bin
+        ref_id: "data_length"
+      
+      - name: "存储时间"
+        length: 5
+        type: bcd
+        time: mmhhDDMMYY
+      
+      - type: repeat
+        count: 6
+        name_template: "电器类型{index}"
+        element:
+          length: 7
+          fields:
+            - name: "电器类型{index}编号"
+              length: 1
+              type: bin
+            
+            - name: "电器类型{index}用电量"
+              length: 4
+              unit: "kWh"
+              decimals: 4
+              type: bcd
+              endian: little
+            
+            - name: "电器类型{index}用电时间"
+              length: 2
+              unit: "分钟"
+              type: bin
+              endian: little
   - id: "06E80102"
     name: "最近一个负荷辨识数据记录块"
     protocol: "csg13"
