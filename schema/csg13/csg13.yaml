@@ -3793,16 +3793,21 @@ data_items:
             enum:
               "1": "已发生"
               "0": "未发生"
-      - type: repeat
-        bits_ref: report_status
-        iterate_order: asc
-        name_template: "{bit_name}新增次数"
-        element:
-          type: switch
-          on: $bit_value
-          cases:
-            "0": { length: 0, type: skip }
-            "1": { length: 1, type: bcd, unit: 次 }
+      - type: switch
+        on: $remaining
+        cases:
+          "0": { length: 0, type: skip }
+        default:
+          type: repeat
+          bits_ref: report_status
+          iterate_order: asc
+          name_template: "{bit_name}新增次数"
+          element:
+            type: switch
+            on: $bit_value
+            cases:
+              "0": { length: 0, type: skip }
+              "1": { length: 1, type: bcd, unit: 次 }
 
   - id: "040B01FF"
     name: "油变装置数据"
